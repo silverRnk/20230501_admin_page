@@ -169,7 +169,7 @@ const AllStudent = () => {
     // setSelectedStudent(student);
     // setOpen(true);
     console.log(student);
-    navigate(`/students/view_profile?id=${student.std_id}`)
+    navigate(`/students/student?id=${student.std_id}`)
 
   };
 

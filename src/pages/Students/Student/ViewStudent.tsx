@@ -1,13 +1,14 @@
 import React, { SyntheticEvent } from "react";
-import { studentList } from "../../utils/data";
+import { studentList } from "../../../utils/data";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
-import DefaultImg from "../../assets/profile_default.svg";
+import DefaultImg from "../../../assets/profile_default.svg"
+//"../../assets/profile_default.svg";
 import { useState } from "react";
 import {
   CredentialsRow,
   StudentProfileLong,
-} from "./utils/interface";
+} from "../utils/interface";
 
 //Mui Table
 import Table from "@mui/material/Table";
@@ -17,7 +18,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { credentialsColumn } from "./utils/ColumnLabels";
+import { credentialsColumn } from "../utils/ColumnLabels";
 
 //Mui Form
 import InputLabel from "@mui/material/InputLabel";
@@ -35,10 +36,11 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
 //Mui Icons
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 import Upload from "rc-upload";
 import { Button, FormLabel } from "@mui/material";
+import { useLoaderData } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -75,7 +77,9 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 65%;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
   border-radius: 50%;
   margin-bottom: 20px;
 `;
@@ -85,6 +89,7 @@ const Status = styled.p`
   font-weight: 600;
   color: red;
   margin-bottom: 40px;
+  text-transform: capitalize;
 `;
 
 const Wrapper = styled.div``;
@@ -103,7 +108,11 @@ const CloseButton = styled.button`
   background-color: transparent;
 `;
 
-const Name = styled.h1``;
+const Name = styled.h1`
+  font-size: 3rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+`;
 
 const CredentialsContainer = styled.div`
   width: 80%;
@@ -125,11 +134,12 @@ const InfoItem = styled.tr`
 `;
 const InfoTitle = styled.th``;
 const InfoDesc = styled.td`
-  text-align: center;
+  padding-left: 200px;
+  text-align: left;
+  text-transform: capitalize;
 `;
 
 const ViewStudent = () => {
-  const std_img = null;
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("1");
   const [studentProfile, setStudentProfile] =
@@ -163,6 +173,9 @@ const ViewStudent = () => {
     upload_date: null,
   });
 
+  const { studentInfo, gradeLevels } = useLoaderData();
+  const std_img = import.meta.env.VITE_URL + studentInfo.std_photo;
+
   return (
     <Container>
       <Top>
@@ -177,7 +190,7 @@ const ViewStudent = () => {
             src={std_img || DefaultImg}
             style={{ border: std_img ? "none" : "1px solid black" }}
           />
-          <Status>Current Status: Transfer</Status>
+          <Status>Current Status: {studentInfo.std_status}</Status>
 
           <FormControl
             style={{
@@ -196,6 +209,8 @@ const ViewStudent = () => {
               style={{ flex: 1 }}
             >
               <MenuItem>Old</MenuItem>
+              <MenuItem>New</MenuItem>
+              <MenuItem>Transferee</MenuItem>
             </Select>
 
             <button
@@ -254,7 +269,7 @@ const ViewStudent = () => {
           </FormControl>
         </Left>
         <Right>
-          <Name>{studentProfile?.name || "N/A"}</Name>
+          <Name>{studentInfo.std_name || "N/A"}</Name>
 
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={selectedTab}>
@@ -278,61 +293,61 @@ const ViewStudent = () => {
                       <InfoItem>
                         <InfoTitle>ID Number:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.id_number || "N/A"}
+                          {studentInfo?.std_id || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Name:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.name || "N/A"}
+                          {studentInfo?.std_name || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Gender:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.gender || "N/A"}
+                          {studentInfo?.std_gender || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Date of Birth:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.date_of_birth || "N/A"}
+                          {studentInfo?.std_dob || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Religion:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.religion || "N/A"}
+                          {studentInfo?.std_religion || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Father's Name:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.father_name || "N/A"}
+                          {studentInfo?.fathers_name || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Mother's Name:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.mother_name || "N/A"}
+                          {studentInfo?.mothers_name || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Father's Occupation:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.father_occupation || "N/A"}
+                          {studentInfo?.fathers_occupation || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Email:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.e_mail || "N/A"}
+                          {studentInfo?.std_email || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                       <InfoItem>
                         <InfoTitle>Admission:</InfoTitle>
                         <InfoDesc>
-                          {studentProfile?.admission_date || "N/A"}
+                          {studentInfo?.admission_date || "N/A"}
                         </InfoDesc>
                       </InfoItem>
                     </tbody>

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { StudentProfileLong } from '../pages/Student/utils/interface';
+import { StudentProfileLong } from '../pages/Students/utils/interface';
 
 const InfoContainer = styled.div`
   padding-left: 20px;

@@ -24,7 +24,7 @@ function createStudent(
 }
 
 /**
- *  @type {Array<import("../pages/Student/utils/interface").StudentProfileShort>}
+ *  @type {Array<import("../pages/Students/utils/interface").StudentProfileShort>}
  */
 export const studentList = [
   {

@@ -2,7 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Loginform from "./pages/Loginform";
-import Students from "./pages/Student/Students";
+import Students from "./pages/Students/Students";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,9 +17,9 @@ import SideNavbar from "./compenents/SideNavBar";
 import ReactSideNav from "./compenents/ReactSideNav.jsx";
 
 //Students
-import AllStudent from "./pages/Student/AllStudent.jsx";
-import AddStudent from "./pages/Student/AddStudent.tsx";
-import StudentPromotions from "./pages/Student/StudentPromotions.jsx";
+import AllStudent from "./pages/Students/AllStudent.jsx";
+import AddStudent from "./pages/Students/AddStudent.tsx";
+import StudentPromotions from "./pages/Students/StudentPromotions.jsx";
 
 //Teachers
 import AllTeachers from "./pages/Teachers/AllTeachers.jsx";
@@ -43,7 +43,7 @@ import SharePage from "./pages/SharePage";
 import { ContextProvider } from "./context/ContextProvider";
 import { SignUp } from "./pages/SignUp";
 import { loadPath, loadStudentData, loadStudents } from "./Loader/StudentLoader";
-import ViewStudent from "./pages/Student/ViewStudent";
+import ViewStudent from "./pages/Students/Student/ViewStudent";
 import Error from "./pages/Error"
 
 //Taena mo pol gawin mo to bukas ng umaga
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
             element: <StudentPromotions />
           },
           {
-            path: 'view_profile',
+            path: 'student',
             element: <ViewStudent />,
             loader: loadStudentData
           }

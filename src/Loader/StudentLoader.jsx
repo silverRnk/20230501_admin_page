@@ -30,11 +30,13 @@ export const loadStudents = async ({params, request}) => {
 export const loadStudentData = async ({params, request}) => {
     console.log("params",params)
     const url = new URL(request.url)
-    const name = url.searchParams.get("name")
-    console.log("url", url)
-    console.log("name", name)
+    const id = url.searchParams.get("id")
+    
+    const response = await axiosClient.get(`/admin/student/${id}`) ?? {}
+    const studentInfo = response?.data?.data?.[0] ?? {}
+    const gradeLevels = response?.data?.grade_levels ?? []
 
-    return {}
+    return {studentInfo, gradeLevels}
 }
 
 export const loadPath = ({request}) => {
