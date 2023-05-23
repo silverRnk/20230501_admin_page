@@ -11,11 +11,10 @@ import {
 } from "@mui/material";
 import React, { useState, useCallback, useEffect, createRef } from "react";
 import styled from "styled-components";
-import { studentList, studentList2 } from "../../utils/data";
-import "./style.css";
-import ViewProfile from "../../compenents/ViewProfile";
+import { studentList, studentList2 } from "../../../utils/data";
+import ViewProfile from "../../../compenents/ViewProfile";
 import {  useLoaderData, useNavigate } from "react-router-dom";
-import { columnAllStudents } from "./utils/ColumnLabels";
+import { columnAllStudents } from "../utils/ColumnLabels";
 
 
 const Container = styled.div`

@@ -2,16 +2,16 @@
 
 import React, { FormEventHandler, createRef, useState } from "react";
 import styled from "styled-components";
-import DefaultImg from "../../assets/profile_default.svg";
-import axiosClient from "../../utils/AxiosClient";
+import DefaultImg from "../../../assets/profile_default.svg";
+import axiosClient from "../../../utils/AxiosClient";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
-import TimeLimitedDialog from "../../compenents/TimeLimitedDialog";
+import TimeLimitedDialog from "../../../compenents/TimeLimitedDialog";
 import {
   AddStudentProps,
   FormValidationFeedback,
-} from "./utils/interface";
-import { useFormFeedback } from "./utils/CustomHooks";
-import { AddStudentLabels } from "./utils/FormInputNames";
+} from "../utils/interface";
+import { useFormFeedback } from "../utils/CustomHooks";
+import { AddStudentLabels } from "../utils/FormInputNames";
 
 const Container = styled.div`
   width: 100%;

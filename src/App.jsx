@@ -17,8 +17,8 @@ import SideNavbar from "./compenents/SideNavBar";
 import ReactSideNav from "./compenents/ReactSideNav.jsx";
 
 //Students
-import AllStudent from "./pages/Students/AllStudent.jsx";
-import AddStudent from "./pages/Students/AddStudent.tsx";
+import AllStudent from "./pages/Students/All/AllStudent.jsx";
+import AddStudent from "./pages/Students/AddStudent/AddStudent";
 import StudentPromotions from "./pages/Students/StudentPromotions.jsx";
 
 //Teachers
