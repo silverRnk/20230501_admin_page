@@ -10,15 +10,26 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link } from "react-router-dom";
 import CedarLogo from "../pictures/cedarhills.png";
-import { Dashboard, Backpack } from "@mui/icons-material";
 import "./SideNavBar.css";
 import styled from "styled-components";
+import ParentIcon from '@mui/icons-material/SupervisorAccount';
+//Mui
+import { Dashboard, Backpack } from "@mui/icons-material";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import PieChartIcon from "@mui/icons-material/PieChart";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+
+//Utils
 import { useStateContext } from "../context/ContextProvider";
 import axiosClient from "../utils/AxiosClient";
+
+//Custom Icons
+import StudentIcons from "./SvgIcons/StudentIcons";
+import TeacherIcon from "./SvgIcons/TeacherIcon";
+import BookIcon from "./SvgIcons/BookIcon";
+import AccountIcon from "./SvgIcons/AccountIcon";
 
 const SideBarContainer = styled.div`
   width: auto;
@@ -48,11 +59,13 @@ const CollapseBtn = styled.button`
   background-color: transparent;
 `;
 
+
+
 function SideNavbar() {
   const { collapseSidebar, collapsed } = useProSidebar();
   const [width, setWidth] = useState("");
   const [collapse, setCollapsed] = useState(false);
-  const {setToken, setUser} = useStateContext()
+  const { setToken, setUser } = useStateContext();
 
   function getSize() {
     setWidth(window.innerWidth);
@@ -72,12 +85,11 @@ function SideNavbar() {
   console.log(collapsed);
 
   const onLogout = () => {
-    axiosClient.post('/logout')
-    .then(() => {
-      setUser({})
-      setToken(null)
-    })
-  }
+    axiosClient.post("/logout").then(() => {
+      setUser({});
+      setToken(null);
+    });
+  };
 
   return (
     <SideBarContainer>
@@ -115,24 +127,43 @@ function SideNavbar() {
           >
             Dashboard
           </MenuItem>
-          <SubMenu label="Students" icon={<Backpack />}>
+          <SubMenu label="Students" icon={<StudentIcons />}>
             <MenuItem component={<Link to="/students/all" />}>
               All Students
             </MenuItem>
             <MenuItem component={<Link to="/students/add_student" />}>
               Add Student
             </MenuItem>
-            <MenuItem component={<Link to="/students/student_admit_form" />}>
+            <MenuItem
+              component={<Link to="/students/student_admit_form" />}
+            >
               Student Promotion
             </MenuItem>
           </SubMenu>
+          <MenuItem icon={<ParentIcon />}>Parents</MenuItem>
+          <SubMenu label="Teachers" icon={<TeacherIcon />}>
+            <MenuItem component={<Link to="/teachers/all" />}>
+              All Teachers
+            </MenuItem>
+            <MenuItem component={<Link to="/teachers/add" />}>
+              Add Teacher
+            </MenuItem>
+          </SubMenu>
+          <SubMenu label="Account" icon={<AccountIcon />}>
+            <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
+            <MenuItem icon={<Dashboard />}> Line charts </MenuItem>
+          </SubMenu>
+          <MenuItem icon={<BookIcon />}>Subjects</MenuItem>
           <SubMenu label="Charts" icon={<PieChartIcon />}>
             <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
             <MenuItem icon={<Dashboard />}> Line charts </MenuItem>
           </SubMenu>
           <MenuItem> Documentation </MenuItem>
           <MenuItem> Calendar </MenuItem>
-          <MenuItem icon={<LogoutIcon />} onClick={onLogout}> Logout</MenuItem>
+          <MenuItem icon={<LogoutIcon />} onClick={onLogout}>
+            {" "}
+            Logout
+          </MenuItem>
         </Menu>
       </Sidebar>
     </SideBarContainer>
