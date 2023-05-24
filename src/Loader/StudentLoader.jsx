@@ -31,8 +31,15 @@ export const loadStudentData = async ({params, request}) => {
     console.log("params",params)
     const url = new URL(request.url)
     const id = url.searchParams.get("id")
+
+
     
     const response = await axiosClient.get(`/admin/student/${id}`) ?? {}
+    if(response.status === 401){
+        throw new Response('Unauthorize', 401)
+    }
+
+
     const studentInfo = response?.data?.data?.[0] ?? {}
     const gradeLevels = response?.data?.grade_levels ?? []
 
