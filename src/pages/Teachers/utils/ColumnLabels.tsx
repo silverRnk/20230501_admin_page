@@ -1,4 +1,4 @@
-import { ColumnHeader } from "./interface";
+import { ColumnHeader, FormInputLabel } from "./interface";
 
 export const credentialsColumn: Array<ColumnHeader> = [
   {
@@ -51,3 +51,16 @@ export const columnTeachers: Array<ColumnHeader> = [
   { id: "teacher_dob", label: "Date of Birth", minWidth: 70 },
   { id: "teacher_phone", label: "Phone", minWidth: 70 },
 ];
+
+
+export const AddStudentsLabel: Array<FormInputLabel> = [
+  {name: "first_name", label: "First Name", isRequired: true},
+  {name: "last_name", label: "Last Name", isRequired: true},
+  {name: "address_line_1", label: "Address Line 1", isRequired: true},
+  {name: "address_line_2", label: "Address Line 2", isRequired: false},
+  {name: "gender", label: "Gender", isRequired: true},
+  {name: "date_of_bird", label: "Date of Birth", isRequired: true},
+  {name: "email", label: "Email", isRequired: true},
+  {name: "phone", label: "Phone Number", isRequired: true},
+  {name: "profile_img", label: "Profile Image", isRequired: false}
+]

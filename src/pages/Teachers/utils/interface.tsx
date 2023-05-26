@@ -46,6 +46,7 @@ export interface FormValidationFeedback {
 export interface FormInputLabel {
   name: string;
   label: string;
+  isRequired: boolean;
 }
 
 export interface GradeLevels {
