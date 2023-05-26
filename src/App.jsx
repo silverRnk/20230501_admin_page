@@ -25,7 +25,7 @@ import StudentPromotions from "./pages/Students/StudentPromotions.jsx";
 import AllTeachers from "./pages/Teachers/all/AllTeachers";
 import Teachers from "./pages/Teachers/Teachers";
 import AddTeacher from "./pages/Teachers/add/AddTeacher";
-import { loaderTeacherAll } from "./pages/Teachers/utils/Loaders";
+import { loaderTeacherAdd, loaderTeacherAll } from "./pages/Teachers/utils/Loaders";
 //Account
 import FeesGroup from "./pages/Account/FeesGroup.jsx";
 import StudentFees from "./pages/Account/StudentFees.jsx";
@@ -46,6 +46,7 @@ import { SignUp } from "./pages/SignUp";
 import { loadPath, loadStudentData, loadStudents } from "./Loader/StudentLoader";
 import ViewStudent from "./pages/Students/Student/ViewStudent";
 import Error from "./pages/Error"
+import Teacher from "./pages/Teachers/teacher/Teacher";
 
 
 
@@ -112,7 +113,12 @@ const router = createBrowserRouter([
           },
           {
             path: 'add',
-            element: <AddTeacher />
+            element: <AddTeacher />,
+            loader: loaderTeacherAdd
+          },
+          {
+            path: 'teacher/{id}',
+            element: <Teacher />
           }
         ]
       }

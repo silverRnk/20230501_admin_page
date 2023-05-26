@@ -23,7 +23,7 @@ export const AddTeacherLabels: Record<TeacherInputs, FormInputLabel> = {
     phone: {label: 'Phone Number', name: 'phone', isRequired: true},
     password: {label: 'Password', name: 'password', isRequired: true},
     password_conf: {label: 'Password Confirmation', name: 'password_confirmation', isRequired: true},
-    profile_img: {label: 'Profile Image', name: 'std_photo', isRequired: false},
+    profile_img: {label: 'Profile Image', name: 'profile_img', isRequired: false},
 
 
 }
