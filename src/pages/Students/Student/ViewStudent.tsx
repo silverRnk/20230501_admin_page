@@ -40,7 +40,14 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 import Upload from "rc-upload";
 import { Button, FormLabel } from "@mui/material";
-import { Navigate, useLoaderData, useSearchParams } from "react-router-dom";
+import {
+  Navigate,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
+import { Grade, GradesPerSY } from "../../../utils/interfaces";
+import GradesTable from "../../../compenents/GradesTable";
+import { Title } from "@mui/icons-material";
 
 const Container = styled.div`
   width: 100%;
@@ -163,6 +170,16 @@ const InfoDesc = styled.td`
   text-transform: capitalize;
 `;
 
+const GradesTableWrapper = styled.div`
+  height: max(auto, 500px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 20px;
+  padding: 10px;
+`;
+
 const ViewStudent = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("1");
@@ -200,13 +217,20 @@ const ViewStudent = () => {
   const { studentInfo, gradeLevels } = useLoaderData();
   const std_img = import.meta.env.VITE_URL + studentInfo.std_photo;
 
-  //React-router params
+  const gradesPerSY: Array<GradesPerSY> = [
+    {year: 2019,
+    grades: [
+      {subject: "Math"}
+    ]}
+  ];
+
+  //get react-router params
   const [search] = useSearchParams();
-  const id = search.get('id');
+  const id = search.get("id");
 
   //return to /students/all page if id is empty
-  if(!id){
-    return <Navigate to={"/students/all"} />
+  if (!id) {
+    return <Navigate to={"/students/all"} />;
   }
 
   return (
@@ -559,7 +583,22 @@ const ViewStudent = () => {
                   </Form>
                 </CredentialsContainer>
               </TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
+              <TabPanel value="3">
+                
+                <GradesTableWrapper>
+                  foo
+                  {
+                  !gradesPerSY? 
+                  <h1>No Grades Information</h1>
+                  :
+                  gradesPerSY.map((grades) => (
+                    <GradesTable
+                      grades={grades.grades}
+                      year={grades.year}
+                    />
+                  ))}
+                </GradesTableWrapper>
+              </TabPanel>
             </TabContext>
           </Box>
         </Right>
