@@ -2,7 +2,7 @@ import React, { SyntheticEvent } from "react";
 import { studentList } from "../../../utils/data";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
-import DefaultImg from "../../../assets/profile_default.svg"
+import DefaultImg from "../../../assets/profile_default.svg";
 //"../../assets/profile_default.svg";
 import { useState } from "react";
 import {
@@ -40,7 +40,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 import Upload from "rc-upload";
 import { Button, FormLabel } from "@mui/material";
-import { useLoaderData } from "react-router-dom";
+import { Navigate, useLoaderData, useSearchParams } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -92,6 +92,19 @@ const Status = styled.p`
   text-transform: capitalize;
 `;
 
+const UpdateButton = styled.button`
+  background-color: lightgray;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px lightgray;
+  transition: all 0.5s;
+
+  :hover {
+    box-shadow: 3px 3px 3px lightgray;
+  }
+`;
+
 const Wrapper = styled.div``;
 
 const Right = styled.div`
@@ -118,12 +131,23 @@ const CredentialsContainer = styled.div`
   width: 80%;
 `;
 
-const Form = styled.form``;
-const InfoContainer = styled.div`
+const Form = styled.form`
+  display: "flex";
+  flex-direction: "row";
+  gap: "15px";
   padding-left: 20px;
   display: flex;
   flex-direction: column;
 `;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const InfoContainer = styled.div``;
+
 const InfoList = styled.table`
   height: 80%;
 `;
@@ -176,6 +200,15 @@ const ViewStudent = () => {
   const { studentInfo, gradeLevels } = useLoaderData();
   const std_img = import.meta.env.VITE_URL + studentInfo.std_photo;
 
+  //React-router params
+  const [search] = useSearchParams();
+  const id = search.get('id');
+
+  //return to /students/all page if id is empty
+  if(!id){
+    return <Navigate to={"/students/all"} />
+  }
+
   return (
     <Container>
       <Top>
@@ -191,39 +224,38 @@ const ViewStudent = () => {
             style={{ border: std_img ? "none" : "1px solid black" }}
           />
           <Status>Current Status: {studentInfo.std_status}</Status>
+          <FormWrapper>
+            <FormLabel required={true}>Update Status:</FormLabel>
+            <FormControl
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "15px",
+                width: "100%",
+                marginBottom: "10px",
+              }}
+              component={"form"}
+              onSubmit={() => console.log("Hello")}
+            >
+              <Select
+                labelId="update_status_id"
+                label="Update Status"
+                style={{ flex: 1 }}
+              >
+                <MenuItem>Old</MenuItem>
+                <MenuItem>New</MenuItem>
+                <MenuItem>Transferee</MenuItem>
+              </Select>
+              <UpdateButton style={{ width: "80px" }}>
+                Update
+              </UpdateButton>
+            </FormControl>
+          </FormWrapper>
 
           <FormControl
             style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "15px",
-              width: "100%",
-            }}
-          >
-            <InputLabel id="update_status_id">
-              Update Status:
-            </InputLabel>
-            <Select
-              labelId="update_status_id"
-              label="Update Status"
-              style={{ flex: 1 }}
-            >
-              <MenuItem>Old</MenuItem>
-              <MenuItem>New</MenuItem>
-              <MenuItem>Transferee</MenuItem>
-            </Select>
-
-            <button
-              style={{ display: "block", padding: "10px 20px" }}
-            >
-              Update
-            </button>
-          </FormControl>
-
-          <FormControl
-            style={{
-              display: "flex",
-              flexDirection: "column",
+              display: "grid",
+              gridTemplateRows: "1fr 0.75fr",
               gap: "15px",
               width: "100%",
             }}
@@ -232,6 +264,7 @@ const ViewStudent = () => {
               style={{
                 display: "flex",
                 flexDirection: "row",
+                flexWrap: "wrap",
                 gap: "10px",
                 width: "100%",
               }}
@@ -261,11 +294,7 @@ const ViewStudent = () => {
               </FormControl>
             </FormGroup>
 
-            <button
-              style={{ display: "block", padding: "10px 20px" }}
-            >
-              Update
-            </button>
+            <UpdateButton>Update</UpdateButton>
           </FormControl>
         </Left>
         <Right>

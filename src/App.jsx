@@ -113,8 +113,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'add',
-            element: <AddTeacher />,
-            loader: loaderTeacherAdd
+            element: <AddTeacher />
           },
           {
             path: 'teacher/{id}',

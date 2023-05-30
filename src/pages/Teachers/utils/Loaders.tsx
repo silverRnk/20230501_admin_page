@@ -6,10 +6,11 @@ export const loaderTeacherAll = async ({ params, request }) => {
   const currentPage = Number(url.searchParams.get("page") || 1);
 
   const response = await axiosClient.get("/admin/teachers/all");
+
   const teachers: Array<TeacherProfileShort> =
-    response?.data?.teachers ?? [];
+    response?.data?.data?.teachers ?? [];
   const gradeAndSections: Array<GradeLevels> =
-    response?.data?.grade_levels ?? [];
+    response?.data?.data?.grade_levels ?? [];
   const pageCount = response?.data?.meta?.last_page ?? 1;
 
   return { teachers, gradeAndSections, currentPage, pageCount };
