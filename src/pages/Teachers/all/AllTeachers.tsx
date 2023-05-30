@@ -105,8 +105,7 @@ function AllTeachers() {
     useLoaderData() as ReturnType<typeof loaderTeacherAll>;
   const navigate = useNavigate();
   const data = teachers;
-  // const gradeAndSection = []
-  // const students = []
+
 
   const handleOnRowsPerChange = (e) => {
     console.log(e.targe.value);
@@ -231,22 +230,22 @@ function AllTeachers() {
             })}
           </TableHead>
           <TableBody>
-            {data.map((student) => (
+            {data.map((teacher) => (
               <TableRow
                 className="table-body-row"
                 hover
                 onClick={(event) => {
-                  handlerTableRow(event, student);
+                  handlerTableRow(event, teacher);
                 }}
-                key={student.teacher_id}
+                key={teacher.teacher_id}
                 style={{ cursor: "pointer" }}
               >
                 {column.map((col) => {
                   let value;
                   if (col.id === "teacher_dob") {
-                    value = student[col.id].toLocaleDateString();
+                    value = teacher[col.id].toLocaleDateString();
                   } else {
-                    value = student[col.id];
+                    value = teacher[col.id];
                   }
 
                   return (

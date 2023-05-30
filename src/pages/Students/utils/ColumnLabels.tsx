@@ -38,7 +38,7 @@ export const credentialsColumn: Array<ColumnHeader> = [
 ];
 
 export const columnAllStudents: Array<ColumnHeader> = [
-  { id: "std_id", label: "Id", minWidth: 70 },
+  { id: "std_id", label: "Student ID", minWidth: 70 },
   { id: "std_name", label: "Name", minWidth: 70},
   { id: "std_gender", label: "Gender", minWidth: 70},
   { id: "std_grade", label: "Class", minWidth: 70},

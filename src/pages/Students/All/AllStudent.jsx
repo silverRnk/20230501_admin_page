@@ -7,15 +7,19 @@ import {
   TableCell,
   TableBody,
   TablePagination,
-  Pagination
+  Pagination,
 } from "@mui/material";
-import React, { useState, useCallback, useEffect, createRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  createRef,
+} from "react";
 import styled from "styled-components";
 import { studentList, studentList2 } from "../../../utils/data";
 import ViewProfile from "../../../compenents/ViewProfile";
-import {  useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { columnAllStudents } from "../utils/ColumnLabels";
-
 
 const Container = styled.div`
   width: 100%;
@@ -52,6 +56,8 @@ const InputName = styled.input`
   font-size: 1.25rem;
 `;
 const Selection = styled.select`
+  /* -webkit-appearance: none;
+  -moz-appearance: none; */
   background-color: #f0f1f3;
   border: none;
   border-radius: 10px;
@@ -59,6 +65,10 @@ const Selection = styled.select`
   padding: 10px;
   padding-right: 20px;
   font-size: 1.25rem;
+
+  ::after {
+    content: "Hello";
+  }
 `;
 
 const SelectionItem = styled.option``;
@@ -83,7 +93,6 @@ const PagerContainer = styled.div`
   justify-content: flex-end;
 `;
 
-
 const AllStudent = () => {
   const column = columnAllStudents;
   const gradeLevelRef = createRef();
@@ -94,16 +103,16 @@ const AllStudent = () => {
   const [page, setPage] = useState(1);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [open, setOpen] = useState(false);
-  
+
   const [selectedStudent, setSelectedStudent] = useState(null);
   /**
    * @type {{import("./utils/interface").StudentProfileShort,
    * import("./utils/interface").GradeLevels, number, number}}
    */
-  const { students, gradeAndSection , currentPage, pageCount } = useLoaderData();
-  const navigate = useNavigate()
-  const data = students
-
+  const { students, gradeAndSection, currentPage, pageCount } =
+    useLoaderData();
+  const navigate = useNavigate();
+  const data = students;
 
   const handleOnPageChange = useCallback(
     (event, newPage) => {
@@ -158,18 +167,19 @@ const AllStudent = () => {
 
   const handleClassName = (e) => {
     setClassName(e.target.value);
-    console.log('grade id', e.target.value)
-    const selSection = gradeAndSection.filter(grade => {
-      return grade.grade_level_id === e.target.value})[0].sections ?? []
-    setSectionList(selSection)
+    console.log("grade id", e.target.value);
+    const selSection =
+      gradeAndSection.filter((grade) => {
+        return grade.grade_level_id === e.target.value;
+      })[0].sections ?? [];
+    setSectionList(selSection);
   };
 
   const handlerTableRow = (event, student) => {
     // setSelectedStudent(student);
     // setOpen(true);
     console.log(student);
-    navigate(`/students/student?id=${student.std_id}`)
-
+    navigate(`/students/student?id=${student.std_id}`);
   };
 
   const handlerCloseDialog = () => {
@@ -179,8 +189,8 @@ const AllStudent = () => {
   };
 
   const handlePageClick = (e, value) => {
-    navigate(`/students/all?page=${value}`)
-  }
+    navigate(`/students/all?page=${value}`);
+  };
 
   return (
     <Container onKeyDownCapture={handlePressEnter}>
@@ -196,16 +206,19 @@ const AllStudent = () => {
           ref={gradeLevelRef}
           onInput={handleClassName}
         >
-          <SelectionItem  value={""}> Select Class </SelectionItem>
+          <SelectionItem value={""}> Select Class </SelectionItem>
           {gradeAndSection.map((item) => (
-            <SelectionItem value={item.grade_level_id}>{item.grade_level}</SelectionItem>
+            <SelectionItem value={item.grade_level_id}>
+              {item.grade_level}
+            </SelectionItem>
           ))}
         </Selection>
-        <Selection
-          ref={sectionRef}>
-          <SelectionItem value={''}> Select Section </SelectionItem>
-          {sectionList.map(section => (
-            <SelectionItem value = {section.id}>{section.name}</SelectionItem>
+        <Selection ref={sectionRef}>
+          <SelectionItem value={""}> Select Section </SelectionItem>
+          {sectionList.map((section) => (
+            <SelectionItem value={section.id}>
+              {section.name}
+            </SelectionItem>
           ))}
         </Selection>
         <ButtonSearch onClick={handlerSearch}>Search</ButtonSearch>
@@ -223,7 +236,12 @@ const AllStudent = () => {
               return (
                 <TableCell
                   key={col.id}
-                  style={{ minWidth: col.minWidth }}
+                  style={{
+                    minWidth: col.minWidth,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "1.05rem",
+                  }}
                 >
                   {col.label}
                 </TableCell>
@@ -231,38 +249,47 @@ const AllStudent = () => {
             })}
           </TableHead>
           <TableBody>
-            {students
-              .map((student) => (
-                <TableRow
-                  className="table-body-row"
-                  hover
-                  onClick={(event) => {
-                    handlerTableRow(event, student)
-                  }}
-                  key={student.id}
-                  style={{ cursor: "pointer" }}
-                >
-                  {column.map((col) => {
-                      let value;
-                    if (col.id === "birth_date") {
-                      value = student[col.id].toLocaleDateString();
-                    } else {
-                      value = student[col.id];
-                    }
+            {students.map((student) => (
+              <TableRow
+                className="table-body-row"
+                hover
+                onClick={(event) => {
+                  handlerTableRow(event, student);
+                }}
+                key={student.id}
+                style={{ cursor: "pointer" }}
+              >
+                {column.map((col) => {
+                  let value;
+                  if (col.id === "birth_date") {
+                    value = student[col.id].toLocaleDateString();
+                  } else {
+                    value = student[col.id];
+                  }
 
-                    return (
-                      <TableCell size="medium">
-                        {value || "N/A"}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
+                  return (
+                    <TableCell
+                      size="medium"
+                      style={{
+                        textAlign: col.align,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {value || "N/A"}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
       <PagerContainer>
-        <Pagination count={pageCount} page={currentPage} onChange={handlePageClick} />
+        <Pagination
+          count={pageCount}
+          page={currentPage}
+          onChange={handlePageClick}
+        />
         {/* <TablePagination
           component="div"
           rowsPerPageOptions={[10]}
