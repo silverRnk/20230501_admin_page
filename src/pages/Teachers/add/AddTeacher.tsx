@@ -128,49 +128,38 @@ const AddTeacher = () => {
   const lastNameRef = createRef<HTMLInputElement>();
   const genderRef = createRef<HTMLSelectElement>();
   const dateOfBirthRef = createRef<HTMLInputElement>();
-  const stdReligionRef = createRef<HTMLInputElement>();
+  const addr1Ref = createRef<HTMLInputElement>();
+  const addr2Ref = createRef<HTMLInputElement>();
+  const religionRef = createRef<HTMLInputElement>();
   const cpNumberRef = createRef<HTMLInputElement>();
   const emailRef = createRef<HTMLInputElement>();
   const passwordRef = createRef<HTMLInputElement>();
   const passwordConfirmationRef = createRef<HTMLInputElement>();
-  const classRef = createRef<HTMLSelectElement>();
-  const sectionRef = createRef<HTMLSelectElement>();
+  const advisoryClassRef = createRef<HTMLSelectElement>();
+  const admissionDateRef = createRef<HTMLInputElement>();
   const studentPhotoRef = createRef<HTMLInputElement>();
-
 
   //Form Feedback
   const [firstNameFeedback, setFirstNameFeedback] = useFormFeedback();
   const [lastNameFeedback, setLastNameFeedback] = useFormFeedback();
   const [genderFeedback, setGenderFeedback] = useFormFeedback();
   const [dobFeedback, setDOBFeedback] = useFormFeedback();
-  const [stdReligionFeedback, setStdReligionFeedback] =
+  const [religionFeedback, setReligionFeedback] =
     useFormFeedback();
-  const [stdEmailFeedback, setStdEmailFeedback] = useFormFeedback();
-  const [stdPhoneFeedback, setStdPhoneFeedback] = useFormFeedback();
+  const [emailFeedback, setEmailFeedback] = useFormFeedback();
+  const [phoneFeedback, setPhoneFeedback] = useFormFeedback();
   const [passwordFeedback, setPasswordFeedback] = useFormFeedback();
   const [
     passwordConfirmationFeedback,
     setPasswordConfirmationFeedback,
   ] = useFormFeedback();
-  const [gradeFeedback, setGradeFeedback] = useFormFeedback();
-  const [sectionFeedback, setSectionFeedback] = useFormFeedback();
+  const [advisoryClassFeedback, setAdvisoryClassFeedback] = useFormFeedback();
+  const [AdmissionDateFeedback, setAdmissionFeedback] = useFormFeedback();
+  const [profileImageFeedback, setProfileImageFeedback] = useFormFeedback();
+  const [addr1Feedback, setAddr1Feedback] = useFormFeedback();
+  const [addr2Feedback, setAddr2Feedback] = useFormFeedback();
 
-  const [fathersNameFeedback, setFathersNameFeedback] =
-    useFormFeedback();
-  const [mothersNameFeedback, setMothersNameFeedback] =
-    useFormFeedback();
-  const [fathersOccupationFeedback, setFathersOccupationFeedback] =
-    useFormFeedback();
-  const [parentsReligionFeedback, setParentsReligionFeedback] =
-    useFormFeedback();
-  const [parentsEmailFeedback, setParentsEmailFeedback] =
-    useFormFeedback();
-  const [parentsPhoneFeedback, setParentsPhoneFeedback] =
-    useFormFeedback();
-  const [studentPhotoFeedback, setStudentPhotoFeedback] =
-    useFormFeedback();
-
-  const [studentImage, setStudentImage] = useState<
+  const [profileImage, setProfileImage] = useState<
     string | ArrayBuffer | null
   >("");
   const [open, setOpen] = useState(false);
@@ -195,8 +184,16 @@ const AddTeacher = () => {
       dateOfBirthRef.current?.value!
     );
     payload.append(
+      FormField.addr1.name,
+      addr1Ref.current?.value!
+    )
+    payload.append(
+      FormField.addr2.name,
+      addr2Ref.current?.value!
+    )
+    payload.append(
       FormField.religion.name,
-      stdReligionRef.current?.value!
+      religionRef.current?.value!
     );
     payload.append(FormField.email.name, emailRef.current?.value!);
     payload.append(FormField.phone.name, cpNumberRef.current?.value!);
@@ -212,29 +209,24 @@ const AddTeacher = () => {
       FormField.profile_img.name,
       studentPhotoRef.current?.files?.[0]!
     );
-    console.log(payload);
-    // const payload = {
-    //   first_name: firstNameRef.current?.value,
-    //   last_name: lastNameRef.current?.value,
-    //   gender: genderRef.current?.value,
-    //   date_of_birth: dateOfBirthRef.current?.value,
-    //   parents_guardian: parentsGuardianRef.current?.value,
-    //   cp_number: cpNumberRef.current?.value,
-    //   Email: emailRef.current?.value,
-    //   Password: passwordRef.current?.value,
-    //   Password_confirmation:
-    //     passwordConfirmationRef.current?.value,
-    //   class: classRef.current?.value,
-    //   photo: null,
-    // };
+    payload.append(
+      FormField.class.name,
+      advisoryClassRef.current?.value!
+    )
+    payload.append(
+      FormField.admission_date.name,
+      admissionDateRef.current?.value!
+    )
+
 
     axiosClient
-      .post("/admin/add_student", payload)
+      .post("/admin/teachers/add", payload)
       .then((data) => {
         if (data && data.status === 201) {
           console.log(data.data);
           setMessage(data.data);
           setOpen(true);
+          formRef.current?.reset();
         }
       })
       .catch((err) => {
@@ -283,7 +275,7 @@ const AddTeacher = () => {
                 });
                 break;
               case FormField.profile_img.name:
-                setStdPhoneFeedback({
+                setProfileImageFeedback({
                   isInvalid: true,
                   isVisible: true,
                   message: errors[key],
@@ -300,14 +292,10 @@ const AddTeacher = () => {
   const handlerSelectImg = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
-      setStudentImage(reader.result);
+      setProfileImage(reader.result);
     };
 
     reader.readAsDataURL(e.target.files[0]);
-  };
-
-  const resetForm = (e) => {
-    console.log(e);
   };
 
   const handleTimeOut = () => {
@@ -339,52 +327,55 @@ const AddTeacher = () => {
         <InputContainer>
           <FormSection>
             <SectionTitle>Teacher Info</SectionTitle>
-            <InputItem>
-              <Label htmlFor={FormField.first_name.name}>
-                {FormField.first_name.label}
-                <IsRequiredIndicator>
-                  {FormField.first_name.isRequired ? "*" : ""}
-                </IsRequiredIndicator>
-                :
-              </Label>
-              <Input
-                ref={firstNameRef}
-                type="text"
-                id={FormField.first_name.name}
-                name={FormField.first_name.name}
-                isInvalid={firstNameFeedback.isInvalid}
-                required
-              />
-              <ValidationFeedback
-                isVisible={firstNameFeedback.isVisible}
-                isInvalid={firstNameFeedback.isInvalid}
-              >
-                {firstNameFeedback.message}
-              </ValidationFeedback>
-            </InputItem>
-            <InputItem>
-              <Label htmlFor={FormField.last_name.name}>
-                {FormField.last_name.label}
-                <IsRequiredIndicator>
-                  {FormField.last_name.isRequired ? "*" : ""}
-                </IsRequiredIndicator>
-                :
-              </Label>
-              <Input
-                ref={lastNameRef}
-                type="text"
-                id={FormField.last_name.name}
-                name={FormField.last_name.name}
-                isInvalid={lastNameFeedback.isInvalid}
-                required
-              />
-              <ValidationFeedback
-                isVisible={lastNameFeedback.isVisible}
-                isInvalid={lastNameFeedback.isInvalid}
-              >
-                {lastNameFeedback.message}
-              </ValidationFeedback>
-            </InputItem>
+            <InputRow>
+              <InputItem>
+                <Label htmlFor={FormField.first_name.name}>
+                  {FormField.first_name.label}
+                  <IsRequiredIndicator>
+                    {FormField.first_name.isRequired ? "*" : ""}
+                  </IsRequiredIndicator>
+                  :
+                </Label>
+                <Input
+                  ref={firstNameRef}
+                  type="text"
+                  id={FormField.first_name.name}
+                  name={FormField.first_name.name}
+                  isInvalid={firstNameFeedback.isInvalid}
+                  required
+                />
+                <ValidationFeedback
+                  isVisible={firstNameFeedback.isVisible}
+                  isInvalid={firstNameFeedback.isInvalid}
+                >
+                  {firstNameFeedback.message}
+                </ValidationFeedback>
+              </InputItem>
+              <InputItem>
+                <Label htmlFor={FormField.last_name.name}>
+                  {FormField.last_name.label}
+                  <IsRequiredIndicator>
+                    {FormField.last_name.isRequired ? "*" : ""}
+                  </IsRequiredIndicator>
+                  :
+                </Label>
+                <Input
+                  ref={lastNameRef}
+                  type="text"
+                  id={FormField.last_name.name}
+                  name={FormField.last_name.name}
+                  isInvalid={lastNameFeedback.isInvalid}
+                  required
+                />
+                <ValidationFeedback
+                  isVisible={lastNameFeedback.isVisible}
+                  isInvalid={lastNameFeedback.isInvalid}
+                >
+                  {lastNameFeedback.message}
+                </ValidationFeedback>
+              </InputItem>
+            </InputRow>
+
             <InputRow>
               <InputItem>
                 <Label htmlFor={FormField.gender.name}>
@@ -438,6 +429,52 @@ const AddTeacher = () => {
               </InputItem>
             </InputRow>
             <InputItem>
+              <Label htmlFor={FormField.addr1.name}>
+                {FormField.addr1.label}
+                <IsRequiredIndicator>
+                  {FormField.addr1.isRequired ? "*" : ""}
+                </IsRequiredIndicator>
+                :
+              </Label>
+              <Input
+                ref={addr1Ref}
+                type="text"
+                name={FormField.addr1.name}
+                id={FormField.addr1.name}
+                isInvalid={addr1Feedback.isInvalid}
+                required={FormField.addr1.isRequired}
+              />
+              <ValidationFeedback
+                isVisible={addr1Feedback.isInvalid}
+                isInvalid={addr1Feedback.isInvalid}
+              >
+                {addr1Feedback.message}
+              </ValidationFeedback>
+            </InputItem>
+            <InputItem>
+              <Label htmlFor={FormField.addr2.name}>
+                {FormField.addr2.label}
+                <IsRequiredIndicator>
+                  {FormField.addr2.isRequired ? "*" : ""}
+                </IsRequiredIndicator>
+                :
+              </Label>
+              <Input
+                ref={addr2Ref}
+                type="text"
+                name={FormField.addr2.name}
+                id={FormField.addr2.name}
+                isInvalid={addr2Feedback.isInvalid}
+                required={FormField.addr2.isRequired}
+              />
+              <ValidationFeedback
+                isVisible={addr2Feedback.isInvalid}
+                isInvalid={addr2Feedback.isInvalid}
+              >
+                {addr2Feedback.message}
+              </ValidationFeedback>
+            </InputItem>
+            <InputItem>
               <Label htmlFor={FormField.religion.name}>
                 {FormField.religion.label}
                 <IsRequiredIndicator>
@@ -446,18 +483,17 @@ const AddTeacher = () => {
                 :
               </Label>
               <Input
-                ref={stdReligionRef}
+                ref={religionRef}
                 type="text"
                 name={FormField.religion.name}
                 id={FormField.religion.name}
-                isInvalid={stdReligionFeedback.isInvalid}
-                required
+                isInvalid={religionFeedback.isInvalid}
               />
               <ValidationFeedback
-                isVisible={stdReligionFeedback.isInvalid}
-                isInvalid={stdReligionFeedback.isInvalid}
+                isVisible={religionFeedback.isInvalid}
+                isInvalid={religionFeedback.isInvalid}
               >
-                {stdReligionFeedback.message}
+                {religionFeedback.message}
               </ValidationFeedback>
             </InputItem>
             <InputRow>
@@ -474,14 +510,14 @@ const AddTeacher = () => {
                   type="email"
                   id={FormField.email.name}
                   name={FormField.email.name}
-                  isInvalid={stdEmailFeedback.isInvalid}
+                  isInvalid={emailFeedback.isInvalid}
                   required={FormField.email.isRequired}
                 />
                 <ValidationFeedback
-                  isVisible={stdEmailFeedback.isVisible}
-                  isInvalid={stdEmailFeedback.isInvalid}
+                  isVisible={emailFeedback.isVisible}
+                  isInvalid={emailFeedback.isInvalid}
                 >
-                  {stdEmailFeedback.message}
+                  {emailFeedback.message}
                 </ValidationFeedback>
               </InputItem>
               <InputItem>
@@ -499,14 +535,14 @@ const AddTeacher = () => {
                   pattern="[0-9]+"
                   name={FormField.phone.name}
                   id={FormField.phone.name}
-                  isInvalid={stdPhoneFeedback.isInvalid}
+                  isInvalid={phoneFeedback.isInvalid}
                   required
                 />
                 <ValidationFeedback
-                  isVisible={stdPhoneFeedback.isVisible}
-                  isInvalid={stdPhoneFeedback.isInvalid}
+                  isVisible={phoneFeedback.isVisible}
+                  isInvalid={phoneFeedback.isInvalid}
                 >
-                  {stdPhoneFeedback.message}
+                  {phoneFeedback.message}
                 </ValidationFeedback>
               </InputItem>
             </InputRow>
@@ -561,17 +597,20 @@ const AddTeacher = () => {
               </InputItem>
             </InputRow>
 
-            {/* <InputRow>
+            <InputRow>
               <InputItem>
-                <Label htmlFor={FormField.grade.name}>
-                  {FormField.grade.label}*:
+                <Label htmlFor={FormField.class.name}>
+                  {FormField.class.label}
+                  <IsRequiredIndicator>
+                    {FormField.class.isRequired ? "*" : ""}
+                  </IsRequiredIndicator>
+                  :
                 </Label>
                 <Selection
-                  ref={classRef}
-                  id={FormField.grade.name}
-                  name={FormField.grade.name}
-                  isInvalid={gradeFeedback.isInvalid}
-                  required
+                  ref={advisoryClassRef}
+                  id={FormField.class.name}
+                  name={FormField.class.name}
+                  isInvalid={advisoryClassFeedback.isInvalid}
                 >
                   <Option value={""}>--Select Class--</Option>
                   <Option value={1}>I</Option>
@@ -579,41 +618,41 @@ const AddTeacher = () => {
                   <Option value={3}>III</Option>
                 </Selection>
                 <ValidationFeedback
-                  isVisible={gradeFeedback.isVisible}
-                  isInvalid={gradeFeedback.isInvalid}
+                  isVisible={advisoryClassFeedback.isVisible}
+                  isInvalid={advisoryClassFeedback.isInvalid}
                 >
-                  {gradeFeedback.message}
+                  {advisoryClassFeedback.message}
                 </ValidationFeedback>
               </InputItem>
               <InputItem>
-                <Label htmlFor={FormField.section.name}>
-                  {FormField.section.label}*:
+                <Label htmlFor={FormField.admission_date.name}>
+                  {FormField.admission_date.label}
+                  <IsRequiredIndicator>
+                    {FormField.admission_date.isRequired ? "*" : ""}
+                  </IsRequiredIndicator>
+                  :
                 </Label>
-                <Selection
-                  ref={sectionRef}
-                  id={FormField.section.name}
-                  name={FormField.section.name}
-                  isInvalid={sectionFeedback.isInvalid}
+                <Input
+                  ref={admissionDateRef}
+                  type="date"
+                  id={FormField.admission_date.name}
+                  name={FormField.admission_date.name}
+                  isInvalid={passwordConfirmationFeedback.isInvalid}
                   required
-                >
-                  <Option value={""}> --Select Section-- </Option>
-                  <Option value={1}>Acacia</Option>
-                  <Option value={2}>Nara</Option>
-                  <Option value={3}>Kawayan</Option>
-                </Selection>
+                />
                 <ValidationFeedback
-                  isVisible={sectionFeedback.isVisible}
-                  isInvalid={sectionFeedback.isInvalid}
+                  isVisible={AdmissionDateFeedback.isVisible}
+                  isInvalid={AdmissionDateFeedback.isInvalid}
                 >
-                  {sectionFeedback.message}
+                  {AdmissionDateFeedback.message}
                 </ValidationFeedback>
               </InputItem>
-            </InputRow> */}
+            </InputRow>
           </FormSection>
 
           <StudentImage>
             <Image
-              src={studentImage || DefaultImg}
+              src={profileImage || DefaultImg}
               alt="student_img"
             />
 
@@ -627,13 +666,13 @@ const AddTeacher = () => {
                 id={FormField.profile_img.name}
                 name={FormField.profile_img.name}
                 onInput={handlerSelectImg}
-                accept="image/jpeg"
+                accept="image/jpeg, image/png, image/jpg"
               />
               <ValidationFeedback
-                isVisible={studentPhotoFeedback.isVisible}
-                isInvalid={studentPhotoFeedback.isInvalid}
+                isVisible={profileImageFeedback.isVisible}
+                isInvalid={profileImageFeedback.isInvalid}
               >
-                {studentPhotoFeedback.message}
+                {profileImageFeedback.message}
               </ValidationFeedback>
             </InputItem>
           </StudentImage>
