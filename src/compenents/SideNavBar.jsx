@@ -12,14 +12,14 @@ import { Link } from "react-router-dom";
 import CedarLogo from "../pictures/cedarhills.png";
 import "./SideNavBar.css";
 import styled from "styled-components";
-import ParentIcon from '@mui/icons-material/SupervisorAccount';
+import ParentIcon from "@mui/icons-material/SupervisorAccount";
 //Mui
 import { Dashboard, Backpack } from "@mui/icons-material";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 //Utils
 import { useStateContext } from "../context/ContextProvider";
@@ -58,8 +58,6 @@ const CollapseBtn = styled.button`
   border: none;
   background-color: transparent;
 `;
-
-
 
 function SideNavbar() {
   const { collapseSidebar, collapsed } = useProSidebar();
@@ -153,7 +151,15 @@ function SideNavbar() {
             <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
             <MenuItem icon={<Dashboard />}> Line charts </MenuItem>
           </SubMenu>
-          <MenuItem icon={<BookIcon />}>Subjects</MenuItem>
+          <SubMenu label="Subjects" icon={<BookIcon />}>
+            <MenuItem component={<Link to={"/subjects/all"} />}>
+              All Subjects
+            </MenuItem>
+            <MenuItem component={<Link to={"/subjects/activities"} />}>
+              Activities
+            </MenuItem>
+          </SubMenu>
+
           <SubMenu label="Charts" icon={<PieChartIcon />}>
             <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
             <MenuItem icon={<Dashboard />}> Line charts </MenuItem>

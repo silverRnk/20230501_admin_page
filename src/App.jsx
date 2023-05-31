@@ -47,6 +47,8 @@ import { loadPath, loadStudentData, loadStudents } from "./Loader/StudentLoader"
 import ViewStudent from "./pages/Students/Student/ViewStudent";
 import Error from "./pages/Error"
 import Teacher from "./pages/Teachers/teacher/Teacher";
+import AllSubjects from "./pages/Subjects/All/AllSubjects";
+import Subjects from "./pages/Subjects/Subjects";
 
 
 
@@ -118,6 +120,20 @@ const router = createBrowserRouter([
           {
             path: 'teacher/{id}',
             element: <Teacher />
+          }
+        ]
+      },
+      {
+        path:"/subjects",
+        element: <Subjects />,
+        children: [
+          {
+            path: "",
+            element: <Navigate to={"/subjects/all"} />
+          },
+          {
+            path: "all",
+            element: <AllSubjects />
           }
         ]
       }
