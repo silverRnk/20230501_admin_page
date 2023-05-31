@@ -4,6 +4,6 @@ export interface Subject {
     teachers: Array<{
         teacher_id: string, 
         teacher: string,
-        classes: Array<{class: string, schedule: string}>}
+        classes: Array<{class: string, schedule: string}>}>
 }
 
