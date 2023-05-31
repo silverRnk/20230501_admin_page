@@ -16,3 +16,11 @@ export interface GradesPerSY {
     year: number,
     grades: Array<Grade>
 }
+
+export interface ColumnHeader {
+    id: string;
+    label: string;
+    minWidth: number;
+    align?: string | null;
+    format?: () => any | null;
+  }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grade } from "../utils/interfaces";
+import { ColumnHeader as ColumnHeadType, Grade } from "../utils/interfaces";
 import styled from "styled-components";
 
 const TableTitle = styled.div`
@@ -58,6 +58,14 @@ const Cell = styled.span`
   padding: 15px
     ${(props) => (props.role === "rowheader" ? "15px" : "0px")};
 `;
+
+const column: Array<ColumnHeadType> = [
+  {id: "subject", label: "", align: "left", minWidth: 70},
+  {id: "q1", label: "1", align: "left", minWidth: 70},
+  {id: "q2", label: "2", align: "left", minWidth: 70},
+  {id: "q3", label: "3", align: "left", minWidth: 70},
+  {id: "q4", label: "4", align: "left", minWidth: 70},
+]
 
 const GradesTable = (gradeInfo: {
   grades: Array<Grade>;
