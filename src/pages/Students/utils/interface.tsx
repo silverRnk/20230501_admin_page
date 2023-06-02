@@ -21,7 +21,7 @@ export interface StudentProfileLong {
   religion: string;
   father_occupation: string;
   e_mail: string;
-  admission_date: Date;
+  admission_date: string;
   class: string;
   section: string;
   status: StudentStatus;

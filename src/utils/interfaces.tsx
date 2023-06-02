@@ -26,3 +26,9 @@ export interface ColumnHeader {
     align?: string | null;
     format?: () => any | null;
   }
+
+  export interface ColumnHeaderShort {
+    id: string;
+    label: string;
+
+  }
