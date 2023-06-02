@@ -1,14 +1,23 @@
+//React Imports
 import React, { SyntheticEvent } from "react";
-import { studentList } from "../../../utils/data";
-import styled from "styled-components";
-import CloseIcon from "@mui/icons-material/Close";
-import DefaultImg from "../../../assets/profile_default.svg";
-//"../../assets/profile_default.svg";
 import { useState } from "react";
+import {
+  Navigate,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
+import styled from "styled-components";
+
+//Image Imports
+import DefaultImg from "../../../assets/profile_default.svg";
+import SchoolLogo from "../../../assets/cedarhills.png";
+
+//Interfaces
 import {
   CredentialsRow,
   StudentProfileLong,
 } from "../utils/interface";
+import { Grade, GradesPerSY } from "../../../utils/interfaces";
 
 //Mui Table
 import Table from "@mui/material/Table";
@@ -36,18 +45,13 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
 //Mui Icons
+import CloseIcon from "@mui/icons-material/Close";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-
-import Upload from "rc-upload";
 import { Button, FormLabel } from "@mui/material";
-import {
-  Navigate,
-  useLoaderData,
-  useSearchParams,
-} from "react-router-dom";
-import { Grade, GradesPerSY } from "../../../utils/interfaces";
+
+//Customize Components
 import GradesTable from "../../../compenents/GradesTable";
-import { Title } from "@mui/icons-material";
+import StudentDetails from "../../../compenents/StudentDetails";
 
 const Container = styled.div`
   width: 100%;
@@ -64,6 +68,11 @@ const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const LogoImg = styled.img`
+  height: 75px;
+  width: 75px;
 `;
 
 const Bottom = styled.div`
@@ -153,21 +162,11 @@ const FormWrapper = styled.div`
   width: 100%;
 `;
 
-const InfoContainer = styled.div``;
-
-const InfoList = styled.table`
-  height: 80%;
-`;
-
-const InfoItem = styled.tr`
-  height: 50px;
-  font-size: 1.25rem;
-`;
-const InfoTitle = styled.th``;
-const InfoDesc = styled.td`
-  padding-left: 200px;
-  text-align: left;
-  text-transform: capitalize;
+const InfoContainer = styled.div`
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 const GradesTableWrapper = styled.div`
@@ -247,7 +246,9 @@ const ViewStudent = () => {
   return (
     <Container>
       <Top>
-        <Logo>LOGO</Logo>
+        <Logo>
+          <LogoImg src={SchoolLogo} alt="School Logo" />
+        </Logo>
         <CloseButton>
           <CloseIcon />
         </CloseButton>
@@ -332,6 +333,10 @@ const ViewStudent = () => {
             <UpdateButton>Update</UpdateButton>
           </FormControl>
         </Left>
+
+        {
+          // Right Size
+        }
         <Right>
           <Name>{studentInfo.std_name || "N/A"}</Name>
 
@@ -350,74 +355,22 @@ const ViewStudent = () => {
                   <Tab label="Grades" value="3" />
                 </TabList>
               </Box>
+
+              {
+                //Tab1
+              }
               <TabPanel value="1">
                 <InfoContainer>
-                  <InfoList>
-                    <tbody>
-                      <InfoItem>
-                        <InfoTitle>ID Number:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_id || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Name:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_name || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Gender:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_gender || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Date of Birth:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_dob || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Religion:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_religion || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Father's Name:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.fathers_name || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Mother's Name:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.mothers_name || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Father's Occupation:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.fathers_occupation || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Email:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.std_email || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                      <InfoItem>
-                        <InfoTitle>Admission:</InfoTitle>
-                        <InfoDesc>
-                          {studentInfo?.admission_date || "N/A"}
-                        </InfoDesc>
-                      </InfoItem>
-                    </tbody>
-                  </InfoList>
+                  <StudentDetails
+                    data={studentInfo}
+                    isLoading={!studentInfo}
+                  />
                 </InfoContainer>
               </TabPanel>
+
+              {
+                //Tab2
+              }
               <TabPanel value="2">
                 <CredentialsContainer>
                   <Form>
