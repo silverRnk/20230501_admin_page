@@ -180,6 +180,22 @@ const GradesTableWrapper = styled.div`
   padding: 10px;
 `;
 
+const GradeTableHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0px;
+`;
+const GradeTableTitle = styled.h3`
+  font-size: 1.6rem;
+  font-weight: bold;
+`;
+const GradeSYSelection = styled.select`
+  margin-right: 10px;
+  padding: 10px 10px;
+`;
+const GradesSYOption = styled.option``;
+
 const ViewStudent = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("1");
@@ -217,12 +233,7 @@ const ViewStudent = () => {
   const { studentInfo, gradeLevels } = useLoaderData();
   const std_img = import.meta.env.VITE_URL + studentInfo.std_photo;
 
-  const gradesPerSY: Array<GradesPerSY> = [
-    {year: 2019,
-    grades: [
-      {subject: "Math"}
-    ]}
-  ];
+  const gradesPerSY: GradesPerSY | null = null;
 
   //get react-router params
   const [search] = useSearchParams();
@@ -584,19 +595,20 @@ const ViewStudent = () => {
                 </CredentialsContainer>
               </TabPanel>
               <TabPanel value="3">
-                
                 <GradesTableWrapper>
-                  foo
-                  {
-                  !gradesPerSY? 
-                  <h1>No Grades Information</h1>
-                  :
-                  gradesPerSY.map((grades) => (
-                    <GradesTable
-                      grades={grades.grades}
-                      year={grades.year}
-                    />
-                  ))}
+                  <GradeTableHeader>
+                    <GradeTableTitle>Grades</GradeTableTitle>
+                    <GradeSYSelection>
+                      <GradesSYOption value={""}>
+                        {" "}
+                        -- Select --
+                      </GradesSYOption>
+                    </GradeSYSelection>
+                  </GradeTableHeader>
+                  <GradesTable
+                    grades={gradesPerSY?.grades ?? []}
+                    isEmpty={!gradesPerSY}
+                  />
                 </GradesTableWrapper>
               </TabPanel>
             </TabContext>

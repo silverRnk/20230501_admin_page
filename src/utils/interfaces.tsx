@@ -9,7 +9,9 @@ export interface Grade {
     q1?: number,
     q2?: number,
     q3?: number,
-    q4?: number
+    q4?: number,
+    final?:number,
+    remarks?: string
 }
 
 export interface GradesPerSY {
