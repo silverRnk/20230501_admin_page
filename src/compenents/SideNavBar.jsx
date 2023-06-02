@@ -9,7 +9,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link } from "react-router-dom";
-import CedarLogo from "../pictures/cedarhills.png";
+import CedarLogo from "../assets/cedarhills.png";
 import "./SideNavBar.css";
 import styled from "styled-components";
 import ParentIcon from "@mui/icons-material/SupervisorAccount";
@@ -48,7 +48,8 @@ const SideBarHeader = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 100%;
+  height: 50px;
+  width: 50px;
   display: ${(props) => (props.isColloapsed ? "none" : "inline")};
 `;
 

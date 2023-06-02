@@ -1,5 +1,5 @@
 import React from "react";
-import image1 from "../pictures/cedarhills.png";
+import SchoolLogo from "../assets/cedarhills.png";
 import styled from "styled-components";
 import { useStateContext } from "../context/ContextProvider";
 import { Navigate } from "react-router-dom";
@@ -187,7 +187,7 @@ function Loginform() {
         <Left>
           <div className="cover">
             <About>
-              <Logo src={image1} />
+              <Logo src={SchoolLogo} />
               <Header>CEDAR HILLS CHRISTIAN ACADEMY</Header>
             </About>
           </div>
