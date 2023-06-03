@@ -11,11 +11,14 @@ import DefaultImg from '../assets/profile_default.svg'
 const Container = styled.nav`
   padding: 20px 10px;
   background-color: white;
-  box-shadow: 0 0 10px gray;
+  box-shadow: 0 2px 10px gray;
+  clip-path: inset(-5px 0px -5px 0px);
   display: flex;
   align-items: center;
   min-width: 900px;
   position:relative;
+  width: 100%;
+  z-index: 10;
 `;
 
 const Left = styled.div`

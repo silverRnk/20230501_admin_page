@@ -19,6 +19,7 @@ const Left = styled.div`
   height: inherit;
   width: auto;
   background-color: red;
+  position: relative;
 `;
 
 const Right = styled.div`
@@ -31,12 +32,17 @@ const Right = styled.div`
 
 const NavBarContainer = styled.div`
   width: 100%;
+  position: relative;
+  
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.main`
+  flex: 1;
   width: 100%;
-  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: scroll;
   height: auto;
+  position: relative;
   background-color: ${props => props.theme.colors.background};
 `;
 

@@ -36,6 +36,15 @@ const SideBarContainer = styled.div`
   width: auto;
   height: 100%;
   background-color: ${(props) => props.theme.colors.primary};
+  position: relative;
+  z-index: 11;
+  overflow-y: scroll;
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar{
+    display: none;
+  }
 `;
 
 const SideBarHeader = styled.div`
