@@ -52,6 +52,7 @@ import { Button, FormLabel } from "@mui/material";
 //Customize Components
 import GradesTable from "../../../compenents/GradesTable";
 import StudentDetails from "../../../compenents/StudentDetails";
+import { theme } from "../../../Theme";
 
 const Container = styled.div`
   width: 100%;
@@ -102,9 +103,7 @@ const Image = styled.img`
 `;
 
 const Status = styled.p`
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: red;
+  ${props => props.theme.fontThemes.h4}
   margin-bottom: 40px;
   text-transform: capitalize;
 `;
@@ -139,9 +138,7 @@ const CloseButton = styled.button`
 `;
 
 const Name = styled.h1`
-  font-size: 3rem;
-  font-weight: 600;
-  letter-spacing: 2px;
+  ${props => props.theme.fontThemes.h2}
 `;
 
 const CredentialsContainer = styled.div`
@@ -187,8 +184,7 @@ const GradeTableHeader = styled.div`
   padding: 10px 0px;
 `;
 const GradeTableTitle = styled.h3`
-  font-size: 1.6rem;
-  font-weight: bold;
+  ${props => props.theme.fontThemes.h3}
 `;
 const GradeSYSelection = styled.select`
   margin-right: 10px;

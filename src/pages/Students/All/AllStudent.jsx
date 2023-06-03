@@ -20,6 +20,7 @@ import { studentList, studentList2 } from "../../../utils/data";
 import ViewProfile from "../../../compenents/ViewProfile";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { columnAllStudents } from "../utils/ColumnLabels";
+import { ButtonSearch as SearchButton, SearchInput, SearchOption, SearchSelection } from "../../../compenents/style-components/SearchInputComponents";
 
 const Container = styled.div`
   width: 100%;
@@ -36,6 +37,7 @@ const Container = styled.div`
 `;
 const Title = styled.h1`
   width: 100%;
+  ${props => props.theme.fontThemes.h2}
   margin-bottom: 40px;
 `;
 
@@ -48,42 +50,23 @@ const SearchContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const InputName = styled.input`
-  background-color: #f0f1f3;
+const InputName = styled(SearchInput)`
+  /* background-color: ${props => props.theme.colors.background};
   border: none;
   border-radius: 10px;
   color: gray;
   padding: 10px;
-  font-size: 1.25rem;
-`;
-const Selection = styled.select`
-  /* -webkit-appearance: none;
-  -moz-appearance: none; */
-  background-color: #f0f1f3;
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  padding-right: 20px;
-  font-size: 1.25rem;
+  font-size: 1.25rem; */
 
-  ::after {
-    content: "Hello";
-  }
+`;
+const Selection = styled(SearchSelection)`
+ 
 `;
 
-const SelectionItem = styled.option``;
+const SelectionItem = styled(SearchOption)``;
 
-const ButtonSearch = styled.button`
-  font-size: 1.25rem;
-  color: white;
-  background-color: red;
-  border: none;
-  border-radius: 10px;
+const ButtonSearch = styled(SearchButton)`
 
-  &:hover {
-    background-color: #d00000;
-  }
 `;
 
 const PagerContainer = styled.div`

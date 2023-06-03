@@ -9,10 +9,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 50px;
-  background-color: #F0F1F3;
 `;
 
 const PageHeader = styled.h1`
+  ${props => props.theme.fontThemes.h1}
   width: 100%;
   margin-bottom: 20px;
 `;
@@ -36,7 +36,7 @@ const Subjects = () => {
   return (
     <>
     <Container>
-      <PageHeader>Teacher</PageHeader>
+      <PageHeader>Subject</PageHeader>
 
       <LinkContainer>
         <LinkItem>

@@ -8,6 +8,7 @@ import styled from "styled-components";
 //Mui Imports
 import { Pagination } from "@mui/material";
 import SubjectsTable from "../../../compenents/SubjectsTable";
+import { SearchInput, SearchSelection, ButtonSearch as SearchButton } from "../../../compenents/style-components/SearchInputComponents";
 
 const Container = styled.div`
   width: 100%;
@@ -22,6 +23,8 @@ const Container = styled.div`
   position: relative;
 `;
 const Title = styled.h1`
+  ${props => props.theme.fontThemes.h2}
+  text-align: left;
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -35,42 +38,16 @@ const SearchContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const InputName = styled.input`
-  background-color: #f0f1f3;
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  font-size: 1.25rem;
+const InputName = styled(SearchInput)`
+  
 `;
-const Selection = styled.select`
-  /* -webkit-appearance: none;
-  -moz-appearance: none; */
-  background-color: #f0f1f3;
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  padding-right: 20px;
-  font-size: 1.25rem;
-
-  ::after {
-    content: "Hello";
-  }
+const Selection = styled(SearchSelection)`
+  
 `;
 
 const SelectionItem = styled.option``;
 
-const ButtonSearch = styled.button`
-  font-size: 1.25rem;
-  color: white;
-  background-color: red;
-  border: none;
-  border-radius: 10px;
-
-  &:hover {
-    background-color: #d00000;
-  }
+const ButtonSearch = styled(SearchButton)`
 `;
 
 const PagerContainer = styled.div`

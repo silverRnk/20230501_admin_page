@@ -22,6 +22,7 @@ import { columnAllStudents, columnTeachers } from "../utils/ColumnLabels";
 
 import { loaderTeacherAll } from "../utils/Loaders";
 import { Section } from "../../Students/utils/interface";
+import { SearchInput, SearchSelection, ButtonSearch as SearchButton } from "../../../compenents/style-components/SearchInputComponents";
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +36,9 @@ const Container = styled.div`
   align-items: center;
   position: relative;
 `;
-const Title = styled.h1`
+const Title = styled.h2`
+  ${props => props.theme.fontThemes.h2}
+  text-align: left;
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -49,36 +52,17 @@ const SearchContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const InputName = styled.input`
-  background-color: #f0f1f3;
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  font-size: 1.25rem;
+const InputName = styled(SearchInput)`
+
 `;
-const Selection = styled.select`
-  background-color: #f0f1f3;
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  padding-right: 20px;
-  font-size: 1.25rem;
+const Selection = styled(SearchSelection)`
+
 `;
 
 const SelectionItem = styled.option``;
 
-const ButtonSearch = styled.button`
-  font-size: 1.25rem;
-  color: white;
-  background-color: red;
-  border: none;
-  border-radius: 10px;
+const ButtonSearch = styled(SearchButton)`
 
-  &:hover {
-    background-color: #d00000;
-  }
 `;
 
 const PagerContainer = styled.div`

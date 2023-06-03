@@ -24,8 +24,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  font-weight: 700;
-  font-size: 2rem;
+  ${props => props.theme.fontThemes.h2}
 `;
 const Reminder = styled.p`
   font-size: 0.75rem;
@@ -48,8 +47,7 @@ const FormSection = styled.div`
   margin-bottom: 20px;
 `;
 const SectionTitle = styled.h2`
-  font-weight: 400;
-  font-size: 1.5rem;
+  ${props => props.theme.fontThemes.h4}
 `;
 
 const InputItem = styled.div`
@@ -107,9 +105,14 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   color: white;
-  background-color: red;
-  background-color: #${(props) => props.type === "reset" && "2A5B84"};
+  background-color: ${(props) => props.theme.colors.secondary};
+  background-color: ${(props) =>
+    props.type === "reset" && props.theme.colors.primary};
   margin-right: 20px;
+
+  &:active{
+    filter: brightness(85%);
+  }
 `;
 
 function AddStudent() {
@@ -330,7 +333,7 @@ function AddStudent() {
                 setStdPhoneFeedback({
                   isInvalid: true,
                   isVisible: true,
-                  message: errors[key]
+                  message: errors[key],
                 });
                 break;
               default:

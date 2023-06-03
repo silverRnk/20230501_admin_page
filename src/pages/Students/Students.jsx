@@ -13,6 +13,7 @@ const Container = styled.div`
 `;
 
 const PageHeader = styled.h1`
+  ${(props) => props.theme.fontThemes.h1}
   width: 100%;
   margin-bottom: 20px;
 `;
@@ -22,7 +23,6 @@ const LinkContainer = styled.ul`
   display: flex;
   margin-bottom: 50px;
   padding-left: 0px;
-
 `;
 
 const LinkItem = styled.li`
@@ -35,22 +35,20 @@ const NLink = styled.a``;
 const Students = () => {
   return (
     <>
-    <Container>
-      <PageHeader>Students</PageHeader>
+      <Container>
+        <PageHeader>Students</PageHeader>
 
-      <LinkContainer>
-        <LinkItem>
-          <NLink href="#">Home</NLink>
-        </LinkItem>
-        <LinkItem>
-        {'>'}
-        </LinkItem>
-        <LinkItem>
-          <NLink href="#">Students</NLink>
-        </LinkItem>
-      </LinkContainer>
-      <Outlet/>
-    </Container>
+        <LinkContainer>
+          <LinkItem>
+            <NLink href="#">Home</NLink>
+          </LinkItem>
+          <LinkItem>{">"}</LinkItem>
+          <LinkItem>
+            <NLink href="#">Students</NLink>
+          </LinkItem>
+        </LinkContainer>
+        <Outlet />
+      </Container>
     </>
   );
 };

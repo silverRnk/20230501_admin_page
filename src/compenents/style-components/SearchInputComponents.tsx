@@ -10,17 +10,23 @@ export const SearchContainer = styled.div`
 `;
 
 export const SearchInput = styled.input`
-  background-color: #f0f1f3;
+  background-color: ${props => props.theme.colors.background2};
   border: none;
   border-radius: 10px;
   color: gray;
   padding: 10px;
   font-size: 1.25rem;
+
+  &:focus{
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary};
+  }
 `;
-export const SelectionSelection = styled.select`
+export const SearchSelection = styled.select`
   /* -webkit-appearance: none;
   -moz-appearance: none; */
-  background-color: #f0f1f3;
+  background-color: ${props => props.theme.colors.background2};
   border: none;
   border-radius: 10px;
   color: gray;
@@ -28,8 +34,11 @@ export const SelectionSelection = styled.select`
   padding-right: 20px;
   font-size: 1.25rem;
 
-  ::after {
-    content: 'Hello';}
+  &:focus{
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary};
+  }
 `;
 
 export const SearchOption = styled.option``;
@@ -37,11 +46,13 @@ export const SearchOption = styled.option``;
 export const ButtonSearch = styled.button`
   font-size: 1.25rem;
   color: white;
-  background-color: red;
+  text-shadow: 0px 0px 3px lightgray;
+  background-color: ${props => props.theme.colors.secondary};
   border: none;
   border-radius: 10px;
 
-  &:hover {
-    background-color: #d00000;
+  &:active{
+    filter: brightness(80%);
+    color: gray;
   }
 `;

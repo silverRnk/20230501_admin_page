@@ -2,16 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 50px;
+  background-color: transparent;
 `;
 
 const PageHeader = styled.h1`
+  ${(props) => props.theme.fontThemes.h1}
   width: 100%;
   margin-bottom: 20px;
 `;
@@ -21,7 +22,6 @@ const LinkContainer = styled.ul`
   display: flex;
   margin-bottom: 50px;
   padding-left: 0px;
-
 `;
 
 const LinkItem = styled.li`
@@ -34,24 +34,22 @@ const NLink = styled.a``;
 const Teachers = () => {
   return (
     <>
-    <Container>
-      <PageHeader>Teacher</PageHeader>
+      <Container>
+        <PageHeader>Teacher</PageHeader>
 
-      <LinkContainer>
-        <LinkItem>
-          <NLink href="#">Home</NLink>
-        </LinkItem>
-        <LinkItem>
-        {'>'}
-        </LinkItem>
-        <LinkItem>
-          <NLink href="#">Teachers</NLink>
-        </LinkItem>
-      </LinkContainer>
-      <Outlet/>
-    </Container>
+        <LinkContainer>
+          <LinkItem>
+            <NLink href="#">Home</NLink>
+          </LinkItem>
+          <LinkItem>{">"}</LinkItem>
+          <LinkItem>
+            <NLink href="#">Teachers</NLink>
+          </LinkItem>
+        </LinkContainer>
+        <Outlet />
+      </Container>
     </>
-  )
-}
+  );
+};
 
-export default Teachers
+export default Teachers;

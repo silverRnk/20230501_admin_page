@@ -43,9 +43,7 @@ const RowHeaders = styled.div`
 `;
 const ColumnHeader = styled.span`
   text-align: center;
-  font-weight: 700;
-  line-height: 35px;
-  font-size: 1.25rem;
+  ${props => props.theme.fontThemes.h5}
   height: 35px;
 `;
 const Cell = styled.span`
