@@ -18,6 +18,7 @@ export const empty: Story = {
 
 export const filled: Story = {
     args: {
+        isLoading: false,
         data: [
             {
                 subject_id: "eng",
@@ -78,5 +79,12 @@ export const filled: Story = {
                 ]
             }
         ]
+    }
+}
+
+export const Loading: Story = {
+    args: {
+        isLoading: true,
+        data: filled.args?.data
     }
 }

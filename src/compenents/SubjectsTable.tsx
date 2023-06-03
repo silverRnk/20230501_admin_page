@@ -16,12 +16,37 @@ import {
 
 //Constant & Objects
 import { AllSubjectColumn } from "../pages/Subjects/utils/objects";
+import styled from "styled-components";
+import { PlaceHolder } from "./style-components/StyleComponents";
 
-const SubjectsTable = (arg: { data: Array<Subject> }) => {
+const PlaceHolderItem = styled(PlaceHolder)`
+  margin: auto;
+`;
+
+const PlaceHolderCount = [1, 2, 3, 4, 5];
+const PlaceHolderRow = (
+  <>
+    {PlaceHolderCount.map(() => (
+      <TableRow>
+        {AllSubjectColumn.map(() => (
+          <TableCell >
+            <PlaceHolderItem />
+          </TableCell>
+        ))}
+      </TableRow>
+    ))}
+  </>
+);
+
+const SubjectsTable = (arg: {
+  data: Array<Subject>;
+  isLoading: boolean;
+}) => {
   let tableBody: Array<any> = [];
   const columns = AllSubjectColumn;
-  const { data } = arg;
+  const { data, isLoading } = arg;
 
+  //TableBody Generator
   data?.forEach((subject) => {
     let subjectRowspan: number = 0;
     let teacherRowSpan: number = 0;
@@ -30,7 +55,7 @@ const SubjectsTable = (arg: { data: Array<Subject> }) => {
     const rowHeaderStyle: React.CSSProperties = {
       textAlign: "center",
       fontWeight: "bold",
-      fontSize: "1.15rem"
+      fontSize: "1.15rem",
     };
     const style: React.CSSProperties = {
       textAlign: "center",
@@ -146,7 +171,9 @@ const SubjectsTable = (arg: { data: Array<Subject> }) => {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>{tableBody}</TableBody>
+        <TableBody>
+          {isLoading ? PlaceHolderRow : tableBody}
+        </TableBody>
       </Table>
     </TableContainer>
   );

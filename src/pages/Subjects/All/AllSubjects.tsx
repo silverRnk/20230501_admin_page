@@ -62,6 +62,7 @@ const AllSubjects = () => {
   const gradeLevelRef = createRef<HTMLSelectElement>();
   const sectionRef = createRef<HTMLSelectElement>();
   const [searchName, setSearchName] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const pageCount = 1;
   const currentPage = 1;
   const data: Array<Subject> = [];
@@ -152,7 +153,7 @@ const AllSubjects = () => {
         </Selection>
         <ButtonSearch onClick={handlerSearch}>Search</ButtonSearch>
       </SearchContainer>
-      <SubjectsTable data={data} />
+      <SubjectsTable data={data} isLoading={isLoading} />
       <PagerContainer>
         <Pagination
           count={pageCount}
