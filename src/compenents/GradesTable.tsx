@@ -4,6 +4,7 @@ import {
   Grade,
 } from "../utils/interfaces";
 import styled from "styled-components";
+import { ShimmerAnimation } from "./style-components/StyleComponents";
 
 const TableTitle = styled.div`
   width: 100%;
@@ -69,16 +70,17 @@ const Placeholder = styled.span`
     #f6f7f8 40%,
     #f6f7f8 100%
   );
+  animation: ${ShimmerAnimation} 2s linear infinite;
   background-repeat: no-repeat;
   background-size: 800px 104px;
   display: inline-block;
   position: relative;
 
-  -webkit-animation-duration: 1s;
+  /* -webkit-animation-duration: 1s;
   -webkit-animation-fill-mode: forwards;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: placeholderShimmer;
-  -webkit-animation-timing-function: linear;
+  -webkit-animation-timing-function: linear; */
 `;
 
 const column: Array<ColumnHeadType> = [
