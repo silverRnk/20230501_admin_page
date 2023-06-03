@@ -7,6 +7,7 @@ import Navbar from "../compenents/Navbar.jsx";
 import { useStateContext } from "../context/ContextProvider.jsx";
 import { useEffect } from "react";
 import axiosClient from "../utils/AxiosClient.jsx";
+import { theme } from "../Theme.tsx";
 
 const Container = styled.div`
   display: flex;
@@ -36,7 +37,7 @@ const Wrapper = styled.div`
   width: 100%;
   overflow: scroll;
   height: auto;
-  background-color: #245B84;
+  background-color: ${props => props.theme.colors.background};
 `;
 
 const SharePage = () => {

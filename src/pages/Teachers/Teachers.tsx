@@ -9,7 +9,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 50px;
-  background-color: #F0F1F3;
 `;
 
 const PageHeader = styled.h1`

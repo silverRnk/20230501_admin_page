@@ -32,6 +32,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  box-shadow: 0px 0px 5px gray;
 `;
 const Title = styled.h1`
   width: 100%;

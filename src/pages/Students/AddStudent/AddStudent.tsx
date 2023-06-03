@@ -20,6 +20,7 @@ const Container = styled.div`
   flex-direction: column;
   border-radius: 10px;
   background-color: white;
+  box-shadow: 0px 0px 7px lightgray;
 `;
 
 const Title = styled.h1`

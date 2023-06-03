@@ -30,11 +30,12 @@ import StudentIcons from "./SvgIcons/StudentIcons";
 import TeacherIcon from "./SvgIcons/TeacherIcon";
 import BookIcon from "./SvgIcons/BookIcon";
 import AccountIcon from "./SvgIcons/AccountIcon";
+import { theme } from "../Theme";
 
 const SideBarContainer = styled.div`
   width: auto;
   height: 100%;
-  background-color: rgb(249, 249, 249, 0.7);
+  background-color: ${(props) => props.theme.colors.primary};
 `;
 
 const SideBarHeader = styled.div`
@@ -44,7 +45,7 @@ const SideBarHeader = styled.div`
   padding: 20px;
   align-items: center;
   justify-content: space-between;
-  background-color: red;
+  background-color: ${(props) => props.theme.colors.secondary};
 `;
 
 const Logo = styled.img`
@@ -69,17 +70,17 @@ function SideNavbar() {
   function getSize() {
     setWidth(window.innerWidth);
   }
-  useEffect(() => {
-    window.addEventListener("resize", getSize);
-    if (width < 400) {
-      setCollapsed(true);
-    } else {
-      setCollapsed(false);
-    }
-    return () => {
-      window.removeEventListener("resize", getSize);
-    };
-  }, [width.innerWidth]);
+  // useEffect(() => {
+  //   window.addEventListener("resize", getSize);
+  //   if (width < 400) {
+  //     setCollapsed(true);
+  //   } else {
+  //     setCollapsed(false);
+  //   }
+  //   return () => {
+  //     window.removeEventListener("resize", getSize);
+  //   };
+  // }, [width.innerWidth]);
 
   console.log(collapsed);
 
@@ -94,10 +95,14 @@ function SideNavbar() {
     <SideBarContainer>
       <Sidebar
         className="sidebar"
+        style={{
+          backgroundColor: theme.colors.primary,
+        }}
         rootStyles={{
           position: "sticky",
           top: "0",
           zIndex: "2",
+          backgroundColor: theme.colors.primary,
         }}
         defaultCollapsed
       >
@@ -119,21 +124,31 @@ function SideNavbar() {
           > <Logo src={CedarLogo} /></MenuItem>
         </Menu> */}
 
-        <Menu>
+        <Menu style={{ backgroundColor: theme.colors.primary }}>
           <MenuItem
             icon={<Dashboard />}
             component={<Link to={"/dashboard"} />}
           >
             Dashboard
           </MenuItem>
-          <SubMenu label="Students" icon={<StudentIcons />}>
-            <MenuItem component={<Link to="/students/all" />}>
+          <SubMenu
+            label="Students"
+            icon={<StudentIcons color="white" />}
+          >
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to="/students/all" />}
+            >
               All Students
             </MenuItem>
-            <MenuItem component={<Link to="/students/add_student" />}>
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to="/students/add_student" />}
+            >
               Add Student
             </MenuItem>
             <MenuItem
+              className="sub-menu-item"
               component={<Link to="/students/student_admit_form" />}
             >
               Student Promotion
@@ -141,29 +156,47 @@ function SideNavbar() {
           </SubMenu>
           <MenuItem icon={<ParentIcon />}>Parents</MenuItem>
           <SubMenu label="Teachers" icon={<TeacherIcon />}>
-            <MenuItem component={<Link to="/teachers/all" />}>
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to="/teachers/all" />}
+            >
               All Teachers
             </MenuItem>
-            <MenuItem component={<Link to="/teachers/add" />}>
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to="/teachers/add" />}
+            >
               Add Teacher
             </MenuItem>
           </SubMenu>
           <SubMenu label="Account" icon={<AccountIcon />}>
-            <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
-            <MenuItem icon={<Dashboard />}> Line charts </MenuItem>
+            <MenuItem className="sub-menu-item" icon={<Backpack />}>
+              {" "}
+              Pie charts{" "}
+            </MenuItem>
+            <MenuItem className="sub-menu-item" icon={<Dashboard />}>
+              {" "}
+              Line charts{" "}
+            </MenuItem>
           </SubMenu>
           <SubMenu label="Subjects" icon={<BookIcon />}>
-            <MenuItem component={<Link to={"/subjects/all"} />}>
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to={"/subjects/all"} />}
+            >
               All Subjects
             </MenuItem>
-            <MenuItem component={<Link to={"/subjects/activities"} />}>
+            <MenuItem
+              className="sub-menu-item"
+              component={<Link to={"/subjects/activities"} />}
+            >
               Activities
             </MenuItem>
           </SubMenu>
 
           <SubMenu label="Charts" icon={<PieChartIcon />}>
-            <MenuItem icon={<Backpack />}> Pie charts </MenuItem>
-            <MenuItem icon={<Dashboard />}> Line charts </MenuItem>
+            <MenuItem className="sub-menu-item" icon={<Backpack />}> Pie charts </MenuItem>
+            <MenuItem className="sub-menu-item" icon={<Dashboard />}> Line charts </MenuItem>
           </SubMenu>
           <MenuItem> Documentation </MenuItem>
           <MenuItem> Calendar </MenuItem>
