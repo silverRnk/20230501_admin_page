@@ -25,7 +25,10 @@ import StudentPromotions from "./pages/Students/StudentPromotions.jsx";
 import AllTeachers from "./pages/Teachers/all/AllTeachers";
 import Teachers from "./pages/Teachers/Teachers";
 import AddTeacher from "./pages/Teachers/add/AddTeacher";
-import { loaderTeacherAdd, loaderTeacherAll } from "./pages/Teachers/utils/Loaders";
+import {
+  loaderTeacherAdd,
+  loaderTeacherAll,
+} from "./pages/Teachers/utils/Loaders";
 //Account
 import FeesGroup from "./pages/Account/FeesGroup.jsx";
 import StudentFees from "./pages/Account/StudentFees.jsx";
@@ -43,14 +46,17 @@ import Settings from "./pages/Settings.jsx";
 import SharePage from "./pages/SharePage";
 import { ContextProvider } from "./context/ContextProvider";
 import { SignUp } from "./pages/SignUp";
-import { loadPath, loadStudentData, loadStudents } from "./Loader/StudentLoader";
+import {
+  loadPath,
+  loadStudentData,
+  loadStudents,
+} from "./Loader/StudentLoader";
 import ViewStudent from "./pages/Students/Student/ViewStudent";
-import Error from "./pages/Error"
+import Error from "./pages/Error";
 import Teacher from "./pages/Teachers/teacher/Teacher";
 import AllSubjects from "./pages/Subjects/All/AllSubjects";
 import Subjects from "./pages/Subjects/Subjects";
-
-
+import Theme from "./Theme";
 
 //Taena mo pol gawin mo to bukas ng umaga
 
@@ -82,66 +88,65 @@ const router = createBrowserRouter([
             index: "true",
             loader: loadStudents,
             element: <AllStudent />,
-            errorElement: <Error />
-            
+            errorElement: <Error />,
           },
           {
             path: "add_student",
             element: <AddStudent />,
           },
           {
-            path: 'student_admit_form',
-            element: <StudentPromotions />
+            path: "student_admit_form",
+            element: <StudentPromotions />,
           },
           {
-            path: 'student',
+            path: "student",
             element: <ViewStudent />,
             loader: loadStudentData,
             // errorElement: <Error />
-          }
+          },
         ],
       },
       {
-        path:'/teachers',
+        path: "/teachers",
         element: <Teachers />,
         children: [
           {
             path: "",
-            element: <Navigate to={'/teachers/all'} />
-          },{
-            path:'all',
+            element: <Navigate to={"/teachers/all"} />,
+          },
+          {
+            path: "all",
             element: <AllTeachers />,
-            loader: loaderTeacherAll
+            loader: loaderTeacherAll,
           },
           {
-            path: 'add',
-            element: <AddTeacher />
+            path: "add",
+            element: <AddTeacher />,
           },
           {
-            path: 'teacher/{id}',
-            element: <Teacher />
-          }
-        ]
+            path: "teacher/{id}",
+            element: <Teacher />,
+          },
+        ],
       },
       {
-        path:"/subjects",
+        path: "/subjects",
         element: <Subjects />,
         children: [
           {
             path: "",
-            element: <Navigate to={"/subjects/all"} />
+            element: <Navigate to={"/subjects/all"} />,
           },
           {
             path: "all",
-            element: <AllSubjects />
-          }
-        ]
-      }
-      ,
+            element: <AllSubjects />,
+          },
+        ],
+      },
       {
         path: "*",
-        element: <Error />
-      }
+        element: <Error />,
+      },
     ],
   },
   {
@@ -150,9 +155,9 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <SignUp />
+    element: <SignUp />,
   },
-  
+
   // {
   //   path: "/navbar",
   //   element: <Navbar />,
@@ -169,14 +174,15 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-    
-      <ProSidebarProvider>
-        <div className="App">
-          <ContextProvider>
-            <RouterProvider router={router} />
-          </ContextProvider>
-        </div>
-      </ProSidebarProvider>
+      <Theme>
+        <ProSidebarProvider>
+          <div className="App">
+            <ContextProvider>
+              <RouterProvider router={router} />
+            </ContextProvider>
+          </div>
+        </ProSidebarProvider>
+      </Theme>
     </>
   );
 }
