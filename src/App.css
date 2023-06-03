@@ -1,0 +1,6 @@
+.MuiTableCell-head {
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+    color: #e7c147 !important;
+    text-shadow: 0px 0px 1px lightgray !important;
+  }

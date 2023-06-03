@@ -5,6 +5,7 @@ export const theme = {
     secondary: "#E7C147",
     primary: "#14238A",
     background: "#FEFDF1",
+    background2: "#eae8d8",
   },
   fontSize: {
     s: "0.75rem",
@@ -20,7 +21,7 @@ export const theme = {
     h1: css`
       font-size: 2.5rem;
       font-weight: bold;
-      letter-spacing: 1.1rem;
+      letter-spacing: 7px;
       color: #14238a;
     `,
     h2: css`
@@ -32,19 +33,19 @@ export const theme = {
       font-size: 1.75rem;
       font-weight: bold;
       color: #e7c147;
-      text-shadow: 0px 0px 3px lightgray;
+      text-shadow: 0px 0px 1px lightgray;
     `,
     h4: css`
       font-size: 1.5rem;
       font-weight: bold;
       color: #e7c147;
-      text-shadow: 0px 0px 3px lightgray;
+      text-shadow: 0px 0px 1px lightgray;
     `,
     h5: css`
       font-size: 1.25rem;
       font-weight: bold;
       color: #e7c147;
-      text-shadow: 0px 0px 3px lightgray;
+      text-shadow: 0px 0px 1px lightgray;
     `,
   },
 };
