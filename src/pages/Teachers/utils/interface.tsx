@@ -10,6 +10,19 @@ export interface TeacherProfileShort {
   teacher_phone: string
 } 
 
+export interface TeacherProfileLong {
+  teacher_id: string,
+  teacher_name: string
+  teacher_gender: Gender,
+  teacher_address: string,
+  teacher_religion: string,
+  teacher_email: string,
+  teacher_phone: string,
+  teacher_advisory_class: string,
+  teacher_admission_date: string
+  teacher_profile_img: string
+}
+
 export interface ColumnHeader {
   id: string;
   label: string;

@@ -11,8 +11,10 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import TeacherProfileDetails from "../../../compenents/TeacherProfileDetails";
 
 const Container = styled.div`
+  min-height: 800px;
   width: 100%;
   margin: auto auto;
   background-color: white;
@@ -24,7 +26,6 @@ const Container = styled.div`
 `;
 
 const Top = styled.div`
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: start;
@@ -52,12 +53,19 @@ const Right = styled.div`
   flex: 2;
 `;
 
+const ProfileWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Teacher = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTab, setSelectedTab] = useState<string>("1");
 
   return (
-    <Container>
+    <Container className="pageMinHeight">
       <Top>
         <LogoImg src={SchoolLogo} alt="School Logo" />
       </Top>
@@ -79,9 +87,17 @@ const Teacher = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab label="Profile" value="1" />
+                  
                 </TabList>
               </Box>
-              <TabPanel value="1">Profile Details</TabPanel>
+              <TabPanel value="1">
+                <ProfileWrapper>
+                  <TeacherProfileDetails
+                    data={null}
+                    isLoading={isLoading}
+                  />
+                </ProfileWrapper>
+              </TabPanel>
             </TabContext>
           </Box>
         </Right>

@@ -7,3 +7,5 @@ export interface Subject {
         classes: Array<{class: string, schedule: string}>}>
 }
 
+
+
