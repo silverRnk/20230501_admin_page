@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useEffect } from "react";
 
 //Types & Interfaces
 import { Subject } from "../pages/Subjects/utils/interfaces";
@@ -29,7 +29,7 @@ const PlaceHolderRow = (
     {PlaceHolderCount.map(() => (
       <TableRow>
         {AllSubjectColumn.map(() => (
-          <TableCell >
+          <TableCell>
             <PlaceHolderItem />
           </TableCell>
         ))}
@@ -46,104 +46,120 @@ const SubjectsTable = (arg: {
   const columns = AllSubjectColumn;
   const { data, isLoading } = arg;
 
-  //TableBody Generator
-  data?.forEach((subject) => {
-    let subjectRowspan: number = 0;
-    let teacherRowSpan: number = 0;
+  //Generate the table if the data has change
+  useEffect(() => {
+    //TableBody Generator
+    data?.forEach((subject) => {
+      let subjectRowspan: number = 0;
+      let teacherRowSpan: number = 0;
 
-    //cell styling
-    const rowHeaderStyle: React.CSSProperties = {
-      textAlign: "center",
-      fontWeight: "bold",
-      fontSize: "1.15rem",
-    };
-    const style: React.CSSProperties = {
-      textAlign: "center",
-    };
+      //cell styling
+      const rowHeaderStyle: React.CSSProperties = {
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: "1.15rem",
+      };
+      const style: React.CSSProperties = {
+        textAlign: "center",
+      };
 
-    // get column 1 row span
-    subject.teachers.forEach((teacher) => {
-      subjectRowspan += teacher.classes.length;
-    });
+      // get subject column row span
+      subject.teachers.forEach((teacher) => {
+        subjectRowspan += teacher.classes.length;
+      });
 
-    //Add the Subject name and first inner first row
-    const element = (
-      <TableRow>
-        <TableCell
-          style={rowHeaderStyle}
-          scope="row"
-          rowSpan={subjectRowspan}
-        >
-          {subject.subject}
-        </TableCell>
-        <TableCell
-          style={style}
-          rowSpan={subject.teachers[0].classes.length}
-        >
-          {subject.teachers[0].teacher}
-        </TableCell>
-        <TableCell style={style}>
-          {subject.teachers[0].classes[0].class}
-        </TableCell>
-        <TableCell style={style}>
-          {subject.teachers[0].classes[0].schedule}
-        </TableCell>
-      </TableRow>
-    );
-    tableBody.push(element);
+      /**
+       * Create the Element for the Subject Column
+       * and the first Teacher and it's first correspond 
+       * class and schedule 
+       */
+      const element = (
+        <TableRow>
+          <TableCell
+            style={rowHeaderStyle}
+            scope="row"
+            rowSpan={subjectRowspan}
+          >
+            {subject.subject}
+          </TableCell>
+          <TableCell
+            style={style}
+            rowSpan={subject.teachers[0].classes.length}
+          >
+            {subject.teachers[0].teacher}
+          </TableCell>
+          <TableCell style={style}>
+            {subject.teachers[0].classes[0].class}
+          </TableCell>
+          <TableCell style={style}>
+            {subject.teachers[0].classes[0].schedule}
+          </TableCell>
+        </TableRow>
+      );
+      tableBody.push(element);
 
-    //Add the consecutive teacher
-    subject.teachers.forEach((teacher, index) => {
-      let classesElements: Array<any> = [];
-      if (index === 0) {
-        for (let i = 1; i < teacher.classes.length; i++) {
-          let element = (
-            <>
-              <TableRow>
-                <TableCell style={style}>
-                  {teacher.classes[i].class}
-                </TableCell>
-                <TableCell style={style}>
-                  {teacher.classes[i].schedule}
-                </TableCell>
-              </TableRow>
-            </>
-          );
-
-          tableBody.push(element);
-        }
-      } else {
-        const numberOfClasses = teacher.classes.length;
-        for (let i = 0; i < numberOfClasses; i++) {
-          const element =
-            i === 0 ? (
-              <TableRow>
-                <TableCell style={style} rowSpan={numberOfClasses}>
-                  {teacher.teacher}
-                </TableCell>
-                <TableCell style={style}>
-                  {teacher.classes[i].class}
-                </TableCell>
-                <TableCell style={style}>
-                  {teacher.classes[i].schedule}
-                </TableCell>
-              </TableRow>
-            ) : (
-              <TableRow>
-                <TableCell style={style}>
-                  {teacher.classes[i].class}
-                </TableCell>
-                <TableCell style={style}>
-                  {teacher.classes[i].schedule}
-                </TableCell>
-              </TableRow>
+      /**
+       * This would create the element for ff:
+       *  *other class and schedule of first teacher
+       *  *the element for the next teacher and it corresponding
+       *    class and schedule
+       * 
+       */
+      subject.teachers.forEach((teacher, index) => {
+        let classesElements: Array<any> = [];
+        if (index === 0) {
+          for (let i = 1; i < teacher.classes.length; i++) {
+            let element = (
+              // Element for other class and schedule of first teacher
+              <>
+                <TableRow>
+                  <TableCell style={style}>
+                    {teacher.classes[i].class}
+                  </TableCell>
+                  <TableCell style={style}>
+                    {teacher.classes[i].schedule}
+                  </TableCell>
+                </TableRow>
+              </>
             );
 
-          tableBody.push(element);
+            tableBody.push(element);
+          }
+        } else {
+          const numberOfClasses = teacher.classes.length;
+          for (let i = 0; i < numberOfClasses; i++) {
+            const element =
+              i === 0 ? (
+                // Element for other teachers first class and sched
+                <TableRow>
+                  <TableCell style={style} rowSpan={numberOfClasses}>
+                    {teacher.teacher}
+                  </TableCell>
+                  <TableCell style={style}>
+                    {teacher.classes[i].class}
+                  </TableCell>
+                  <TableCell style={style}>
+                    {teacher.classes[i].schedule}
+                  </TableCell>
+                </TableRow>
+              ) : (
+                // Element for other teachers other class and sched
+                <TableRow>
+                  <TableCell style={style}>
+                    {teacher.classes[i].class}
+                  </TableCell>
+                  <TableCell style={style}>
+                    {teacher.classes[i].schedule}
+                  </TableCell>
+                </TableRow>
+              );
+
+            tableBody.push(element);
+          }
         }
-      }
+      });
     });
-  });
+  }, [data]);
 
   return (
     <TableContainer
@@ -179,4 +195,4 @@ const SubjectsTable = (arg: {
   );
 };
 
-export default SubjectsTable;
+export default memo(SubjectsTable);
