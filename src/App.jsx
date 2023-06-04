@@ -124,7 +124,7 @@ const router = createBrowserRouter([
             element: <AddTeacher />,
           },
           {
-            path: "teacher/{id}",
+            path: "teacher",
             element: <Teacher />,
           },
         ],

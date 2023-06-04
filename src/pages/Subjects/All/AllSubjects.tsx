@@ -65,7 +65,7 @@ const AllSubjects = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const pageCount = 1;
   const currentPage = 1;
-  const data: Array<Subject> = [];
+  const [data, setData] = useState<Array<Subject>>([])
 
   const handleOnRowsPerChange = (e) => {
     console.log(e.targe.value);
