@@ -69,7 +69,7 @@ const Top = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
 `;
 
 const LogoImg = styled.img`
@@ -90,9 +90,6 @@ const Left = styled.div`
   justify-content: flex-start;
 `;
 
-const ImageContainer = styled.div`
-  height: auto;
-`;
 
 const Image = styled.img`
   width: 300px;
@@ -103,7 +100,7 @@ const Image = styled.img`
 `;
 
 const Status = styled.p`
-  ${props => props.theme.fontThemes.h4}
+  ${(props) => props.theme.fontThemes.h4}
   margin-bottom: 40px;
   text-transform: capitalize;
 `;
@@ -121,24 +118,13 @@ const UpdateButton = styled.button`
   }
 `;
 
-const Wrapper = styled.div``;
 
 const Right = styled.div`
   flex: 2;
 `;
 
-const Logo = styled.div`
-  font-size: 2rem;
-  font-weight: 600;
-`;
-
-const CloseButton = styled.button`
-  border: none;
-  background-color: transparent;
-`;
-
-const Name = styled.h1`
-  ${props => props.theme.fontThemes.h2}
+const Name = styled.h2`
+  ${(props) => props.theme.fontThemes.h2}
 `;
 
 const CredentialsContainer = styled.div`
@@ -184,7 +170,7 @@ const GradeTableHeader = styled.div`
   padding: 10px 0px;
 `;
 const GradeTableTitle = styled.h3`
-  ${props => props.theme.fontThemes.h3}
+  ${(props) => props.theme.fontThemes.h3}
 `;
 const GradeSYSelection = styled.select`
   margin-right: 10px;
@@ -243,12 +229,7 @@ const ViewStudent = () => {
   return (
     <Container>
       <Top>
-        <Logo>
-          <LogoImg src={SchoolLogo} alt="School Logo" />
-        </Logo>
-        <CloseButton>
-          <CloseIcon />
-        </CloseButton>
+        <LogoImg src={SchoolLogo} alt="School Logo" />
       </Top>
       <Bottom>
         <Left>
