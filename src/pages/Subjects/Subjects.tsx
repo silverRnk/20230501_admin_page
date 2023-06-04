@@ -46,7 +46,7 @@ const Subjects = () => {
         {'>'}
         </LinkItem>
         <LinkItem>
-          <NLink href="#">Teachers</NLink>
+          <NLink href="#">Subjects</NLink>
         </LinkItem>
       </LinkContainer>
       <Outlet/>

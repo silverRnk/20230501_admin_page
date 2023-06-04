@@ -134,7 +134,7 @@ const AllSubjects = () => {
 
   return (
     <Container onKeyDownCapture={handlePressEnter}>
-      <Title>All Teachers</Title>
+      <Title>All Subjects</Title>
       <SearchContainer>
         <InputName
           placeholder="Search by Name"
