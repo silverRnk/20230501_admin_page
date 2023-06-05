@@ -8,3 +8,7 @@
 /* .pageMinHeight{
   height: max(100vh, 700px);
 } */
+
+.table-body-row:active{
+  background-color: rgb(202, 202, 202);
+}

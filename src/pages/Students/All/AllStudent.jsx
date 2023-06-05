@@ -1,14 +1,4 @@
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  Paper,
-  TableCell,
-  TableBody,
-  TablePagination,
-  Pagination,
-} from "@mui/material";
+import { Pagination } from "@mui/material";
 import React, {
   useState,
   useCallback,
@@ -17,10 +7,21 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { studentList, studentList2 } from "../../../utils/data";
-import ViewProfile from "../../../compenents/ViewProfile";
-import { useLoaderData, useNavigate } from "react-router-dom";
+
+import {
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { columnAllStudents } from "../utils/ColumnLabels";
-import { ButtonSearch as SearchButton, SearchInput, SearchOption, SearchSelection } from "../../../compenents/style-components/SearchInputComponents";
+import {
+  ButtonSearch as SearchButton,
+  SearchInput,
+  SearchOption,
+  SearchSelection,
+} from "../../../compenents/style-components/SearchInputComponents";
+import StudentsTable from "../../../compenents/StudentsTable";
+import axiosClient from "../../../utils/AxiosClient";
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +38,7 @@ const Container = styled.div`
 `;
 const Title = styled.h1`
   width: 100%;
-  ${props => props.theme.fontThemes.h2}
+  ${(props) => props.theme.fontThemes.h2}
   margin-bottom: 40px;
 `;
 
@@ -50,24 +51,12 @@ const SearchContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const InputName = styled(SearchInput)`
-  /* background-color: ${props => props.theme.colors.background};
-  border: none;
-  border-radius: 10px;
-  color: gray;
-  padding: 10px;
-  font-size: 1.25rem; */
-
-`;
-const Selection = styled(SearchSelection)`
- 
-`;
+const InputName = styled(SearchInput)``;
+const Selection = styled(SearchSelection)``;
 
 const SelectionItem = styled(SearchOption)``;
 
-const ButtonSearch = styled(SearchButton)`
-
-`;
+const ButtonSearch = styled(SearchButton)``;
 
 const PagerContainer = styled.div`
   height: 100px;
@@ -78,64 +67,72 @@ const PagerContainer = styled.div`
 `;
 
 const AllStudent = () => {
-  const column = columnAllStudents;
+  const nameRef = createRef();
   const gradeLevelRef = createRef();
   const sectionRef = createRef();
-  const [searchName, setSearchName] = useState("");
-  const [className, setClassName] = useState("");
+  const [gradeAndSection, setGradeAndSection] = useState([]);
   const [sectionList, setSectionList] = useState([]);
   const [page, setPage] = useState(1);
-  const [rowPerPage, setRowPerPage] = useState(10);
-  const [open, setOpen] = useState(false);
-
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  /**
-   * @type {{import("./utils/interface").StudentProfileShort,
-   * import("./utils/interface").GradeLevels, number, number}}
-   */
-  const { students, gradeAndSection, currentPage, pageCount } =
-    useLoaderData();
+  const [pageCount, setPageCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [students, setStudents] = useState([]);
   const navigate = useNavigate();
-  const data = students;
 
-  const handleOnPageChange = useCallback(
-    (event, newPage) => {
-      setPage(newPage);
-    },
-    [rowPerPage, page]
-  );
+  const [searchParams] = useSearchParams()
+  const nameParams = searchParams.get('name')
+  const gradeLevelParams = searchParams.get('grade_level')
+  const sectionParams = searchParams.get('section')
 
-  const handleOnRowsPerChange = (e) => {
-    console.log(e.targe.value);
+
+  useEffect(() => {
+    setIsLoading(true);
+    axiosClient
+      .get(`/admin/allStudents`, {
+        params:{
+          page:page,
+          name:nameParams,
+          grade_level:gradeLevelParams,
+          section:sectionParams
+        }
+      })
+      .then((res) => {
+        const data = res ?? {};
+        setStudents(data?.data?.data ?? []);
+        setPageCount(data?.data?.meta?.last_page ?? 1);
+        setGradeAndSection(data?.data?.grade_levels ?? []);
+        
+        if(students.length > 0){
+          setIsLoading(false);
+        }
+        
+      })
+      .catch((err) => {
+        console.log("Error", err);
+        if (err.status === 401) {
+          throw new Response("Unauthorized", 401);
+        }
+      });
+
+  }, [page]);
+
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
   };
 
+  //Search Function
   const handlerSearch = async () => {
-    if (searchName === "" && className === "") {
-      setData(studentList2);
-    } else if (searchName === "" && className !== "") {
-      setData(
-        studentList2.filter((student) => {
-          return className === student.std_c_name;
-        })
-      );
-    } else if (searchName !== "" && className === "") {
-      setData(
-        studentList2.filter((student) => {
-          return student.std_name.match(`.*${searchName}.*`);
-        })
-      );
-    } else {
-      setData(
-        data.filter((student) => {
-          return (
-            studentList2.std_name.match(`.*${searchName}.*`) &&
-            className === student.std_c_name
-          );
-        })
-      );
+    const searchParams = new URLSearchParams({
+      name: nameRef.current?.value,
+      grade_level: gradeLevelRef.current?.value,
+      section: sectionRef.current?.value,
+    });
+
+    if(!nameRef.current?.value && !gradeLevelRef.current?.value && !sectionRef.current?.value){
+      navigate('/students/all?')
+      return
     }
-    setSearchName("");
-    setClassName("");
+
+    navigate('/students/all?' + searchParams.toString())
   };
 
   const handlePressEnter = (event) => {
@@ -144,46 +141,25 @@ const AllStudent = () => {
     }
   };
 
-  const handlerSearchName = (e) => {
-    setSearchName(e.target.value);
-    console.log(e.target.value);
-  };
-
   const handleClassName = (e) => {
-    setClassName(e.target.value);
-    console.log("grade id", e.target.value);
+    sectionRef.current.value = "";
     const selSection =
       gradeAndSection.filter((grade) => {
         return grade.grade_level_id === e.target.value;
       })[0].sections ?? [];
+
     setSectionList(selSection);
   };
 
-  const handlerTableRow = (event, student) => {
-    // setSelectedStudent(student);
-    // setOpen(true);
-    console.log(student);
+  const handlerTableRow = useCallback((event, student) => {
     navigate(`/students/student?id=${student.std_id}`);
-  };
-
-  const handlerCloseDialog = () => {
-    setOpen(false);
-    setSelectedStudent(null);
-    console.log("close");
-  };
-
-  const handlePageClick = (e, value) => {
-    navigate(`/students/all?page=${value}`);
-  };
+  }, students);
 
   return (
     <Container onKeyDownCapture={handlePressEnter}>
       <Title>All Students</Title>
       <SearchContainer>
-        <InputName
-          placeholder="Search by Name"
-          onInput={handlerSearchName}
-        />
+        <InputName ref={nameRef} placeholder="Search by Name" />
 
         <Selection
           placeholder="Select Class"
@@ -207,90 +183,20 @@ const AllStudent = () => {
         </Selection>
         <ButtonSearch onClick={handlerSearch}>Search</ButtonSearch>
       </SearchContainer>
-      <TableContainer
-        component={Paper}
-        sx={{
-          border: "1px solid black",
-          width: "100%",
-        }}
-      >
-        <Table size="medium">
-          <TableHead>
-            {column.map((col) => {
-              return (
-                <TableCell
-                  key={col.id}
-                  style={{
-                    minWidth: col.minWidth,
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "1.05rem",
-                  }}
-                >
-                  {col.label}
-                </TableCell>
-              );
-            })}
-          </TableHead>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow
-                className="table-body-row"
-                hover
-                onClick={(event) => {
-                  handlerTableRow(event, student);
-                }}
-                key={student.id}
-                style={{ cursor: "pointer" }}
-              >
-                {column.map((col) => {
-                  let value;
-                  if (col.id === "birth_date") {
-                    value = student[col.id].toLocaleDateString();
-                  } else {
-                    value = student[col.id];
-                  }
 
-                  return (
-                    <TableCell
-                      size="medium"
-                      style={{
-                        textAlign: col.align,
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      {value || "N/A"}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <StudentsTable
+        data={students}
+        isLoading={isLoading}
+        onSelectRow={handlerTableRow}
+      />
+
       <PagerContainer>
         <Pagination
           count={pageCount}
-          page={currentPage}
-          onChange={handlePageClick}
-        />
-        {/* <TablePagination
-          component="div"
-          rowsPerPageOptions={[10]}
-          count={data.length}
-          rowsPerPage={rowPerPage}
           page={page}
-          onPageChange={handleOnPageChange}
-          onRowsPerPageChange={handleOnRowsPerChange}
-          style={{ display: "flex", alignItems: "center" }}
-        /> */}
+          onChange={handlePageChange}
+        />
       </PagerContainer>
-
-      <ViewProfile
-        open={open}
-        onClose={handlerCloseDialog}
-        {...selectedStudent}
-      />
     </Container>
   );
 };

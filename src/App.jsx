@@ -86,9 +86,7 @@ const router = createBrowserRouter([
           {
             path: "all",
             index: "true",
-            loader: loadStudents,
             element: <AllStudent />,
-            errorElement: <Error />,
           },
           {
             path: "add_student",
