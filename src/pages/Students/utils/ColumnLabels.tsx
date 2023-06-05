@@ -38,13 +38,13 @@ export const credentialsColumn: Array<ColumnHeader> = [
 ];
 
 export const columnAllStudents: Array<ColumnHeader> = [
-  { id: "std_id", label: "Student ID", minWidth: 70 },
-  { id: "std_name", label: "Name", minWidth: 70},
-  { id: "std_gender", label: "Gender", minWidth: 70},
-  { id: "std_grade", label: "Class", minWidth: 70},
-  { id: "std_section", label: "Section", minWidth: 70},
-  { id: "std_status", label: "Status", minWidth: 70},
-  { id: "std_date_of_birth", label: "Date of Birth", minWidth: 70},
-  { id: "parents_phone", label: "Parent's Phone No.", minWidth: 70}
+  { id: "std_id", label: "Student ID", minWidth: 70, align: "center" },
+  { id: "std_name", label: "Name", minWidth: 70, align: "left"},
+  { id: "std_gender", label: "Gender", minWidth: 70, align: "center"},
+  { id: "std_grade", label: "Class", minWidth: 70, align: "center"},
+  { id: "std_section", label: "Section", minWidth: 70, align: "center"},
+  { id: "std_status", label: "Status", minWidth: 70, align: "center"},
+  { id: "std_date_of_birth", label: "Date of Birth", minWidth: 70, align: "center"},
+  { id: "parents_phone", label: "Parent's Phone No.", minWidth: 70, align: "left"}
 
 ];

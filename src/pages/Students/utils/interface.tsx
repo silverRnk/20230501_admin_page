@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { Gender, StudentStatus } from "../../../utils/Types";
 
 export interface StudentProfileShort {
@@ -27,11 +28,15 @@ export interface StudentProfileLong {
   status: StudentStatus;
 }
 
+// const textAlignments = ['auto', 'left', 'right', 'center', 'justify'] as const;
+
+type textAlignments = 'left' | 'right' | 'center' | 'justify'
+
 export interface ColumnHeader {
   id: string;
   label: string;
   minWidth: number;
-  align?: string | null;
+  align?: textAlignments | null;
   format?: () => any | null;
 }
 
