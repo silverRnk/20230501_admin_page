@@ -1,19 +1,33 @@
 import axiosClient from "../../../utils/AxiosClient";
-import { GradeLevels, TeacherProfileShort } from "./interface";
+import {
+  AllTeachersSearchParams,
+  GradeLevels,
+  TeacherProfileShort,
+} from "./interface";
 
-export const loaderTeacherAll = async ({ params, request }) => {
-  const url = new URL(request.url);
-  const currentPage = Number(url.searchParams.get("page") || 1);
-
-  const response = await axiosClient.get("/admin/teachers/all");
+/**
+ * Get request to BASE_URL + /api//admin/teachers/all
+ * @param args 
+ * @returns 
+ */
+export const loaderTeacherAll = async (args: {
+  params?: Record<AllTeachersSearchParams, string | number | null>;
+  request?: any;
+}) => {
+  const {params, request} = args
+  
+  const response = await axiosClient.get("/admin/teachers/all", {
+    params:params
+  });
 
   const teachers: Array<TeacherProfileShort> =
     response?.data?.data?.teachers ?? [];
   const gradeAndSections: Array<GradeLevels> =
     response?.data?.data?.grade_levels ?? [];
   const pageCount = response?.data?.meta?.last_page ?? 1;
+  const currentPage = response?.data?.meta?.last_page ?? 1;
 
-  return { teachers, gradeAndSections, currentPage, pageCount };
+  return {teachers, gradeAndSections,pageCount, currentPage };
 };
 
 export const loaderTeacherAdd = async () => {
@@ -24,9 +38,10 @@ export const loaderTeacherAdd = async () => {
   return { gradeAndSections };
 };
 
-export const loaderTeacherProfile = async ({params, request}) => {
-    const url = new URL(request.url)
-    const id = url.searchParams.get('id')
-    const response = await axiosClient.get(`/admin/teachers/view/${id}`)
-
-}
+export const loaderTeacherProfile = async ({ params, request }) => {
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+  const response = await axiosClient.get(
+    `/admin/teachers/view/${id}`
+  );
+};

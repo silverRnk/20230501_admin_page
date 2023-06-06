@@ -73,3 +73,5 @@ export interface Section {
   id: number;
   section_name: string;
 }
+
+export type AllTeachersSearchParams = "page" | "name" | "gradeLevel" | "section" 

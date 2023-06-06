@@ -115,7 +115,6 @@ const router = createBrowserRouter([
           {
             path: "all",
             element: <AllTeachers />,
-            loader: loaderTeacherAll,
           },
           {
             path: "add",

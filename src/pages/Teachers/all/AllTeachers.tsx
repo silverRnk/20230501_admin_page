@@ -17,12 +17,20 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { studentList, studentList2 } from "../../../utils/data";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { columnAllStudents, columnTeachers } from "../utils/ColumnLabels";
+import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 
 import { loaderTeacherAll } from "../utils/Loaders";
 import { Section } from "../../Students/utils/interface";
-import { SearchInput, SearchSelection, ButtonSearch as SearchButton } from "../../../compenents/style-components/SearchInputComponents";
+import {
+  SearchInput,
+  SearchSelection,
+  ButtonSearch as SearchButton,
+} from "../../../compenents/style-components/SearchInputComponents";
+import TeachersTable from "../../../compenents/TeachersTable";
+import { GradeLevels } from "../utils/interface";
+import { TeacherProfileShort } from "../utils/interface";
+import axios from "axios";
+import { URLSearchParams } from "url";
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +45,7 @@ const Container = styled.div`
   position: relative;
 `;
 const Title = styled.h2`
-  ${props => props.theme.fontThemes.h2}
+  ${(props) => props.theme.fontThemes.h2}
   text-align: left;
   width: 100%;
   margin-bottom: 40px;
@@ -52,18 +60,12 @@ const SearchContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const InputName = styled(SearchInput)`
-
-`;
-const Selection = styled(SearchSelection)`
-
-`;
+const InputName = styled(SearchInput)``;
+const Selection = styled(SearchSelection)``;
 
 const SelectionItem = styled.option``;
 
-const ButtonSearch = styled(SearchButton)`
-
-`;
+const ButtonSearch = styled(SearchButton)``;
 
 const PagerContainer = styled.div`
   height: 100px;
@@ -72,109 +74,84 @@ const PagerContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+ 
 
 function AllTeachers() {
-  const column = columnTeachers;
+  const nameRef = createRef<HTMLInputElement>();
   const gradeLevelRef = createRef<HTMLSelectElement>();
   const sectionRef = createRef<HTMLSelectElement>();
-  const [searchName, setSearchName] = useState("");
-  const [className, setClassName] = useState("");
   const [sectionList, setSectionList] = useState<Array<Section>>([]);
-  const [page, setPage] = useState(1);
-  const [rowPerPage, setRowPerPage] = useState(10);
-  const [open, setOpen] = useState(false);
-
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const { teachers, gradeAndSections, currentPage, pageCount } =
-    useLoaderData() as ReturnType<typeof loaderTeacherAll>;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageCount, setPageCount] = useState<number>(1);
+  const [gradeAndSections, setGradeAndSections] = useState<
+    Array<GradeLevels>
+  >([]);
+  const [teachers, setTeachers] = useState<
+    Array<TeacherProfileShort>
+  >([]);
   const navigate = useNavigate();
-  const data = teachers;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const [urlParams] = useSearchParams()
+  const nameParams = urlParams.get('name')
+  const gradeLevelParams = urlParams.get('grade_level')
+  const sectionParams = urlParams.get('section')
 
-  const handleOnRowsPerChange = (e) => {
-    console.log(e.targe.value);
-  };
+  useEffect(() => {
+    setIsLoading(true)
+    loaderTeacherAll({
+      params: {
+        page: currentPage,
+        gradeLevel: gradeLevelParams,
+        name: nameParams,
+        section: sectionParams,
+      },
+    }).then(res => {
+      setTeachers(res.teachers)
+      setPageCount(res.pageCount)
+      setGradeAndSections(res.gradeAndSections)
+      setIsLoading(false)
+    }).
+    catch(err => {
+      console.log(err)
+    });
+  }, [currentPage]);
 
   const handlerSearch = async () => {
-    // if (searchName === "" && className === "") {
-    //   setData(studentList2);
-    // } else if (searchName === "" && className !== "") {
-    //   setData(
-    //     studentList2.filter((student) => {
-    //       return className === student.std_c_name;
-    //     })
-    //   );
-    // } else if (searchName !== "" && className === "") {
-    //   setData(
-    //     studentList2.filter((student) => {
-    //       return student.std_name.match(`.*${searchName}.*`);
-    //     })
-    //   );
-    // } else {
-    //   setData(
-    //     data.filter((student) => {
-    //       return (
-    //         studentList2.std_name.match(`.*${searchName}.*`) &&
-    //         className === student.std_c_name
-    //       );
-    //     })
-    //   );
-    // }
-    // setSearchName("");
-    // setClassName("");
+    const searchParams = `name=${nameRef.current?.value}&`
+        + `grade_level=${gradeLevelRef.current?.value}&`
+        + `section=${sectionRef.current?.value}`
+
+    console.log(searchParams)
+    navigate(`/teachers/all?` + searchParams )
   };
 
-  const handlePressEnter = (event) => {
-    if (event.which === 13) {
-      handlerSearch();
-    }
+  const handleSelectClass = (e) => {
+    const selSection =
+      gradeAndSections.filter((grade) => {
+        return grade.grade_level_id === e.target.value;
+      })[0].sections ?? [];
+    setSectionList(selSection);
   };
 
-  const handlerSearchName = (e) => {
-    setSearchName(e.target.value);
-    console.log(e.target.value);
-  };
-
-  const handleClassName = (e) => {
-    // setClassName(e.target.value);
-    // console.log("grade id", e.target.value);
-    // const selSection =
-    //   gradeAndSection.filter((grade) => {
-    //     return grade.grade_level_id === e.target.value;
-    //   })[0].sections ?? [];
-    // setSectionList(selSection);
-  };
-
-  const handlerTableRow = (event, student) => {
-    // setSelectedStudent(student);
-    // setOpen(true);
-    // console.log(student);
-    // navigate(`/students/student?id=${student.std_id}`);
-  };
-
-  const handlerCloseDialog = () => {
-    setOpen(false);
-    setSelectedStudent(null);
-    console.log("close");
+  const handleSelectRow = (event, teacher:TeacherProfileShort) => {
+    navigate(`/teachers/teacher?id=${teacher.teacher_id}`);
   };
 
   const handlePageClick = (e, value: number) => {
-    navigate(`/students/all?page=${value}`);
+    navigate(`/teachers/all?page=${value}`);
   };
 
   return (
-    <Container onKeyDownCapture={handlePressEnter}>
+    <Container>
       <Title>All Teachers</Title>
       <SearchContainer>
-        <InputName
-          placeholder="Search by Name"
-          onInput={handlerSearchName}
-        />
+        <InputName ref={nameRef} placeholder="Search by Name" />
 
         <Selection
           placeholder="Select Class"
           ref={gradeLevelRef}
-          onInput={handleClassName}
+          onInput={handleSelectClass}
         >
           <SelectionItem value={""}> Select Class </SelectionItem>
           {gradeAndSections.map((item) => (
@@ -193,75 +170,20 @@ function AllTeachers() {
         </Selection>
         <ButtonSearch onClick={handlerSearch}>Search</ButtonSearch>
       </SearchContainer>
-      <TableContainer
-        component={Paper}
-        sx={{
-          border: "1px solid black",
-          width: "100%",
-        }}
-      >
-        <Table size="medium">
-          <TableHead>
-            {column.map((col) => {
-              return (
-                <TableCell
-                  key={col.id}
-                  style={{ minWidth: col.minWidth }}
-                >
-                  {col.label}
-                </TableCell>
-              );
-            })}
-          </TableHead>
-          <TableBody>
-            {data.map((teacher) => (
-              <TableRow
-                className="table-body-row"
-                hover
-                onClick={(event) => {
-                  handlerTableRow(event, teacher);
-                }}
-                key={teacher.teacher_id}
-                style={{ cursor: "pointer" }}
-              >
-                {column.map((col) => {
-                  let value;
-                  if (col.id === "teacher_dob") {
-                    value = teacher[col.id].toLocaleDateString();
-                  } else {
-                    value = teacher[col.id];
-                  }
 
-                  return (
-                    <TableCell size="medium">
-                      {value || "N/A"}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TeachersTable
+        data={teachers}
+        isLoading={isLoading}
+        onSelectRow={handleSelectRow}
+      />
+
       <PagerContainer>
         <Pagination
           count={pageCount}
           page={currentPage}
           onChange={handlePageClick}
         />
-        {/* <TablePagination
-          component="div"
-          rowsPerPageOptions={[10]}
-          count={data.length}
-          rowsPerPage={rowPerPage}
-          page={page}
-          onPageChange={handleOnPageChange}
-          onRowsPerPageChange={handleOnRowsPerChange}
-          style={{ display: "flex", alignItems: "center" }}
-        /> */}
       </PagerContainer>
-
-    
     </Container>
   );
 }
