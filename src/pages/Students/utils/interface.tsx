@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { Gender, StudentStatus } from "../../../utils/Types";
+import { credentialsRowHeader } from "./objects";
 
 export interface StudentProfileShort {
   std_id: string;
@@ -30,7 +31,7 @@ export interface StudentProfileLong {
 
 // const textAlignments = ['auto', 'left', 'right', 'center', 'justify'] as const;
 
-type textAlignments = 'left' | 'right' | 'center' | 'justify'
+type textAlignments = "left" | "right" | "center" | "justify";
 
 export interface ColumnHeader {
   id: string;
@@ -81,3 +82,18 @@ export interface Section {
   id: number;
   section_name: string;
 }
+
+export interface CredentialsInfo {
+  id: string;
+  fileName: string;
+  uploadedDate: string;
+  downloadLink: string;
+}
+
+export type CredentialsRowHeader =
+  | "birth_cert"
+  | "form_137"
+  | "good_moral"
+  | "form_138"
+  | "report_card";
+

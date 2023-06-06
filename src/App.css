@@ -12,3 +12,13 @@
 .table-body-row:active{
   background-color: rgb(202, 202, 202);
 }
+
+.credentials-row-header{
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.credentials-cell{
+  text-align: center;
+  font-size: 1rem;
+}

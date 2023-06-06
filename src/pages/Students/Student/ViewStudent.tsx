@@ -53,6 +53,8 @@ import { Button, FormLabel } from "@mui/material";
 import GradesTable from "../../../compenents/GradesTable";
 import StudentDetails from "../../../compenents/StudentDetails";
 import { theme } from "../../../Theme";
+import ProfileImg from "../../../compenents/ProfileImg";
+import ProfileName from "../../../compenents/ProfileName";
 
 const Container = styled.div`
   width: 100%;
@@ -91,14 +93,6 @@ const Left = styled.div`
 `;
 
 
-const Image = styled.img`
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 20px;
-`;
-
 const Status = styled.p`
   ${(props) => props.theme.fontThemes.h4}
   margin-bottom: 40px;
@@ -121,10 +115,6 @@ const UpdateButton = styled.button`
 
 const Right = styled.div`
   flex: 2;
-`;
-
-const Name = styled.h2`
-  ${(props) => props.theme.fontThemes.h2}
 `;
 
 const CredentialsContainer = styled.div`
@@ -217,6 +207,7 @@ const ViewStudent = () => {
 
   const gradesPerSY: GradesPerSY | null = null;
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   //get react-router params
   const [search] = useSearchParams();
   const id = search.get("id");
@@ -233,10 +224,7 @@ const ViewStudent = () => {
       </Top>
       <Bottom>
         <Left>
-          <Image
-            src={std_img || DefaultImg}
-            style={{ border: std_img ? "none" : "1px solid black" }}
-          />
+          <ProfileImg image={std_img} isLoading={isLoading} />
           <Status>Current Status: {studentInfo.std_status}</Status>
           <FormWrapper>
             <FormLabel required={true}>Update Status:</FormLabel>
@@ -316,7 +304,7 @@ const ViewStudent = () => {
           // Right Size
         }
         <Right>
-          <Name>{studentInfo.std_name || "N/A"}</Name>
+          <ProfileName name={studentProfile?.name || ''} isLoading={isLoading} />
 
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={selectedTab}>
@@ -340,8 +328,8 @@ const ViewStudent = () => {
               <TabPanel value="1">
                 <InfoContainer>
                   <StudentDetails
-                    data={studentInfo}
-                    isLoading={!studentInfo}
+                    data={studentProfile}
+                    isLoading={isLoading}
                   />
                 </InfoContainer>
               </TabPanel>

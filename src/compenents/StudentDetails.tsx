@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { StudentProfileLong } from "../pages/Students/utils/interface";
 import { studentDetailsHeader } from "../pages/Students/utils/objects";
+import { PlaceHolder } from "./style-components/StyleComponents";
 
 const Table = styled.div`
   width: 100%;
@@ -32,18 +33,7 @@ const Cell = styled.span`
   padding-left: 10px;
 `;
 
-const PlaceHolder = styled.span`
-  height: 20px;
-  width: 200px;
-  background: #f6f7f8;
-  background-image: linear-gradient(
-    to right,
-    #f6f7f8 0%,
-    #edeef1 20%,
-    #f6f7f8 40%,
-    #f6f7f8 100%
-  );
-`;
+
 
 const StudentDetails = (arg: {
   data?: StudentProfileLong | null;
@@ -59,7 +49,7 @@ const StudentDetails = (arg: {
             <RowHeader role="rowheader">{row.label}:</RowHeader>
             {isLoading ? (
               <Cell>
-                <PlaceHolder />
+                <PlaceHolder style={{height: "20px"}} />
               </Cell>
             ) : (
               <Cell>{!data ? "N/A" : data[row.id]}</Cell>
