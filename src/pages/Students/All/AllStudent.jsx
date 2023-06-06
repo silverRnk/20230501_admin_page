@@ -101,9 +101,7 @@ const AllStudent = () => {
         setPageCount(data?.data?.meta?.last_page ?? 1);
         setGradeAndSection(data?.data?.grade_levels ?? []);
         
-        if(students.length > 0){
-          setIsLoading(false);
-        }
+        setIsLoading(false);
         
       })
       .catch((err) => {

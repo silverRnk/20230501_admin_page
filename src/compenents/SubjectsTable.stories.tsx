@@ -2,18 +2,28 @@ import { Meta, StoryObj } from "@storybook/react";
 
 // Components
 import SubjectsTable from "./SubjectsTable";
+import Theme from "../Theme";
 
 
 const meta: Meta<typeof SubjectsTable> = {
     title: "Subjects Tables",
-    component: SubjectsTable
+    component: SubjectsTable,
+    decorators: [
+        (Story) => (
+            <Theme>
+                <Story/>
+            </Theme>
+        ),
+    ]
 }
 
 export default meta;
 type Story = StoryObj<typeof SubjectsTable>
 
 export const empty: Story = {
-    
+    args:{
+        data: []
+    }
 }
 
 export const filled: Story = {

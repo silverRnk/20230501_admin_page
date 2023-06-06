@@ -15,7 +15,22 @@ import { columnAllStudents } from "../pages/Students/utils/ColumnLabels";
 import { EmptyArrayGenerator } from "../utils/ArrayGenerator";
 import { PlaceHolder } from "./style-components/StyleComponents";
 import { theme } from "../Theme";
+import styled from "styled-components";
 
+
+const EmptyLabelContainer = styled.div<{ isVisible: boolean }>`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: ${(props) => (props.isVisible ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+`;
+const EmptyLabel = styled.span`
+  font-size: ${(props) => props.theme.fontSize.medium1};
+`;
 
 const RowBodyStyle: React.CSSProperties = {
   cursor: "pointer" ,
@@ -49,6 +64,8 @@ const StudentsTable = (args: {
       sx={{
         border: "1px solid black",
         width: "100%",
+        position: "relative",
+        minHeight: "300px"
       }}
     >
       <Table size="medium">
@@ -107,6 +124,9 @@ const StudentsTable = (args: {
               ))}
         </TableBody>
       </Table>
+      <EmptyLabelContainer isVisible={data.length == 0 && !isLoading}>
+                  <EmptyLabel>No data to display</EmptyLabel>
+      </EmptyLabelContainer>
     </TableContainer>
   );
 };
