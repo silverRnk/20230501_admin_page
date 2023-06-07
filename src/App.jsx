@@ -98,8 +98,7 @@ const router = createBrowserRouter([
           },
           {
             path: "student",
-            element: <ViewStudent />,
-            loader: loadStudentData,
+            element: <ViewStudent />
             // errorElement: <Error />
           },
         ],

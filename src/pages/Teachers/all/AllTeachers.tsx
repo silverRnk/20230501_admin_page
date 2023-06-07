@@ -96,7 +96,7 @@ function AllTeachers() {
   const nameParams = urlParams.get('name')
   const gradeLevelParams = urlParams.get('grade_level')
   const sectionParams = urlParams.get('section')
-
+  console.log('params', nameParams, gradeLevelParams, sectionParams)
   useEffect(() => {
     setIsLoading(true)
     loaderTeacherAll({
@@ -115,7 +115,7 @@ function AllTeachers() {
     catch(err => {
       console.log(err)
     });
-  }, [currentPage]);
+  }, [currentPage, nameParams, gradeLevelParams, sectionParams]);
 
   const handlerSearch = async () => {
     const searchParams = `name=${nameRef.current?.value}&`
@@ -138,8 +138,8 @@ function AllTeachers() {
     navigate(`/teachers/teacher?id=${teacher.teacher_id}`);
   };
 
-  const handlePageClick = (e, value: number) => {
-    navigate(`/teachers/all?page=${value}`);
+  const handlePageChange = (e, value: number) => {
+    setCurrentPage(value)
   };
 
   return (
@@ -181,7 +181,7 @@ function AllTeachers() {
         <Pagination
           count={pageCount}
           page={currentPage}
-          onChange={handlePageClick}
+          onChange={handlePageChange}
         />
       </PagerContainer>
     </Container>

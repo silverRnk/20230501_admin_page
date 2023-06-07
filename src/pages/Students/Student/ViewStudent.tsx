@@ -1,5 +1,5 @@
 //React Imports
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useEffect } from "react";
 import { useState } from "react";
 import {
   Navigate,
@@ -55,6 +55,8 @@ import StudentDetails from "../../../compenents/StudentDetails";
 import { theme } from "../../../Theme";
 import ProfileImg from "../../../compenents/ProfileImg";
 import ProfileName from "../../../compenents/ProfileName";
+import StudentsCredentials from "./StudentsCredentials";
+import axiosClient from "../../../utils/AxiosClient";
 
 const Container = styled.div`
   width: 100%;
@@ -168,54 +170,44 @@ const GradeSYSelection = styled.select`
 `;
 const GradesSYOption = styled.option``;
 
+
+const loadStudentProfile = async (id: number | string) => {
+    
+    const response = await axiosClient.get(`/admin/student/${id}`) ?? {}
+
+    const studentInfo:StudentProfileLong = response?.data?.data?.[0] ?? {}
+    const gradeLevels = response?.data?.grade_levels ?? []
+
+    return {studentInfo, gradeLevels}
+}
+
 const ViewStudent = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("1");
   const [studentProfile, setStudentProfile] =
     useState<StudentProfileLong | null>(null);
-  const [birthCert, setBirthCert] = useState<CredentialsRow>({
-    file_type: "Birth Certificate",
-    file_name: null,
-    upload_date: null,
-  });
-  const [form137, setForm137] = useState<CredentialsRow>({
-    file_type: "Form 137",
-    file_name: null,
-    upload_date: null,
-  });
 
-  const [goodMoral, setGoodMoral] = useState<CredentialsRow>({
-    file_type: "Good Moral",
-    file_name: null,
-    upload_date: null,
-  });
-
-  const [form138, setForm138] = useState<CredentialsRow>({
-    file_type: "Form 138",
-    file_name: null,
-    upload_date: null,
-  });
-
-  const [reportCard, setReportCard] = useState<CredentialsRow>({
-    file_type: "Report Card",
-    file_name: null,
-    upload_date: null,
-  });
-
-  const { studentInfo, gradeLevels } = useLoaderData();
-  const std_img = import.meta.env.VITE_URL + studentInfo.std_photo;
+  const std_img = import.meta.env.VITE_URL + studentProfile?.profile_img;
 
   const gradesPerSY: GradesPerSY | null = null;
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   //get react-router params
-  const [search] = useSearchParams();
-  const id = search.get("id");
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
 
   //return to /students/all page if id is empty
   if (!id) {
     return <Navigate to={"/students/all"} />;
   }
+
+  useEffect(() => {
+    loadStudentProfile(id)
+    .then(data => {
+      setStudentProfile(data?.studentInfo)
+      setIsLoading(false)
+    })
+  }, [])
 
   return (
     <Container>
@@ -225,7 +217,7 @@ const ViewStudent = () => {
       <Bottom>
         <Left>
           <ProfileImg image={std_img} isLoading={isLoading} />
-          <Status>Current Status: {studentInfo.std_status}</Status>
+          <Status>Current Status: {studentProfile?.status}</Status>
           <FormWrapper>
             <FormLabel required={true}>Update Status:</FormLabel>
             <FormControl
@@ -338,180 +330,8 @@ const ViewStudent = () => {
                 //Tab2
               }
               <TabPanel value="2">
-                <CredentialsContainer>
-                  <Form>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          {credentialsColumn.map((column) => (
-                            <TableCell
-                              key={column.id}
-                              style={{ minWidth: column.minWidth }}
-                            >
-                              {column.label}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>{birthCert.file_type}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              component="label"
-                              style={{
-                                backgroundColor: "lightgray",
-                                color: "black",
-                              }}
-                            >
-                              Upload
-                              <input
-                                hidden
-                                type="file"
-                                name=""
-                                id=""
-                              />
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            {birthCert.file_name || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {birthCert.upload_date || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            <FileDownloadIcon />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>{form137.file_type}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              component="label"
-                              style={{
-                                backgroundColor: "lightgray",
-                                color: "black",
-                              }}
-                            >
-                              Upload
-                              <input
-                                hidden
-                                type="file"
-                                name=""
-                                id=""
-                              />
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            {form137.file_name || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {form137.upload_date || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            <FileDownloadIcon />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>{goodMoral.file_type}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              component="label"
-                              style={{
-                                backgroundColor: "lightgray",
-                                color: "black",
-                              }}
-                            >
-                              Upload
-                              <input
-                                hidden
-                                type="file"
-                                name="good_moral"
-                                id=""
-                                placeholder="Upload"
-                                style={{ display: "none" }}
-                              />
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            {goodMoral.file_name || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {goodMoral.upload_date || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            <FileDownloadIcon />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>{form138.file_type}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              component="label"
-                              style={{
-                                backgroundColor: "lightgray",
-                                color: "black",
-                              }}
-                            >
-                              Upload
-                              <input
-                                hidden
-                                type="file"
-                                name=""
-                                id=""
-                              />
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            {form138.file_name || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {form138.upload_date || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            <FileDownloadIcon />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>
-                            {reportCard.file_type}
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant="contained"
-                              component="label"
-                              style={{
-                                backgroundColor: "lightgray",
-                                color: "black",
-                              }}
-                            >
-                              Upload
-                              <input
-                                hidden
-                                type="file"
-                                name=""
-                                id=""
-                              />
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            {reportCard.file_name || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {reportCard.upload_date || "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            <FileDownloadIcon />
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </Form>
-                </CredentialsContainer>
+                <StudentsCredentials id={studentProfile?.id_number} />
+
               </TabPanel>
               <TabPanel value="3">
                 <GradesTableWrapper>

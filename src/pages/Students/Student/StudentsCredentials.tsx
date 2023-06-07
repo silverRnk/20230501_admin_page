@@ -22,19 +22,21 @@ import { theme } from "../../../Theme";
 import { PlaceHolder } from "../../../compenents/style-components/StyleComponents";
 
 const CredentialsContainer = styled.div`
-  width: 80%;
+  width: 100%;
+  padding: 10px 15px;
+  display:grid;
 `;
+
+const Title = styled.h4`
+  width: 100%;
+  ${props => props.theme.fontThemes.h3}
+  margin-block-end: 1em;
+`
 
 const Form = styled.form`
-  display: "flex";
-  flex-direction: "row";
-  gap: "15px";
-  padding-left: 20px;
-  display: flex;
-  flex-direction: column;
 `;
 
-const StudentsCredentials = (arg: { id: string }) => {
+const StudentsCredentials = (arg: { id?: number }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [credentials, setCredentials] =
     useState<Record<string, CredentialsInfo>>();
@@ -49,6 +51,7 @@ const StudentsCredentials = (arg: { id: string }) => {
 
   return (
     <CredentialsContainer>
+      <Title>Credentials</Title>
       <Form>
         <Table>
           <TableHead>

@@ -27,6 +27,7 @@ export interface StudentProfileLong {
   class: string;
   section: string;
   status: StudentStatus;
+  profile_img: string
 }
 
 // const textAlignments = ['auto', 'left', 'right', 'center', 'justify'] as const;
