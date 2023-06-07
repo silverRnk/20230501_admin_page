@@ -5,7 +5,6 @@ import styled from "styled-components";
 import DefaultImg from "../../../assets/profile_default.svg";
 import axiosClient from "../../../utils/AxiosClient";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
-import TimeLimitedDialog from "../../../compenents/TimeLimitedDialog";
 import {
   AddStudentProps,
   FormValidationFeedback,
@@ -365,15 +364,6 @@ function AddStudent() {
 
   return (
     <Container>
-      <TimeLimitedDialog
-        open={open}
-        onTimeOut={handleTimeOut}
-        duration={1500}
-      >
-        {Object.keys(message).map((key) => (
-          <p key={key}>{message[key][0]}</p>
-        ))}
-      </TimeLimitedDialog>
       <Form
         ref={formRef}
         onSubmit={handlerForm}

@@ -20,6 +20,6 @@ type Story = StoryObj<typeof StudentsCredentials>
 
 export const empty: Story = {
     args: {
-        id: "1333333"
+        id: 133333
     }
 }

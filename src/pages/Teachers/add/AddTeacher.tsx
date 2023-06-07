@@ -5,7 +5,6 @@ import styled from "styled-components";
 import DefaultImg from "../../../assets/profile_default.svg";
 import axiosClient from "../../../utils/AxiosClient";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
-import TimeLimitedDialog from "../../../compenents/TimeLimitedDialog";
 import {
   AddStudentProps,
   FormValidationFeedback,
@@ -24,7 +23,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  ${props => props.theme.fontThemes.h2}
+  ${(props) => props.theme.fontThemes.h2}
 `;
 const Reminder = styled.p`
   font-size: 0.75rem;
@@ -47,7 +46,7 @@ const FormSection = styled.div`
   margin-bottom: 20px;
 `;
 const SectionTitle = styled.h2`
-  ${props => props.theme.fontThemes.h4}
+  ${(props) => props.theme.fontThemes.h4}
 `;
 
 const InputItem = styled.div`
@@ -147,8 +146,7 @@ const AddTeacher = () => {
   const [lastNameFeedback, setLastNameFeedback] = useFormFeedback();
   const [genderFeedback, setGenderFeedback] = useFormFeedback();
   const [dobFeedback, setDOBFeedback] = useFormFeedback();
-  const [religionFeedback, setReligionFeedback] =
-    useFormFeedback();
+  const [religionFeedback, setReligionFeedback] = useFormFeedback();
   const [emailFeedback, setEmailFeedback] = useFormFeedback();
   const [phoneFeedback, setPhoneFeedback] = useFormFeedback();
   const [passwordFeedback, setPasswordFeedback] = useFormFeedback();
@@ -156,9 +154,12 @@ const AddTeacher = () => {
     passwordConfirmationFeedback,
     setPasswordConfirmationFeedback,
   ] = useFormFeedback();
-  const [advisoryClassFeedback, setAdvisoryClassFeedback] = useFormFeedback();
-  const [AdmissionDateFeedback, setAdmissionFeedback] = useFormFeedback();
-  const [profileImageFeedback, setProfileImageFeedback] = useFormFeedback();
+  const [advisoryClassFeedback, setAdvisoryClassFeedback] =
+    useFormFeedback();
+  const [AdmissionDateFeedback, setAdmissionFeedback] =
+    useFormFeedback();
+  const [profileImageFeedback, setProfileImageFeedback] =
+    useFormFeedback();
   const [addr1Feedback, setAddr1Feedback] = useFormFeedback();
   const [addr2Feedback, setAddr2Feedback] = useFormFeedback();
 
@@ -186,14 +187,8 @@ const AddTeacher = () => {
       FormField.dob.name,
       dateOfBirthRef.current?.value!
     );
-    payload.append(
-      FormField.addr1.name,
-      addr1Ref.current?.value!
-    )
-    payload.append(
-      FormField.addr2.name,
-      addr2Ref.current?.value!
-    )
+    payload.append(FormField.addr1.name, addr1Ref.current?.value!);
+    payload.append(FormField.addr2.name, addr2Ref.current?.value!);
     payload.append(
       FormField.religion.name,
       religionRef.current?.value!
@@ -215,12 +210,11 @@ const AddTeacher = () => {
     payload.append(
       FormField.class.name,
       advisoryClassRef.current?.value!
-    )
+    );
     payload.append(
       FormField.admission_date.name,
       admissionDateRef.current?.value!
-    )
-
+    );
 
     axiosClient
       .post("/admin/teachers/add", payload)
@@ -309,15 +303,6 @@ const AddTeacher = () => {
 
   return (
     <Container>
-      <TimeLimitedDialog
-        open={open}
-        onTimeOut={handleTimeOut}
-        duration={1500}
-      >
-        {Object.keys(message).map((key) => (
-          <p key={key}>{message[key][0]}</p>
-        ))}
-      </TimeLimitedDialog>
       <Form
         ref={formRef}
         onSubmit={handlerForm}
