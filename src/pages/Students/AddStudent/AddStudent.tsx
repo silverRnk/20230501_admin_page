@@ -1,6 +1,11 @@
 // @ts-ignore
 
-import React, { FormEventHandler, createRef, useState } from "react";
+import React, {
+  FormEventHandler,
+  createRef,
+  useReducer,
+  useState,
+} from "react";
 import styled from "styled-components";
 import DefaultImg from "../../../assets/profile_default.svg";
 import axiosClient from "../../../utils/AxiosClient";
@@ -13,6 +18,10 @@ import { useFormFeedback } from "../utils/CustomHooks";
 import { AddStudentLabels } from "../utils/FormInputNames";
 import { useStateContext } from "../../../context/ContextProvider";
 import PopupDialog from "../../../compenents/PopupDialog";
+import {
+  formFieldsInitValue,
+  formFieldsReducer,
+} from "./reducer";
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +34,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  ${props => props.theme.fontThemes.h2}
+  ${(props) => props.theme.fontThemes.h2}
 `;
 const Reminder = styled.p`
   font-size: 0.75rem;
@@ -48,7 +57,7 @@ const FormSection = styled.div`
   margin-bottom: 20px;
 `;
 const SectionTitle = styled.h2`
-  ${props => props.theme.fontThemes.h4}
+  ${(props) => props.theme.fontThemes.h4}
 `;
 
 const InputItem = styled.div`
@@ -111,170 +120,62 @@ const Button = styled.button`
     props.type === "reset" && props.theme.colors.primary};
   margin-right: 20px;
 
-  &:active{
+  &:active {
     filter: brightness(85%);
   }
 `;
 
 function AddStudent() {
-  const {addDialogMessages} = useStateContext()
+  const { addDialogMessages } = useStateContext();
   const formRef = createRef<HTMLFormElement>();
-  //Input Ref
-  const firstNameRef = createRef<HTMLInputElement>();
-  const lastNameRef = createRef<HTMLInputElement>();
-  const genderRef = createRef<HTMLSelectElement>();
-  const dateOfBirthRef = createRef<HTMLInputElement>();
-  const stdReligionRef = createRef<HTMLInputElement>();
-  const cpNumberRef = createRef<HTMLInputElement>();
-  const emailRef = createRef<HTMLInputElement>();
-  const passwordRef = createRef<HTMLInputElement>();
-  const passwordConfirmationRef = createRef<HTMLInputElement>();
-  const classRef = createRef<HTMLSelectElement>();
-  const sectionRef = createRef<HTMLSelectElement>();
   const studentPhotoRef = createRef<HTMLInputElement>();
-
-  const fathersNameRef = createRef<HTMLInputElement>();
-  const mothersNameRef = createRef<HTMLInputElement>();
-  const fathersOccupationRef = createRef<HTMLInputElement>();
-  const parentsReligionRef = createRef<HTMLInputElement>();
-  const parentsEmailRef = createRef<HTMLInputElement>();
-  const parentsPhoneRef = createRef<HTMLInputElement>();
-
-  //Form Feedback
-  const [firstNameFeedback, setFirstNameFeedback] = useFormFeedback();
-  const [lastNameFeedback, setLastNameFeedback] = useFormFeedback();
-  const [genderFeedback, setGenderFeedback] = useFormFeedback();
-  const [dobFeedback, setDOBFeedback] = useFormFeedback();
-  const [stdReligionFeedback, setStdReligionFeedback] =
-    useFormFeedback();
-  const [stdEmailFeedback, setStdEmailFeedback] = useFormFeedback();
-  const [stdPhoneFeedback, setStdPhoneFeedback] = useFormFeedback();
-  const [passwordFeedback, setPasswordFeedback] = useFormFeedback();
-  const [
-    passwordConfirmationFeedback,
-    setPasswordConfirmationFeedback,
-  ] = useFormFeedback();
-  const [gradeFeedback, setGradeFeedback] = useFormFeedback();
-  const [sectionFeedback, setSectionFeedback] = useFormFeedback();
-
-  const [fathersNameFeedback, setFathersNameFeedback] =
-    useFormFeedback();
-  const [mothersNameFeedback, setMothersNameFeedback] =
-    useFormFeedback();
-  const [fathersOccupationFeedback, setFathersOccupationFeedback] =
-    useFormFeedback();
-  const [parentsReligionFeedback, setParentsReligionFeedback] =
-    useFormFeedback();
-  const [parentsEmailFeedback, setParentsEmailFeedback] =
-    useFormFeedback();
-  const [parentsPhoneFeedback, setParentsPhoneFeedback] =
-    useFormFeedback();
-  const [studentPhotoFeedback, setStudentPhotoFeedback] =
-    useFormFeedback();
 
   const [studentImage, setStudentImage] = useState<
     string | ArrayBuffer | null
   >("");
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState({});
+
+  const [formInputs, formInputsReducer] = useReducer(
+    formFieldsReducer,
+    formFieldsInitValue
+  );
+
+  const handlerOnInput = (
+    e: any,
+    name: string,
+    value: string | undefined
+  ) => {
+    formInputsReducer({
+      type: "INPUT",
+      name: name,
+      value: value,
+    });
+  };
 
   const handlerForm = (e: any) => {
     e.preventDefault();
     resetForm(e);
     const payload = new FormData();
-    payload.append(
-      AddStudentLabels.std_first_name.name,
-      firstNameRef.current?.value ?? ""
-    );
-    payload.append(
-      AddStudentLabels.std_last_name.name,
-      lastNameRef.current?.value ?? ""
-    );
-    payload.append(
-      AddStudentLabels.std_gender.name,
-      genderRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_dob.name,
-      dateOfBirthRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_religion.name,
-      stdReligionRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_email.name,
-      emailRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_phone.name,
-      cpNumberRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_password.name,
-      passwordRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_passconf.name,
-      passwordConfirmationRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_grade.name,
-      classRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.std_section.name,
-      sectionRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.fth_name.name,
-      fathersNameRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.mth_name.name,
-      mothersNameRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.fth_occupation.name,
-      fathersOccupationRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.prn_religion.name,
-      parentsReligionRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.prn_email.name,
-      parentsEmailRef.current?.value!
-    );
-    payload.append(
-      AddStudentLabels.prn_phone.name,
-      parentsPhoneRef.current?.value!
-    );
+    formInputs.forEach((form) => {
+      if (form.name === "std_photo") {
+        return;
+      }
+      payload.append(form.name, form.value!);
+    });
     payload.append(
       AddStudentLabels.std_photo.name,
       studentPhotoRef.current?.files?.[0]!
     );
+
     console.log(payload);
-    // const payload = {
-    //   std_first_name: firstNameRef.current?.value,
-    //   std_last_name: lastNameRef.current?.value,
-    //   std_gender: genderRef.current?.value,
-    //   std_date_of_birth: dateOfBirthRef.current?.value,
-    //   std_parents_guardian: parentsGuardianRef.current?.value,
-    //   std_cp_number: cpNumberRef.current?.value,
-    //   std_Email: emailRef.current?.value,
-    //   std_Password: passwordRef.current?.value,
-    //   std_Password_confirmation:
-    //     passwordConfirmationRef.current?.value,
-    //   std_class: classRef.current?.value,
-    //   std_photo: null,
-    // };
 
     axiosClient
       .post("/admin/add_student", payload)
       .then((data) => {
         if (data && data.status === 201) {
-          console.log(data.data);
+          addDialogMessages({
+            message: "Student has been successfully added",
+            messageType: "Successful",
+          });
         }
       })
       .catch((err) => {
@@ -282,63 +183,17 @@ function AddStudent() {
         console.log(err.response.data);
         if (response && response.status === 422) {
           const errors = response.data.errors;
-          const key = Object.keys(errors)
-          addDialogMessages({message: `You have ${key.length} input `, messageType:"Error"})
-          key.forEach((key) => {
-            switch (key) {
-              case AddStudentLabels.std_first_name.name:
-                setFirstNameFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              case AddStudentLabels.std_last_name.name:
-                setLastNameFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              case AddStudentLabels.std_gender.name:
-                setGenderFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              case AddStudentLabels.std_first_name.name:
-                setFirstNameFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              case AddStudentLabels.std_password.name:
-                setPasswordFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-
-              case AddStudentLabels.std_passconf.name:
-                setPasswordConfirmationFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              case AddStudentLabels.std_photo.name:
-                setStdPhoneFeedback({
-                  isInvalid: true,
-                  isVisible: true,
-                  message: errors[key],
-                });
-                break;
-              default:
-                break;
-            }
+          const errorKey = Object.keys(errors);
+          addDialogMessages({
+            message: `You have ${errorKey.length} input `,
+            messageType: "Error",
+          });
+          errorKey.forEach((key) => {
+            formInputsReducer({
+              type: "INVALID",
+              name: key,
+              feedbackMessage: errors[key],
+            });
           });
         }
       });
@@ -357,11 +212,21 @@ function AddStudent() {
     console.log(e);
   };
 
-  const handleTimeOut = () => {
-    setOpen(false);
+
+  const handleFormInput = (e) => {
+    if (e.target.name === "std_photo") {
+      return;
+    }
+    formInputsReducer({
+      type: "INPUT",
+      name: e.target.name,
+      value: e.target.value,
+    });
   };
 
-  const handleFormInput = (e) => {};
+  const getFormInput = (name: string) => {
+    return formInputs.filter((form) => form.name === name)[0];
+  };
 
   return (
     <Container>
@@ -381,18 +246,36 @@ function AddStudent() {
                 {AddStudentLabels.std_first_name.label}*:
               </Label>
               <Input
-                ref={firstNameRef}
+                onChange={(e) =>
+                  handlerOnInput(
+                    e,
+                    AddStudentLabels.std_first_name.name,
+                    e.target.value
+                  )
+                }
                 type="text"
                 id={AddStudentLabels.std_first_name.name}
                 name={AddStudentLabels.std_first_name.name}
-                isInvalid={firstNameFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_first_name.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={firstNameFeedback.isVisible}
-                isInvalid={firstNameFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.std_first_name.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_first_name.name)
+                    .isInvalid
+                }
               >
-                {firstNameFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.std_first_name.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputItem>
@@ -400,18 +283,29 @@ function AddStudent() {
                 {AddStudentLabels.std_last_name.label}*:
               </Label>
               <Input
-                ref={lastNameRef}
                 type="text"
                 id={AddStudentLabels.std_last_name.name}
                 name={AddStudentLabels.std_last_name.name}
-                isInvalid={lastNameFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_last_name.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={lastNameFeedback.isVisible}
-                isInvalid={lastNameFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.std_last_name.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_last_name.name)
+                    .isInvalid
+                }
               >
-                {lastNameFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.std_last_name.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputRow>
@@ -420,10 +314,13 @@ function AddStudent() {
                   {AddStudentLabels.std_gender.label}*:
                 </Label>
                 <Selection
-                  ref={genderRef}
+
                   id={AddStudentLabels.std_gender.name}
                   name={AddStudentLabels.std_gender.name}
-                  isInvalid={genderFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_gender.name)
+                      .isInvalid
+                  }
                   required
                 >
                   <Option value={""}>--Select Gender--</Option>
@@ -431,10 +328,19 @@ function AddStudent() {
                   <Option value={"female"}>Female</Option>
                 </Selection>
                 <ValidationFeedback
-                  isVisible={genderFeedback.isVisible}
-                  isInvalid={genderFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_gender.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_gender.name)
+                      .isInvalid
+                  }
                 >
-                  first name is required
+                  {
+                    getFormInput(AddStudentLabels.std_gender.name)
+                      .feedbackMessage
+                  }
                 </ValidationFeedback>
               </InputItem>
 
@@ -443,18 +349,30 @@ function AddStudent() {
                   {AddStudentLabels.std_dob.label}*
                 </Label>
                 <Input
-                  ref={dateOfBirthRef}
+
                   type="date"
                   id={AddStudentLabels.std_dob.name}
                   name={AddStudentLabels.std_dob.name}
-                  isInvalid={dobFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_dob.name)
+                      .isInvalid
+                  }
                   required
                 />
                 <ValidationFeedback
-                  isVisible={dobFeedback.isVisible}
-                  isInvalid={dobFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_dob.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_dob.name)
+                      .isInvalid
+                  }
                 >
-                  {dobFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_dob.name)
+                      .feedbackMessage
+                  }
                 </ValidationFeedback>
               </InputItem>
             </InputRow>
@@ -463,18 +381,30 @@ function AddStudent() {
                 {AddStudentLabels.std_religion.label}*:
               </Label>
               <Input
-                ref={stdReligionRef}
+
                 type="text"
                 name={AddStudentLabels.std_religion.name}
                 id={AddStudentLabels.std_religion.name}
-                isInvalid={stdReligionFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_religion.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={stdReligionFeedback.isInvalid}
-                isInvalid={stdReligionFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.std_religion.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_religion.name)
+                    .isInvalid
+                }
               >
-                {stdReligionFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.std_religion.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputRow>
@@ -483,18 +413,30 @@ function AddStudent() {
                   {AddStudentLabels.std_email.label}*:
                 </Label>
                 <Input
-                  ref={emailRef}
+
                   type="email"
                   id={AddStudentLabels.std_email.name}
                   name={AddStudentLabels.std_email.name}
-                  isInvalid={stdEmailFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_email.name)
+                      .isInvalid
+                  }
                   required
                 />
                 <ValidationFeedback
-                  isVisible={stdEmailFeedback.isVisible}
-                  isInvalid={stdEmailFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_email.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_email.name)
+                      .isInvalid
+                  }
                 >
-                  {stdEmailFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_email.name)
+                      .isInvalid
+                  }
                 </ValidationFeedback>
               </InputItem>
               <InputItem>
@@ -502,20 +444,32 @@ function AddStudent() {
                   {AddStudentLabels.std_phone.label}*:
                 </Label>
                 <Input
-                  ref={cpNumberRef}
+
                   type="number"
                   inputMode="numeric"
                   pattern="[0-9]+"
                   name={AddStudentLabels.std_phone.name}
                   id={AddStudentLabels.std_phone.name}
-                  isInvalid={stdPhoneFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_phone.name)
+                      .isInvalid
+                  }
                   required
                 />
                 <ValidationFeedback
-                  isVisible={stdPhoneFeedback.isVisible}
-                  isInvalid={stdPhoneFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_phone.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_phone.name)
+                      .isInvalid
+                  }
                 >
-                  {stdPhoneFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_phone.name)
+                      .isInvalid
+                  }
                 </ValidationFeedback>
               </InputItem>
             </InputRow>
@@ -526,19 +480,31 @@ function AddStudent() {
                   {AddStudentLabels.std_password.label}*:
                 </Label>
                 <Input
-                  ref={passwordRef}
+
                   type="password"
                   id={AddStudentLabels.std_password.name}
                   name={AddStudentLabels.std_password.name}
                   minLength={6}
-                  isInvalid={passwordFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_password.name)
+                      .isInvalid
+                  }
                   required
                 />
                 <ValidationFeedback
-                  isVisible={passwordFeedback.isVisible}
-                  isInvalid={passwordFeedback.isVisible}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_password.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_password.name)
+                      .isInvalid
+                  }
                 >
-                  {passwordFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_password.name)
+                      .feedbackMessage
+                  }
                 </ValidationFeedback>
               </InputItem>
               <InputItem>
@@ -546,18 +512,30 @@ function AddStudent() {
                   {AddStudentLabels.std_passconf.label}*:
                 </Label>
                 <Input
-                  ref={passwordConfirmationRef}
+
                   type="password"
                   id={AddStudentLabels.std_passconf.name}
                   name={AddStudentLabels.std_passconf.name}
-                  isInvalid={passwordConfirmationFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_passconf.name)
+                      .isInvalid
+                  }
                   required
                 />
                 <ValidationFeedback
-                  isVisible={passwordConfirmationFeedback.isVisible}
-                  isInvalid={passwordConfirmationFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_passconf.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_passconf.name)
+                      .isInvalid
+                  }
                 >
-                  {passwordConfirmationFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_passconf.name)
+                      .feedbackMessage
+                  }
                 </ValidationFeedback>
               </InputItem>
             </InputRow>
@@ -568,10 +546,12 @@ function AddStudent() {
                   {AddStudentLabels.std_grade.label}*:
                 </Label>
                 <Selection
-                  ref={classRef}
                   id={AddStudentLabels.std_grade.name}
                   name={AddStudentLabels.std_grade.name}
-                  isInvalid={gradeFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_grade.name)
+                      .isInvalid
+                  }
                   required
                 >
                   <Option value={""}>--Select Class--</Option>
@@ -580,10 +560,19 @@ function AddStudent() {
                   <Option value={3}>III</Option>
                 </Selection>
                 <ValidationFeedback
-                  isVisible={gradeFeedback.isVisible}
-                  isInvalid={gradeFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_grade.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_grade.name)
+                      .isInvalid
+                  }
                 >
-                  {gradeFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_grade.name)
+                      .feedbackMessage
+                  }
                 </ValidationFeedback>
               </InputItem>
               <InputItem>
@@ -591,10 +580,12 @@ function AddStudent() {
                   {AddStudentLabels.std_section.label}*:
                 </Label>
                 <Selection
-                  ref={sectionRef}
                   id={AddStudentLabels.std_section.name}
                   name={AddStudentLabels.std_section.name}
-                  isInvalid={sectionFeedback.isInvalid}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_section.name)
+                      .isInvalid
+                  }
                   required
                 >
                   <Option value={""}> --Select Section-- </Option>
@@ -603,10 +594,19 @@ function AddStudent() {
                   <Option value={3}>Kawayan</Option>
                 </Selection>
                 <ValidationFeedback
-                  isVisible={sectionFeedback.isVisible}
-                  isInvalid={sectionFeedback.isInvalid}
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_section.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_section.name)
+                      .isInvalid
+                  }
                 >
-                  {sectionFeedback.message}
+                  {
+                    getFormInput(AddStudentLabels.std_section.name)
+                      .isInvalid
+                  }
                 </ValidationFeedback>
               </InputItem>
             </InputRow>
@@ -619,18 +619,29 @@ function AddStudent() {
                 {AddStudentLabels.fth_name.label}*:
               </Label>
               <Input
-                ref={fathersNameRef}
                 type="text"
                 name={AddStudentLabels.fth_name.name}
                 id={AddStudentLabels.fth_name.name}
-                isInvalid={fathersNameFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.fth_name.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={fathersNameFeedback.isVisible}
-                isInvalid={fathersNameFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.fth_name.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.fth_name.name)
+                    .isInvalid
+                }
               >
-                {fathersNameFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.fth_name.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputItem>
@@ -638,17 +649,29 @@ function AddStudent() {
                 {AddStudentLabels.mth_name.label}*:
               </Label>
               <Input
-                ref={mothersNameRef}
                 type="text"
                 name={AddStudentLabels.mth_name.name}
                 id={AddStudentLabels.mth_name.name}
+                isInvalid={
+                  getFormInput(AddStudentLabels.mth_name.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={mothersNameFeedback.isVisible}
-                isInvalid={mothersNameFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.mth_name.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.mth_name.name)
+                    .isInvalid
+                }
               >
-                {mothersNameFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.mth_name.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputItem>
@@ -656,18 +679,29 @@ function AddStudent() {
                 {AddStudentLabels.fth_occupation.label}*:
               </Label>
               <Input
-                ref={fathersOccupationRef}
                 type="text"
                 name={AddStudentLabels.fth_occupation.name}
                 id={AddStudentLabels.fth_occupation.name}
-                isInvalid={fathersOccupationFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.fth_occupation.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={fathersOccupationFeedback.isVisible}
-                isInvalid={fathersOccupationFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.fth_occupation.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.fth_occupation.name)
+                    .isInvalid
+                }
               >
-                {fathersOccupationFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.fth_occupation.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
 
@@ -676,18 +710,29 @@ function AddStudent() {
                 {AddStudentLabels.prn_religion.label}*:
               </Label>
               <Input
-                ref={parentsReligionRef}
                 type="text"
                 name={AddStudentLabels.prn_religion.name}
                 id={AddStudentLabels.prn_religion.name}
-                isInvalid={parentsReligionFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_religion.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={parentsReligionFeedback.isVisible}
-                isInvalid={parentsReligionFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.prn_religion.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_religion.name)
+                    .isInvalid
+                }
               >
-                {parentsReligionFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.prn_religion.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputItem>
@@ -695,18 +740,29 @@ function AddStudent() {
                 {AddStudentLabels.prn_email.label}*:
               </Label>
               <Input
-                ref={parentsEmailRef}
                 type="email"
                 name={AddStudentLabels.prn_email.name}
                 id={AddStudentLabels.prn_email.name}
-                isInvalid={parentsEmailFeedback.isInvalid}
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_email.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={parentsEmailFeedback.isVisible}
-                isInvalid={parentsEmailFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.prn_email.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_email.name)
+                    .isInvalid
+                }
               >
-                {parentsEmailFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.prn_email.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
             <InputItem>
@@ -714,17 +770,29 @@ function AddStudent() {
                 {AddStudentLabels.prn_phone.label}*:
               </Label>
               <Input
-                ref={parentsPhoneRef}
                 type="number"
                 name={AddStudentLabels.prn_phone.name}
                 id={AddStudentLabels.prn_phone.name}
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_phone.name)
+                    .isInvalid
+                }
                 required
               />
               <ValidationFeedback
-                isVisible={parentsPhoneFeedback.isVisible}
-                isInvalid={parentsPhoneFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.prn_phone.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.prn_phone.name)
+                    .isInvalid
+                }
               >
-                {parentsPhoneFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.prn_phone.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
           </FormSection>
@@ -748,10 +816,19 @@ function AddStudent() {
                 accept="image/jpeg"
               />
               <ValidationFeedback
-                isVisible={studentPhotoFeedback.isVisible}
-                isInvalid={studentPhotoFeedback.isInvalid}
+                isVisible={
+                  getFormInput(AddStudentLabels.std_photo.name)
+                    .isInvalid
+                }
+                isInvalid={
+                  getFormInput(AddStudentLabels.std_photo.name)
+                    .isInvalid
+                }
               >
-                {studentPhotoFeedback.message}
+                {
+                  getFormInput(AddStudentLabels.std_photo.name)
+                    .feedbackMessage
+                }
               </ValidationFeedback>
             </InputItem>
           </StudentImage>
