@@ -12,6 +12,7 @@ import {
 import { useFormFeedback } from "../utils/CustomHooks";
 import { AddStudentLabels } from "../utils/FormInputNames";
 import { useStateContext } from "../../../context/ContextProvider";
+import PopupDialog from "../../../compenents/PopupDialog";
 
 const Container = styled.div`
   width: 100%;
@@ -116,6 +117,7 @@ const Button = styled.button`
 `;
 
 function AddStudent() {
+  const {addDialogMessages} = useStateContext()
   const formRef = createRef<HTMLFormElement>();
   //Input Ref
   const firstNameRef = createRef<HTMLInputElement>();
@@ -273,18 +275,16 @@ function AddStudent() {
       .then((data) => {
         if (data && data.status === 201) {
           console.log(data.data);
-          setMessage(data.data);
-          setOpen(true);
         }
       })
       .catch((err) => {
         const response = err.response;
         console.log(err.response.data);
         if (response && response.status === 422) {
-          setMessage(response.data.message);
-          setOpen(true);
           const errors = response.data.errors;
-          Object.keys(errors).forEach((key) => {
+          const key = Object.keys(errors)
+          addDialogMessages({message: `You have ${key.length} input `, messageType:"Error"})
+          key.forEach((key) => {
             switch (key) {
               case AddStudentLabels.std_first_name.name:
                 setFirstNameFeedback({
@@ -373,7 +373,6 @@ function AddStudent() {
       >
         <Title>Add Student</Title>
         <Reminder>Required(*)</Reminder>
-
         <InputContainer>
           <FormSection>
             <SectionTitle>Student Info</SectionTitle>

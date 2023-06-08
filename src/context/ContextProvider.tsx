@@ -8,7 +8,7 @@ export type MessageType = "Message" | "Successful" | "Error";
 export type DialogAction = "DELETE" | "ADD";
 
 export interface DialogMessage {
-  id?: string;
+  id: string;
   message: string;
   messageType: MessageType;
 }
@@ -36,6 +36,7 @@ const dialogMessagesHandler = (
   }
 };
 
+
 /**
  * Initial value of the context
  */
@@ -44,15 +45,20 @@ const contextInitValue = {
   setToken: (token: string) => {},
   dialogMessages: new Array<DialogMessage>(),
   addDialogMessages: (
-    messages: DialogMessage | Array<DialogMessage>
+    messages: DialogMessageShort | Array<DialogMessageShort>
   ) => {},
   deleteDialogMessages: (
     messages: DialogMessage | Array<DialogMessage>
   ) => {},
 };
 
+type InitContext = typeof contextInitValue
 
-const StateContext = createContext(contextInitValue);
+interface ContextObject extends InitContext {
+  token: string | null | undefined
+}
+
+const StateContext = createContext<ContextObject>(contextInitValue);
 
 /**
  * 
@@ -62,14 +68,15 @@ const StateContext = createContext(contextInitValue);
 export const ContextProvider = (props: {
   children: React.JSX.Element;
 }) => {
-  // const [token, _setToken] = useState(123);
-  const [token, _setToken] = useState(
-    localStorage.getItem("ACCESS_TOKEN") ?? ""
-  );
+  const [token, _setToken] = useState(123);
+  // const [token, _setToken] = useState(
+  //   localStorage.getItem("ACCESS_TOKEN")
+  // );
   const [dialogMessages, dialogHandler] = useReducer(
     dialogMessagesHandler,
     dialogMessageInitState
   );
+
   const setToken = (token: string) => {
     _setToken(token);
     if (token) {
@@ -85,7 +92,7 @@ export const ContextProvider = (props: {
    * @returns 
    */
   const addDialogMessages = (
-    messages: DialogMessage | Array<DialogMessage>
+    messages: DialogMessageShort | Array<DialogMessageShort>
   ) => {
     if(Array.isArray(messages)){
         messages.forEach(message => {
@@ -110,13 +117,13 @@ export const ContextProvider = (props: {
     if(Array.isArray(messages)){
         messages.forEach(message => {
 
-            dialogHandler({type: "DELETE", messages: {...message, id: uuidv4()}})
+            dialogHandler({type: "DELETE", messages: {...message}})
         })
 
         return
     }
 
-    dialogHandler({type: "DELETE", messages: {...messages, id: uuidv4()}})
+    dialogHandler({type: "DELETE", messages: {...messages}})
   };
 
   return (

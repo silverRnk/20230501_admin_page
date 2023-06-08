@@ -4,10 +4,11 @@ import SideBar from "../compenents/ReactSideNav.jsx";
 import styled from "styled-components";
 import SideNavbar from "../compenents/SideNavBar.jsx";
 import Navbar from "../compenents/Navbar.jsx";
-import { useStateContext } from "../context/ContextProvider.jsx";
+import { useStateContext } from "../context/ContextProvider.tsx";
 import { useEffect } from "react";
 import axiosClient from "../utils/AxiosClient.jsx";
 import { theme } from "../Theme.tsx";
+import PopupDialog from "../compenents/PopupDialog.tsx";
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +34,6 @@ const Right = styled.div`
 const NavBarContainer = styled.div`
   width: 100%;
   position: relative;
-  
 `;
 
 const Wrapper = styled.main`
@@ -43,23 +43,39 @@ const Wrapper = styled.main`
   overflow-y: scroll;
   height: auto;
   position: relative;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.background};
+`;
+
+const PopupDialogContainer = styled.div`
+  height: auto;
+  width: auto;
+  display: ${props => props.isEmpty? "none": "flex"};
+  flex-direction: column-reverse;
+  gap: 10px;
+  position: absolute;
+  bottom: 15vh;
+  right: 15vh;
+  z-index: 10;
 `;
 
 const SharePage = () => {
-  const {user, token, setUser} = useStateContext()
+  const {token, dialogMessages, deleteDialogMessages } =
+    useStateContext();
 
-    if(!token){
-        return <Navigate to="/login" />
-    }
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      axiosClient.get('/user')
-      .then(data=> {
-        setUser(data)
-      })
-    }, [setUser])
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // useEffect(() => {
+  //   axiosClient.get("/user").then((data) => {
+  //     setUser(data);
+  //   });
+  // }, [setUser]);
+
+  const handlerDeleteDialog = (message) => {
+    deleteDialogMessages(message);
+  };
 
   return (
     <>
@@ -69,11 +85,26 @@ const SharePage = () => {
         </Left>
 
         <Right>
-          <NavBarContainer><Navbar /></NavBarContainer>
+          <NavBarContainer>
+            <Navbar />
+          </NavBarContainer>
           <Wrapper>
             <Outlet />
           </Wrapper>
         </Right>
+        <PopupDialogContainer className="dialog-container" isEmpty={dialogMessages.length == 0} >
+          {dialogMessages.map((dialogItem,index) => {
+            console.log(dialogItem)
+            return <PopupDialog
+            message={dialogItem.message}
+            messageType={dialogItem.messageType}
+            onTimeOut={() => handlerDeleteDialog(dialogItem)}
+            onDelete={() => handlerDeleteDialog(dialogItem)}
+            key={dialogItem.id}
+            duration={5 + index}
+          />
+          })}
+        </PopupDialogContainer>
       </Container>
     </>
   );

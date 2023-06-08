@@ -154,7 +154,7 @@ function Loginform() {
     axiosClient
       .post("/admin/login", payload)
       .then(({ data }) => {
-        setUser(data.user);
+        // setUser(data.user);
         setToken(data.token);
       })
       .catch((err) => {

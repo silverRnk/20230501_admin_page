@@ -74,7 +74,7 @@ function SideNavbar() {
   const { collapseSidebar, collapsed } = useProSidebar();
   const [width, setWidth] = useState("");
   const [collapse, setCollapsed] = useState(false);
-  const { setToken, setUser } = useStateContext();
+  const { setToken } = useStateContext();
 
   function getSize() {
     setWidth(window.innerWidth);
@@ -95,8 +95,8 @@ function SideNavbar() {
 
   const onLogout = () => {
     axiosClient.post("/logout").then(() => {
-      setUser({});
-      setToken(null);
+      // setUser({});
+      setToken("");
     });
   };
 

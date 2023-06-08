@@ -11,6 +11,7 @@ import {
 } from "../utils/interface";
 import { useFormFeedback } from "../utils/CustomHooks";
 import { AddTeacherLabels } from "../utils/FormInputNames";
+import { useStateContext } from "../../../context/ContextProvider";
 
 const Container = styled.div`
   width: 100%;
@@ -170,9 +171,11 @@ const AddTeacher = () => {
   const [message, setMessage] = useState({});
   const FormField = AddTeacherLabels;
 
+  const { addDialogMessages } = useStateContext();
   const handlerForm = (e: any) => {
     e.preventDefault();
-    resetForm(e);
+
+    /* resetForm(e); */
     const payload = new FormData();
     payload.append(
       FormField.first_name.name,
@@ -230,10 +233,13 @@ const AddTeacher = () => {
         const response = err.response;
         console.log(err.response.data);
         if (response && response.status === 422) {
-          setMessage(response.data.message);
-          setOpen(true);
           const errors = response.data.errors;
-          Object.keys(errors).forEach((key) => {
+          const keys = Object.keys(errors);
+          addDialogMessages({
+            message: `You have enter ${keys.length} invalid input`,
+            messageType: "Error",
+          });
+          keys.forEach((key) => {
             switch (key) {
               case FormField.first_name.name:
                 setFirstNameFeedback({

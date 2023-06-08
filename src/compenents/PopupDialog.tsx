@@ -1,4 +1,4 @@
-import React, { createRef, useLayoutEffect, useState } from "react";
+import React, { createRef, useEffect, useLayoutEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,7 +10,6 @@ import {
   CheckCircleOutline as SuccessIcon,
 } from "@mui/icons-material";
 const Container = styled.div<{
-  open: boolean;
   isExpanded: boolean;
   expandedHeight?: number;
 }>`
@@ -19,7 +18,7 @@ const Container = styled.div<{
   min-height: 130px;
   overflow: hidden;
   width: 350px;
-  display: ${(props) => (props.open ? "grid" : "none")};
+  display: grid;
   grid-template-rows: 30px 1fr;
   position: relative;
   background-color: white;
@@ -114,20 +113,26 @@ type MessageType = "Message" | "Successful" | "Error";
 
 const PopupDialog = (
   args: {
-    open: boolean;
+    key: string | number;
     messageType: MessageType;
     onTimeOut: () => void;
+    onDelete: () => void;
     message: string;
+    duration?: number
   },
-  duration: number = 1500
+  
 ) => {
-  const { open, onTimeOut, message, messageType } = args;
+  const { key, onTimeOut, message, messageType, onDelete, duration } = args;
   const [isExpand, setIsExpand] = useState(false);
-  setTimeout(() => {
-    onTimeOut();
-  }, duration);
+  
   const messageRef = createRef<HTMLDivElement>();
   const [clientHeight, setClientHeight] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onTimeOut();
+    }, duration? duration*1000 : 1000);
+  }, [])
 
   useLayoutEffect(() => {
     setClientHeight(messageRef.current?.clientHeight!);
@@ -137,11 +142,12 @@ const PopupDialog = (
     setIsExpand(!isExpand);
   };
 
+  
+
 
   return (
     <Container
       id="time-limited-dialog"
-      open={open}
       isExpanded={isExpand}
       expandedHeight={40 + clientHeight}
     >
@@ -154,7 +160,7 @@ const PopupDialog = (
         >
           <KeyboardArrowDownIcon style={{ fontSize: "25px" }} />
         </IconButton>
-        <IconButton role="button">
+        <IconButton role="button" onClick={onDelete}>
           <CloseIcon style={{ fontSize: "25px" }} />
         </IconButton>
       </HeaderBar>
