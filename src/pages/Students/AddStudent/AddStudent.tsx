@@ -73,6 +73,7 @@ const Input = styled.input<AddStudentProps>`
   border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
 `;
 const ValidationFeedback = styled.small<AddStudentProps>`
+  min-height: 20px;
   font-weight: 400;
   margin-top: 2px;
   margin-left: 5px;
@@ -153,6 +154,7 @@ function AddStudent() {
 
   const handlerForm = (e: any) => {
     e.preventDefault();
+    formInputsReducer({type: "INVALID", name: ""})
     resetForm(e);
     const payload = new FormData();
     formInputs.forEach((form) => {
@@ -166,12 +168,12 @@ function AddStudent() {
       studentPhotoRef.current?.files?.[0]!
     );
 
-    console.log(payload);
-
     axiosClient
       .post("/admin/add_student", payload)
       .then((data) => {
         if (data && data.status === 201) {
+
+          //Notify user for successful
           addDialogMessages({
             message: "Student has been successfully added",
             messageType: "Successful",
@@ -184,10 +186,13 @@ function AddStudent() {
         if (response && response.status === 422) {
           const errors = response.data.errors;
           const errorKey = Object.keys(errors);
+          
+          //Notify user for invalid
           addDialogMessages({
             message: `You have ${errorKey.length} input `,
             messageType: "Error",
           });
+
           errorKey.forEach((key) => {
             formInputsReducer({
               type: "INVALID",

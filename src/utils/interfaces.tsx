@@ -36,3 +36,14 @@ export interface RowHeaderShort {
   id: string;
   label: string;
 }
+
+/**
+ * Object for storing input value and validation state
+ */
+export interface FormInput {
+  name: string;
+  value: string | undefined;
+  file?: FileList | undefined;
+  isInvalid: boolean;
+  feedbackMessage: string | undefined;
+}

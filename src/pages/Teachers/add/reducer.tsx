@@ -1,37 +1,26 @@
 import { FormInput } from "../../../utils/interfaces";
-import { FormActions } from "../../Teachers/utils/types";
-import { AddStudentLabels } from "../utils/FormInputNames";
+import { AddTeacherLabels } from "../utils/FormInputNames";
+import { FormActions } from "../utils/types";
 
-
-
-export const formFieldsInitValue: Array<FormInput> = Object.keys(
-  AddStudentLabels
+const addTeachersInputFieldsInitValue: Array<FormInput> = Object.keys(
+  AddTeacherLabels
 ).map((key) => {
   return {
-    name: AddStudentLabels[key]?.name,
+    name: AddTeacherLabels[key].name,
     value: "",
     isInvalid: false,
     feedbackMessage: "",
   };
 });
 
-
-
-/**
- * handles AddStudentForm input value and validation state of
- * the input
- * @param state  - state of the reducer
- * @param action -
- * @returns
- */
-export const formFieldsReducer = (
+const addTeachersInputFieldReducer = (
   state: Array<FormInput>,
   action: {
     type: FormActions;
     name: string;
     value?: string | undefined;
-    file?: FileList | undefined;
     feedbackMessage?: string;
+    files?: FileList;
   }
 ) => {
   switch (action.type) {
@@ -52,10 +41,12 @@ export const formFieldsReducer = (
           : form;
       });
     case "RESET_INVALID":
-      return state.map((form) => {
-        return { ...form, isInvalid: false, feedbackMessage: "" };
-      });
+        return state.map(form => {
+            return {...form, isInvalid: false, feedbackMessage: ""}
+        })
     default:
       return state;
   }
 };
+
+export {addTeachersInputFieldReducer, addTeachersInputFieldsInitValue}
