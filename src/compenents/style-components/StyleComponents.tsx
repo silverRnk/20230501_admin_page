@@ -46,3 +46,17 @@ export const PlaceHolderStyle = css`
   display: inline-block;
   position: relative;
 `
+
+export const EmptyLabelContainer = styled.div<{ isVisible: boolean }>`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: ${(props) => (props.isVisible ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+`;
+export const EmptyLabel = styled.span`
+  font-size: ${(props) => props.theme.fontSize.medium1};
+`;
