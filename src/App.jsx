@@ -57,6 +57,7 @@ import Teacher from "./pages/Teachers/teacher/Teacher";
 import AllSubjects from "./pages/Subjects/All/AllSubjects";
 import Subjects from "./pages/Subjects/Subjects";
 import Theme from "./Theme";
+import SubjectActivitiesPage from "./pages/Subjects/Activities/SubjectActivitiesPage";
 
 //Taena mo pol gawin mo to bukas ng umaga
 
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
             path: "all",
             element: <AllSubjects />,
           },
+          {
+            path: "activities",
+            element: <SubjectActivitiesPage/>
+          }
         ],
       },
       {

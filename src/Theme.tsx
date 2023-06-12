@@ -48,6 +48,19 @@ export const theme = {
       text-shadow: 0px 0px 1px lightgray;
     `,
   },
+  chipStyles: {
+    chip1: css`
+      background-color: #14238A;
+      color: white;
+    `,
+    chip2: css`
+      background-color: #E7C147;
+      color: white;`,
+    chip3: css`
+      background-color: #D60A0B;
+      color: white;
+    `
+  }
 };
 
 const Theme = ({ children }) => {
