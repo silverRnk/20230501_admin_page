@@ -2,7 +2,7 @@ import React, { useContext, useState, createContext } from "react";
 import styled from "styled-components";
 import ClassSubjectTable, {
   ClassSubjects,
-} from "../../../compenents/ClassSubjectsTable";
+} from "./ClassSubjectsTable";
 import {
   SearchContainer,
   SearchOption,
