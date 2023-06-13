@@ -26,7 +26,7 @@ import {
   SearchSelection,
   ButtonSearch as SearchButton,
 } from "../../../compenents/style-components/SearchInputComponents";
-import TeachersTable from "../../../compenents/TeachersTable";
+import TeachersTable from "./TeachersTable";
 import { GradeLevels } from "../utils/interface";
 import { TeacherProfileShort } from "../utils/interface";
 import axios from "axios";

@@ -22,7 +22,7 @@ import AddStudent from "./pages/Students/AddStudent/AddStudent";
 import StudentPromotions from "./pages/Students/StudentPromotions.jsx";
 
 //Teachers
-import AllTeachers from "./pages/Teachers/all/AllTeachers";
+import AllTeachers from "./pages/Teachers/all";
 import Teachers from "./pages/Teachers/Teachers";
 import AddTeacher from "./pages/Teachers/add/AddTeacher";
 import {

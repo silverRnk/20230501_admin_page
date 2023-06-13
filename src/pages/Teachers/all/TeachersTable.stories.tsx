@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import TeachersTable from "./TeachersTable";
-import { EmptyArrayGenerator } from "../utils/ArrayGenerator";
+import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
 import { faker } from "@faker-js/faker";
-import { TeacherProfileShort } from "../pages/Teachers/utils/interface";
-import Theme from "../Theme";
+import { TeacherProfileShort } from "../utils/interface";
+import Theme from "../../../Theme";
 
 const meta: Meta<typeof TeachersTable> = {
   title: "Teachers Table",
@@ -33,7 +33,7 @@ const teachers: Array<TeacherProfileShort> = EmptyArrayGenerator(
   teacher_id: faker.string.alphanumeric({ length: 8 }),
   teacher_name: faker.person.fullName(),
   teacher_addr: faker.location.secondaryAddress(),
-  teacher_gender: faker.helpers.arrayElement(["Male", "Female"]),
+  teacher_gender: faker.helpers.arrayElement(["Male"]),
   teacher_class: faker.helpers.arrayElement(["", "class1", "class2"]),
   teacher_dob: faker.date
     .birthdate({ min: 20, max: 65 })

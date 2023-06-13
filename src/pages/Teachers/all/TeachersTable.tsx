@@ -8,13 +8,13 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-import { TeacherProfileShort } from "../pages/Teachers/utils/interface";
-import { columnTeachers } from "../pages/Teachers/utils/ColumnLabels";
-import { EmptyArrayGenerator } from "../utils/ArrayGenerator";
-import { PlaceHolder } from "./style-components/StyleComponents";
+import { TeacherProfileShort } from "../utils/interface";
+import { columnTeachers } from "../utils/ColumnLabels";
+import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
+import { PlaceHolder } from "../../../compenents/style-components/StyleComponents";
 import { relative } from "path";
 import styled from "styled-components";
-import { theme } from "../Theme";
+import { theme } from "../../../Theme";
 
 const EmptyLabelContainer = styled.div<{ isVisible: boolean }>`
   height: 100%;
