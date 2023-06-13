@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import StudentsTable from "./StudentsTable";
-import Theme from "../Theme";
+import Theme from "../../../Theme";
 import { faker } from "@faker-js/faker";
 
 const meta: Meta<typeof StudentsTable> = {

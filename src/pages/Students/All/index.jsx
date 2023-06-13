@@ -20,7 +20,7 @@ import {
   SearchOption,
   SearchSelection,
 } from "../../../compenents/style-components/SearchInputComponents";
-import StudentsTable from "../../../compenents/StudentsTable";
+import StudentsTable from "./StudentsTable";
 import axiosClient from "../../../utils/AxiosClient";
 
 const Container = styled.div`

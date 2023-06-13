@@ -1,5 +1,5 @@
 import React, {memo} from "react";
-import { StudentProfileShort } from "../pages/Students/utils/interface";
+import { StudentProfileShort } from "../utils/interface";
 import {
   TableContainer,
   Table,
@@ -11,10 +11,10 @@ import {
   TablePagination,
   Pagination,
 } from "@mui/material";
-import { columnAllStudents } from "../pages/Students/utils/ColumnLabels";
-import { EmptyArrayGenerator } from "../utils/ArrayGenerator";
-import { PlaceHolder } from "./style-components/StyleComponents";
-import { theme } from "../Theme";
+import { columnAllStudents } from "../utils/ColumnLabels";
+import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
+import { PlaceHolder } from "../../../compenents/style-components/StyleComponents";
+import { theme } from "../../../Theme";
 import styled from "styled-components";
 
 
