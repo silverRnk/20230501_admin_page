@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 
 //Types & Interfaces
-import { Subject } from "../pages/Subjects/utils/interfaces";
+import { Subject } from "../utils/interfaces";
 
 //Mui Components
 import {
@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 
 //Constant & Objects
-import { AllSubjectColumn } from "../pages/Subjects/utils/objects";
+import { AllSubjectColumn } from "../utils/objects";
 import styled from "styled-components";
-import { PlaceHolder } from "./style-components/StyleComponents";
+import { PlaceHolder } from "../../../compenents/style-components/StyleComponents";
 
 const EmptyLabelContainer = styled.div<{ isVisible: boolean }>`
   height: 100%;

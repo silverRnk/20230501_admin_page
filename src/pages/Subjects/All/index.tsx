@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 //Mui Imports
 import { Pagination } from "@mui/material";
-import SubjectsTable from "../../../compenents/SubjectsTable";
+import SubjectsTable from "./SubjectsTable";
 import { SearchInput, SearchSelection, ButtonSearch as SearchButton } from "../../../compenents/style-components/SearchInputComponents";
 
 const Container = styled.div`

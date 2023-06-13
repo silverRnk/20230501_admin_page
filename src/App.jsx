@@ -54,10 +54,10 @@ import {
 import ViewStudent from "./pages/Students/Student/ViewStudent";
 import Error from "./pages/Error";
 import Teacher from "./pages/Teachers/teacher/Teacher";
-import AllSubjects from "./pages/Subjects/All/AllSubjects";
+import AllSubjects from "./pages/Subjects/All";
 import Subjects from "./pages/Subjects/Subjects";
 import Theme from "./Theme";
-import SubjectActivitiesPage from "./pages/Subjects/Activities/SubjectActivitiesPage";
+import SubjectActivitiesPage from "./pages/Subjects/Activities";
 
 //Taena mo pol gawin mo to bukas ng umaga
 
