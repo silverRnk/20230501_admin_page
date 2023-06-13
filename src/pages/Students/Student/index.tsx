@@ -50,8 +50,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Button, FormLabel } from "@mui/material";
 
 //Customize Components
-import GradesTable from "../../../compenents/GradesTable";
-import StudentDetails from "../../../compenents/StudentDetails";
+import GradesTable from "./GradesTable";
+import StudentDetails from "./StudentDetails";
 import { theme } from "../../../Theme";
 import ProfileImg from "../../../compenents/ProfileImg";
 import ProfileName from "../../../compenents/ProfileName";

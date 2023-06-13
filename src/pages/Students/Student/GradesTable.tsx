@@ -2,9 +2,9 @@ import React from "react";
 import {
   ColumnHeader as ColumnHeadType,
   Grade,
-} from "../utils/interfaces";
+} from "../../../utils/interfaces";
 import styled from "styled-components";
-import { ShimmerAnimation } from "./style-components/StyleComponents";
+import { ShimmerAnimation } from "../../../compenents/style-components/StyleComponents";
 
 const TableTitle = styled.div`
   width: 100%;

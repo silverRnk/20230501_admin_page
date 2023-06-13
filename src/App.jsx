@@ -51,7 +51,7 @@ import {
   loadStudentData,
   loadStudents,
 } from "./Loader/StudentLoader";
-import ViewStudent from "./pages/Students/Student/ViewStudent";
+import ViewStudent from "./pages/Students/Student";
 import Error from "./pages/Error";
 import Teacher from "./pages/Teachers/teacher/Teacher";
 import AllSubjects from "./pages/Subjects/All";

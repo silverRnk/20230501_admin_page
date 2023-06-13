@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { StudentProfileLong } from "../pages/Students/utils/interface";
-import { studentDetailsHeader } from "../pages/Students/utils/objects";
-import { PlaceHolder } from "./style-components/StyleComponents";
+import { StudentProfileLong } from "../utils/interface";
+import { studentDetailsHeader } from "../utils/objects";
+import { PlaceHolder } from "../../../compenents/style-components/StyleComponents";
 
 const Table = styled.div`
   width: 100%;
