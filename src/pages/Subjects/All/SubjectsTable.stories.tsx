@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 // Components
 import SubjectsTable from "./SubjectsTable";
-import Theme from "../Theme";
+import Theme from "../../../Theme";
 
 
 const meta: Meta<typeof SubjectsTable> = {

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 //component
 import GradesTable from "./GradesTable";
 import { Grade } from "../utils/interfaces";
-import Theme from "../Theme";
+import Theme from "../../../Theme";
 
 const meta: Meta<typeof GradesTable> = {
   title: "Grades",
