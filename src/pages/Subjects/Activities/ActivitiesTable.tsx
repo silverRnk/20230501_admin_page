@@ -21,11 +21,9 @@ import AddIcon from "@mui/icons-material/Add";
 
 import { ColumnHeader } from "../../../utils/interfaces";
 import styled from "styled-components";
-import { relative } from "path";
-import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
 import { Activities } from "./ClassSubjectsTable";
 import { theme } from "../../../Theme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const headers: Array<ColumnHeader> = [
   { id: "title", label: "Title", minWidth: 100 },
@@ -37,6 +35,7 @@ const headers: Array<ColumnHeader> = [
   { id: "resources", label: "Resources", minWidth: 100 },
 ];
 
+//Styled-components
 const Container = styled.div`
   position: relative;
   min-height: 300px;
@@ -50,8 +49,9 @@ const PopupOptions = styled.div<{ isDisplayed: boolean }>`
   min-height: 50px;
   width: 100px;
   bottom: 50%;
-  left: 94%;
-  border: 1px solid black;
+  right: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 2px lightgray;
   background-color: white;
 `;
 
@@ -146,53 +146,22 @@ const TableOptionsButtons = styled.button<{ buttonType: ButtonType }>`
   }
 `;
 
+const LabelContainer = styled.div<{ isDisplayed: boolean }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: ${(props) => (props.isDisplayed ? "flex" : "none")};
+  align-items: center;
+  justify-content: center;
+`;
+
+const Label = styled.span`
+  font-size: 1rem;
+`;
+
+//Styled-components End
+
 type ActivityResourceType = "Files" | "Link";
-
-const ResourceLinks = (props: {
-  type: ActivityResourceType;
-  url: string;
-  label: string;
-}) => {
-  const { type, url, label } = props;
-  return (
-    <ResourceWrapper>
-      {type === "Files" ? (
-        <ResourceLink download href={url}>
-          <FileDownloadIcon
-            style={{ fontSize: "20px", lineHeight: "20px" }}
-          />
-          {label}
-        </ResourceLink>
-      ) : (
-        <ResourceLink href={url}>
-          <LinkIcon
-            style={{ fontSize: "20px", lineHeight: "20px" }}
-          />
-          {label}
-        </ResourceLink>
-      )}
-    </ResourceWrapper>
-  );
-};
-
-const TableOptions = (props: { selectedRows: readonly string[] }) => {
-  const { selectedRows } = props;
-
-  const handleAdd = () => {};
-
-  const handleDelete = () => {};
-
-  return (
-    <TableOptionsContainer>
-      <TableOptionsButtons buttonType="ADD">
-        <AddIcon />
-      </TableOptionsButtons>
-      <TableOptionsButtons buttonType="DELETE">
-        <DeleteIcon />
-      </TableOptionsButtons>
-    </TableOptionsContainer>
-  );
-};
 
 const ActivitiesTableHead = (props: {
   numSelected: number;
@@ -225,6 +194,55 @@ const ActivitiesTableHead = (props: {
   );
 };
 
+const ResourceLinks = (props: {
+  type: ActivityResourceType;
+  url: string;
+  label: string;
+}) => {
+  const { type, url, label } = props;
+  return (
+    <ResourceWrapper>
+      {type === "Files" ? (
+        <ResourceLink download href={url}>
+          <FileDownloadIcon
+            style={{ fontSize: "20px", lineHeight: "20px" }}
+          />
+          {label}
+        </ResourceLink>
+      ) : (
+        <ResourceLink href={url}>
+          <LinkIcon
+            style={{ fontSize: "20px", lineHeight: "20px" }}
+          />
+          {label}
+        </ResourceLink>
+      )}
+    </ResourceWrapper>
+  );
+};
+
+const TableOptions = (props: { selectedRows: readonly string[] }) => {
+  const { selectedRows } = props;
+  const navigate = useNavigate()
+
+  const handleAdd = () => {
+    navigate('/subjects/activity/add')
+  };
+
+  const handleDelete = () => {};
+
+  return (
+    <TableOptionsContainer>
+      <TableOptionsButtons onClick={handleAdd} buttonType="ADD">
+        <AddIcon />
+      </TableOptionsButtons>
+      <TableOptionsButtons buttonType="DELETE">
+        <DeleteIcon />
+      </TableOptionsButtons>
+    </TableOptionsContainer>
+  );
+};
+
 const ActivitiesRow = (props: {
   activity: Activities;
   isSelected?: boolean;
@@ -232,7 +250,6 @@ const ActivitiesRow = (props: {
 }) => {
   const { activity, isSelected, onCheck } = props;
   const [isPopupClicked, setIsPopupClicked] = useState(false);
-  const [isRowFocus, setIsRowFocus] = useState(false);
   const [isMouseOnPopup, setIsMouseOnPopUp] = useState(false);
   const isPopupDisplayed = isPopupClicked || isMouseOnPopup;
 
@@ -275,7 +292,7 @@ const ActivitiesRow = (props: {
         />
       </TableCell>
       <TableCell>{activity.name}</TableCell>
-      <TableCell>
+      <TableCell style={{textAlign: "center"}}>
         {activity.dateOfSubmission.toLocaleString()}
       </TableCell>
       <TableCell>
@@ -315,13 +332,13 @@ const ActivitiesRow = (props: {
   );
 };
 
-type ActivityTableState = "NO_SELECTED" | "SELECTED";
+export type ActivityTableState = "NO_SELECTED" | "SELECTED";
 
 const ActivitiesTable = (props: {
   state: ActivityTableState;
   activities: Array<Activities>;
 }) => {
-  const { activities } = props;
+  const { activities, state } = props;
   const [selectedRow, setSelectedRow] = useState<readonly string[]>(
     []
   );
@@ -394,6 +411,19 @@ const ActivitiesTable = (props: {
           })}
         </TableBody>
       </Table>
+      <LabelContainer
+        isDisplayed={
+          activities.length === 0 || state === "NO_SELECTED"
+        }
+      >
+        {state === "NO_SELECTED" ? (
+          <Label>No Selected Subject</Label>
+        ) : activities.length === 0 ? (
+          <Label>No data to display</Label>
+        ) : (
+          <></>
+        )}
+      </LabelContainer>
     </Container>
   );
 };

@@ -6,7 +6,8 @@ import {
   PlaceHolder,
 } from "../../../compenents/style-components/StyleComponents";
 import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
-import SubjectsChip from "../../../compenents/SubjectsChip";
+import SubjectsChip, { ChipsType } from "../../../compenents/SubjectsChip";
+import { useSubjectActivitiesContext } from "../../../context/SubjectActivitiesProvider";
 
 
 const TableContainer = styled.div`
@@ -92,6 +93,7 @@ const CellPlaceHolder = styled(PlaceHolder)`
   height: 20px;
 `;
 
+//Interface and Types def
 /**
  * Represent the data for Activities Table
  * @property  className - name of the class
@@ -102,21 +104,32 @@ export interface ClassSubjectsActivities {
   subjects: Array<SubjectActivities>;
 }
 
+/**
+ * @property {string} className - name of class where subject belongs to
+ * @property {SubjectActivitiesShort[]} subjects - 
+ */
 export interface ClassSubjects {
   className: string;
-  subjects: Array<SubjectShort>;
+  subjects: Array<SubjectActivitiesShort>;
 }
 
-export interface SubjectShort {
+/**
+ * Short Version of SubjectActivities
+ * @property {string} id
+ * @property {string} name
+ */
+export interface SubjectActivitiesShort {
   id: string;
   name: string;
 }
 
 /**
+ * @property {string} id
  * @property {string} name - name of subject
- * @property {Array of Activities} activities - list of activities
+ * @property {Activities[]} activities - list of activities
  */
 export interface SubjectActivities {
+  id: string
   name: string;
   activities: Array<Activities>;
 }
@@ -141,6 +154,7 @@ export interface Activities {
 }
 
 type ActivityResourceType = "Link" | "Files";
+//Interface and Types def end
 
 const emptyPlaceHolderItems = EmptyArrayGenerator(5);
 
@@ -150,6 +164,14 @@ const ClassSubjectsTable = (props: {
   isLoading: boolean;
 }) => {
   const { classSubjects, schoolYear, isLoading } = props;
+  const {setSelectedSubject} = useSubjectActivitiesContext()
+
+  //This would set the state in SubjectActivityContext 
+  // selectedSubject as part of Subject/Activities Page
+  const handleSelectSubject = (className: string, subject: SubjectActivitiesShort, type: ChipsType) => {
+    setSelectedSubject({...subject, className: className, type: type})
+  }
+
   return (
     <TableContainer>
       <Table
@@ -194,24 +216,28 @@ const ClassSubjectsTable = (props: {
                 </Row>
               ))
             : classSubjects.map((classSubject) => {
+                
                 return (
                   <Row>
                     <RowHeader role="rowheader">
                       {classSubject.className}
                     </RowHeader>
                     <Cell>
-                      {classSubject.subjects.map((subject, index) => (
+                      {classSubject.subjects.map((subject, index) => {
+                        const chipType = (index + 1) % 3 === 1
+                        ? "BLUE"
+                        : (index + 1) % 3 === 2
+                        ? "YELLOW"
+                        : "RED"
+                        return (
                         <SubjectsChip
                           name={subject.name}
                           type={
-                            (index + 1) % 3 === 1
-                              ? "BLUE"
-                              : (index + 1) % 3 === 2
-                              ? "YELLOW"
-                              : "RED"
+                            chipType
                           }
+                          onClick={() => handleSelectSubject(classSubject.className, subject, chipType)}
                         />
-                      ))}
+                      )})}
                     </Cell>
                   </Row>
                 );
