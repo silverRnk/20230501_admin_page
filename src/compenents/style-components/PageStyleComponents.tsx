@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
   width: 100%;
-  height: 1000px;
+  min-height: 1000px;
   border-radius: 10px;
   box-shadow: 0 0 7px lightgray;
   background-color: white;

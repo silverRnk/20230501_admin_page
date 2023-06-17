@@ -48,6 +48,12 @@ export const theme = {
       color: #e7c147;
       text-shadow: 0px 0px 1px lightgray;
     `,
+    inputLabel: css`
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #14238a;
+    `
+      
   },
   chipStyles: {
     chip1: css`

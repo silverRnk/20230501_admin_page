@@ -58,6 +58,7 @@ import AllSubjects from "./pages/Subjects/All";
 import Subjects from "./pages/Subjects/Subjects";
 import Theme from "./Theme";
 import SubjectActivitiesPage from "./pages/Subjects/Activities";
+import AddActivity from "./pages/Subjects/Activity/Add";
 
 //Taena mo pol gawin mo to bukas ng umaga
 
@@ -141,6 +142,14 @@ const router = createBrowserRouter([
           {
             path: "activities",
             element: <SubjectActivitiesPage/>
+          },
+          {
+            path: "activity",
+            element: <AddActivity/>,
+            children: [
+              {path: "add",
+              element: <AddActivity/>}
+            ]
           }
         ],
       },
