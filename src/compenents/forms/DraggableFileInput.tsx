@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import { theme } from "../../Theme";
+import FileChip from "../ui/FileChip";
+
 const Container = styled.div`
   width: 100%;
   height: 300px;
@@ -19,7 +21,7 @@ const Wrapper = styled.div<{ isDragged: boolean }>`
   border: 2px dotted gray;
   border-radius: 5px;
 
-  display: flex;
+  display: grid;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -46,33 +48,50 @@ const LabelStrong = styled.strong`
     filter: brightness(200%);
   }
 `;
+const FileChipsWrapper = styled.div<{ isEmpty: boolean }>`
+  flex: 1;
+  width: 100%;
+  max-height: 200px;
+  padding: 10px 20px;
+  margin-bottom: 15px;
+  display: ${(props) => (props.isEmpty ? "none" : "flex")};
+  flex-direction: row;
+  align-content: start;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  gap: 15px;
+`;
+
+const InputWrapper = styled.div`
+  height: auto;
+`;
 const Input = styled.input`
   display: none;
 `;
 
 const DraggableFileInput = (props: {
-  files?: FileList;
+  files: File[];
   onDrop?: (files: FileList) => void;
+  onDeleteFile?: (fileName: string, index: number) => void;
 }) => {
+  const {files, onDrop, onDeleteFile } = props;
   const [dragActive, setDragActive] = React.useState(false);
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files);
   };
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    // e.dataTransfer.effectAllowed = "all"
-    // e.dataTransfer.dropEffect = "link"
-
-    console.log(e.dataTransfer.files[0]);
-    setDragActive(false)
+    if(onDrop !== undefined){
+      onDrop(e.dataTransfer.files)
+    }
+    setDragActive(false);
   };
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    
+
     if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
     } else if (
@@ -83,6 +102,12 @@ const DraggableFileInput = (props: {
       setDragActive(false);
     }
   };
+
+  const handleDeleteItem = useCallback((file: File, index: number) => {
+    onDeleteFile!(file.name, index)
+    
+  }, [files, onDeleteFile])
+
   return (
     <Container>
       <Wrapper
@@ -92,27 +117,39 @@ const DraggableFileInput = (props: {
         onDragOver={handleDrag}
         onDrop={handleDrop}
       >
-        <Input
-          multiple={true}
-          onChange={handleUpload}
-          type="file"
-          name="file-uploader"
-          id="file-uploader"
-        />
-        <Label htmlFor="file-uploader">
-          <LabelTop>
-            <DownloadForOfflineIcon
-              style={{
-                fontSize: "75px",
-                color: theme.colors.primary,
-              }}
-            />
-          </LabelTop>
-          <LabelBottom>
-            <LabelStrong>Choose a file, </LabelStrong>
-            <span>or drag it here</span>
-          </LabelBottom>
-        </Label>
+        <FileChipsWrapper
+          isEmpty={files?.length === 0 || !files?.length}
+        >
+          {files.map((file, index) => (
+            <FileChip file={file} onDelete={() => handleDeleteItem(file, index)}  />
+          ))}
+
+        </FileChipsWrapper>
+        <InputWrapper>
+          <Input
+            multiple={true}
+            onChange={handleUpload}
+            type="file"
+            name="file-uploader"
+            id="file-uploader"
+          />
+          <Label htmlFor="file-uploader">
+            <LabelTop>
+              {files?.length! > 0 || (
+                <DownloadForOfflineIcon
+                  style={{
+                    fontSize: "75px",
+                    color: theme.colors.primary,
+                  }}
+                />
+              )}
+            </LabelTop>
+            <LabelBottom>
+              <LabelStrong>Choose a file, </LabelStrong>
+              <span>or drag it here</span>
+            </LabelBottom>
+          </Label>
+        </InputWrapper>
       </Wrapper>
     </Container>
   );

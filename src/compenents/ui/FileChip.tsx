@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const Container = styled.div`
   height: 75px;
   width: 300px;
+  background-color: white;
   box-shadow: 0 0 5px gray;
   border-radius: 5px;
   display: grid;
@@ -76,10 +77,10 @@ const FileChip = (props: { file: File; onDelete?: () => void }) => {
       <IconWrapper onClick={handleClick}>{getSvgIconFromMIME(file.type)}</IconWrapper>
       <FileNameWrapper onClick={handleClick}>{file.name}</FileNameWrapper>
       <ButtonWrapper>
-        <DeleteButton ><CloseIcon/></DeleteButton>
+        <DeleteButton onClick={onDelete} ><CloseIcon/></DeleteButton>
       </ButtonWrapper>
     </Container>
   );
 };
 
-export default FileChip;
+export default memo(FileChip);
