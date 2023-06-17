@@ -79,6 +79,7 @@ const DraggableFileInput = (props: {
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files);
   };
+  
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
@@ -103,10 +104,13 @@ const DraggableFileInput = (props: {
     }
   };
 
-  const handleDeleteItem = useCallback((file: File, index: number) => {
-    onDeleteFile!(file.name, index)
+  const handleDeleteItem = (file: File, index: number) => {
+    if(onDeleteFile !== undefined){
+      onDeleteFile(file.name, index)
+    }
     
-  }, [files, onDeleteFile])
+    
+  }
 
   return (
     <Container>

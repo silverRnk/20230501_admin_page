@@ -72,12 +72,20 @@ const FileChip = (props: { file: File; onDelete?: () => void }) => {
     window.open(url, "_blank")
     URL.revokeObjectURL(url)
   }
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if(onDelete !== undefined){
+      onDelete()
+    }
+    
+  }
   return (
     <Container >
       <IconWrapper onClick={handleClick}>{getSvgIconFromMIME(file.type)}</IconWrapper>
       <FileNameWrapper onClick={handleClick}>{file.name}</FileNameWrapper>
       <ButtonWrapper>
-        <DeleteButton onClick={onDelete} ><CloseIcon/></DeleteButton>
+        <DeleteButton onClick={handleDelete} ><CloseIcon/></DeleteButton>
       </ButtonWrapper>
     </Container>
   );

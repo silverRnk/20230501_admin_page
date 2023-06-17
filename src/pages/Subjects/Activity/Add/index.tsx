@@ -29,6 +29,34 @@ import DraggableFileInput from "../../../../compenents/forms/DraggableFileInput"
 const AddActivity = () => {
   const editorRef = useRef(null);
 
+  const [files, setFiles] = useState<readonly File[]>([]);
+
+  const handleDropFile = (fileList: FileList) => {
+    setFiles(files.concat([...fileList]));
+  };
+
+  const handleDeleteFile = (name: string, index: number) => {
+    const fileCount = files.length;
+    let newFiles: File[] = [];
+    console.log("FileCount", fileCount, " Index", index)
+
+    if (files.length === 0) {
+      return;
+    }
+
+    if (index == 0) {
+      newFiles = newFiles.concat(files.slice(1));
+    } else if (index == fileCount - 1) {
+      newFiles = newFiles.concat(files.slice(0, -1));
+    } else if (index > 0) {
+      newFiles = newFiles.concat(
+        files.slice(0, index + 1),
+        files.slice(index + 1, fileCount - 1)
+      );
+    }
+    setFiles(newFiles)
+  };
+
   return (
     <PageContainer>
       <PageTitle>Add Activity</PageTitle>
@@ -128,13 +156,18 @@ const AddActivity = () => {
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
           /> */}
-          <ValidationFeedback isInvalid={false} isVisible={false}>
-
-          </ValidationFeedback>
+          <ValidationFeedback
+            isInvalid={false}
+            isVisible={false}
+          ></ValidationFeedback>
         </InputWrapper>
         <InputWrapper>
           <Label>Upload Files</Label>
-          <DraggableFileInput/>
+          <DraggableFileInput
+            files={files}
+            onDrop={handleDropFile}
+            onDeleteFile={handleDeleteFile}
+          />
         </InputWrapper>
       </Form>
     </PageContainer>
