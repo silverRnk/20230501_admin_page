@@ -4,8 +4,11 @@ import {
   PageTitle,
 } from "../../../../compenents/style-components/PageStyleComponents";
 import {
+  Button,
+  ButtonContainer,
   Form,
   Input,
+  InputContainer,
   InputRow,
   InputWrapper,
   Label,
@@ -13,6 +16,11 @@ import {
   Selection,
   ValidationFeedback,
 } from "../../../../compenents/forms/Forms";
+
+//Rich Text Editor Import
+//ReqctQuill
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 //Draft JS Import
 // import {
@@ -25,11 +33,50 @@ import {
 
 import { Editor } from "@tinymce/tinymce-react";
 import DraggableFileInput from "../../../../compenents/forms/DraggableFileInput";
+import styled from "styled-components";
+
+const EditorArea = styled.div`
+  height: 300px;
+  width: 100%;
+  overflow-y: auto;
+`;
+
+//Quill Editor Toolbar settings
+
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
 
 const AddActivity = () => {
   const editorRef = useRef(null);
 
   const [files, setFiles] = useState<File[]>([]);
+  const [editorValue, setEditorValue] = useState("");
 
   const handleDropFile = (fileList: FileList) => {
     setFiles(files.concat([...fileList]));
@@ -38,7 +85,7 @@ const AddActivity = () => {
   const handleDeleteFile = (name: string, index: number) => {
     const fileCount = files.length;
     let newFiles: File[] = [];
-    console.log("FileCount", fileCount, " Index", index)
+    console.log("FileCount", fileCount, " Index", index);
 
     if (files.length === 0) {
       return;
@@ -54,121 +101,114 @@ const AddActivity = () => {
         files.slice(index + 1)
       );
     }
-    setFiles(newFiles)
+    setFiles(newFiles);
   };
+
+  const handleEditorChange = (value: string) => {
+    console.log(value);
+    setEditorValue(value);
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
+
+  const handleOnReset = (e: React.FormEvent<HTMLFormElement>) => {
+    setEditorValue("")
+    setFiles([])
+  }
 
   return (
     <PageContainer>
       <PageTitle>Add Activity</PageTitle>
-      <Form>
-        <InputWrapper>
-          <Label>Title</Label>
-          <Input isInvalid={false} />
-          <ValidationFeedback
-            isInvalid={false}
-            isVisible={false}
-          ></ValidationFeedback>
-        </InputWrapper>
-        <InputRow columnCount={2}>
+      <Form onSubmit={handleOnSubmit} onReset={handleOnReset}>
+        <InputContainer>
           <InputWrapper>
-            <Label>Subject</Label>
+            <Label>Title</Label>
             <Input isInvalid={false} />
             <ValidationFeedback
               isInvalid={false}
               isVisible={false}
             ></ValidationFeedback>
           </InputWrapper>
-          <InputWrapper>
-            <Label>Teacher</Label>
-            <Input isInvalid={false} />
-            <ValidationFeedback
-              isInvalid={false}
-              isVisible={false}
-            ></ValidationFeedback>
-          </InputWrapper>
-        </InputRow>
+          <InputRow columnCount={2}>
+            <InputWrapper>
+              <Label>Subject</Label>
+              <Input isInvalid={false} />
+              <ValidationFeedback
+                isInvalid={false}
+                isVisible={false}
+              ></ValidationFeedback>
+            </InputWrapper>
+            <InputWrapper>
+              <Label>Teacher</Label>
+              <Input isInvalid={false} />
+              <ValidationFeedback
+                isInvalid={false}
+                isVisible={false}
+              ></ValidationFeedback>
+            </InputWrapper>
+          </InputRow>
 
-        <InputRow columnCount={2}>
+          <InputRow columnCount={2}>
+            <InputWrapper>
+              <Label>Grade</Label>
+              <Selection isInvalid={false}>
+                <Option>-- Select Grade ---</Option>
+              </Selection>
+              <ValidationFeedback
+                isInvalid={false}
+                isVisible={false}
+              ></ValidationFeedback>
+            </InputWrapper>
+            <InputWrapper>
+              <Label>Section</Label>
+              <Selection isInvalid={false}>
+                <Option>-- Select Section ---</Option>
+              </Selection>
+              <ValidationFeedback
+                isInvalid={false}
+                isVisible={false}
+              ></ValidationFeedback>
+            </InputWrapper>
+          </InputRow>
           <InputWrapper>
-            <Label>Grade</Label>
-            <Selection isInvalid={false}>
-              <Option>-- Select Grade ---</Option>
-            </Selection>
+            <Label>Date of Submission</Label>
+            <Input isInvalid={false} />
+            <ValidationFeedback
+              isInvalid={false}
+              isVisible={false}
+            ></ValidationFeedback>
+          </InputWrapper>
+          <InputWrapper className="editor-wrapper">
+            <Label>Details/Instruction</Label>
+            <ReactQuill
+              id="editor"
+              className="editor"
+              value={editorValue}
+              onChange={handleEditorChange}
+              modules={modules}
+              formats={formats}
+            />
             <ValidationFeedback
               isInvalid={false}
               isVisible={false}
             ></ValidationFeedback>
           </InputWrapper>
           <InputWrapper>
-            <Label>Section</Label>
-            <Selection isInvalid={false}>
-              <Option>-- Select Section ---</Option>
-            </Selection>
-            <ValidationFeedback
-              isInvalid={false}
-              isVisible={false}
-            ></ValidationFeedback>
+            <Label>Upload Files</Label>
+            <DraggableFileInput
+              files={files}
+              onDrop={handleDropFile}
+              onDeleteFile={handleDeleteFile}
+            />
           </InputWrapper>
-        </InputRow>
-        <InputWrapper>
-          <Label>Date of Submission</Label>
-          <Input isInvalid={false} />
-          <ValidationFeedback
-            isInvalid={false}
-            isVisible={false}
-          ></ValidationFeedback>
-        </InputWrapper>
-        <InputWrapper>
-          <Label>Details/Instruction</Label>
-          {/* <Editor
-            apiKey="your-api-key"
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue="<p>This is the initial content of the editor.</p>"
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: [
-                "advlist",
-                "autolink",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "code",
-                "fullscreen",
-                "insertdatetime",
-                "media",
-                "table",
-                "code",
-                "help",
-                "wordcount",
-              ],
-              toolbar:
-                "undo redo | blocks | " +
-                "bold italic forecolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            }}
-          /> */}
-          <ValidationFeedback
-            isInvalid={false}
-            isVisible={false}
-          ></ValidationFeedback>
-        </InputWrapper>
-        <InputWrapper>
-          <Label>Upload Files</Label>
-          <DraggableFileInput
-            files={files}
-            onDrop={handleDropFile}
-            onDeleteFile={handleDeleteFile}
-          />
-        </InputWrapper>
+        </InputContainer>
+
+        <ButtonContainer>
+          <Button type="submit">Submit</Button>
+          <Button type="reset">Reset</Button>
+        </ButtonContainer>
       </Form>
     </PageContainer>
   );

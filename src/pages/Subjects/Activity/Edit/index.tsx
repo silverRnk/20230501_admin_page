@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   PageContainer,
   PageTitle,
@@ -34,6 +34,7 @@ import "react-quill/dist/quill.snow.css";
 import { Editor } from "@tinymce/tinymce-react";
 import DraggableFileInput from "../../../../compenents/forms/DraggableFileInput";
 import styled from "styled-components";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const EditorArea = styled.div`
   height: 300px;
@@ -77,6 +78,19 @@ const EditActivity = () => {
 
   const [files, setFiles] = useState<File[]>([]);
   const [editorValue, setEditorValue] = useState("");
+  const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
+  const [urlParams] = useSearchParams()
+  const activityId = urlParams.get("activityId")
+
+  useEffect(() => {
+    if(!activityId){
+      navigate("/subjects/activities")
+    }
+
+    //TODO get activity to server
+    
+  },[activityId])
 
   const handleDropFile = (fileList: FileList) => {
     setFiles(files.concat([...fileList]));
@@ -125,7 +139,7 @@ const EditActivity = () => {
         <InputContainer>
           <InputWrapper>
             <Label>Title</Label>
-            <Input isInvalid={false} />
+            <Input isInvalid={false} placeholder={isLoading? "Loading....": ""} disabled={isLoading} />
             <ValidationFeedback
               isInvalid={false}
               isVisible={false}
@@ -134,7 +148,7 @@ const EditActivity = () => {
           <InputRow columnCount={2}>
             <InputWrapper>
               <Label>Subject</Label>
-              <Input isInvalid={false} />
+              <Input isInvalid={false} disabled={isLoading} />
               <ValidationFeedback
                 isInvalid={false}
                 isVisible={false}
@@ -142,7 +156,7 @@ const EditActivity = () => {
             </InputWrapper>
             <InputWrapper>
               <Label>Teacher</Label>
-              <Input isInvalid={false} />
+              <Input isInvalid={false} disabled={isLoading} />
               <ValidationFeedback
                 isInvalid={false}
                 isVisible={false}
