@@ -18,7 +18,13 @@ const FormSection = styled.div`
 const FormSectionTitle = styled.h2`
   ${(props) => props.theme.fontThemes.h4}
 `;
-
+const InputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+`;
 const InputRow = styled.div<{ columnCount: number }>`
   width: 100%;
   display: grid;
@@ -95,6 +101,7 @@ const Button = styled.button`
     filter: brightness(85%);
   }
 `;
+
 const InputWithFeedback = (props: {
   type: string | undefined;
   value?: string | number | undefined;
@@ -123,6 +130,9 @@ export default InputWithFeedback;
 
 export {
   Form,
+  FormSectionTitle,
+  FormSection,
+  InputContainer,
   Input,
   InputRow,
   ValidationFeedback,
@@ -131,5 +141,5 @@ export {
   Option,
   Label,
   ButtonContainer,
-  Button
+  Button,
 };

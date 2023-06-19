@@ -7,7 +7,6 @@ import FileChip from "../ui/FileChip";
 const Container = styled.div`
   width: 100%;
   height: 300px;
-  padding: 10px;
 `;
 
 const draggedStyle = css`

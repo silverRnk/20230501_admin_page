@@ -6,7 +6,7 @@ import React, {
   createRef,
 } from "react";
 import styled from "styled-components";
-import { studentList, studentList2 } from "../../../utils/data";
+
 
 import {
   useLoaderData,

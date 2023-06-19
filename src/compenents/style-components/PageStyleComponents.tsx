@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
   width: 100%;
+  max-width: 1500px;
+  min-width: 600px;
   min-height: 1000px;
   border-radius: 10px;
   box-shadow: 0 0 7px lightgray;

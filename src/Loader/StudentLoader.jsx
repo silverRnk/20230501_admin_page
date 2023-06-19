@@ -1,6 +1,5 @@
 
 import axiosClient from "../utils/AxiosClient"
-import {studentList} from "../utils/data"
 
 
 export const loadStudents = async ({params, request}) => {
