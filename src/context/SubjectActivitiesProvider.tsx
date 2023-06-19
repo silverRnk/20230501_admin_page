@@ -27,6 +27,8 @@ interface ContextState {
 const initState: ContextState = {
   selectedSubject: null,
   setSelectedSubject: (props: {
+    className: string,
+    id: string,
     name: string;
     type: ChipsType;
   }) => {},
@@ -43,16 +45,20 @@ const SubjectActivitiesContextProvider = (props: {
   children: React.JSX.Element;
 }) => {
   const [selectedSubject, _setSelectedSubject] = useState<{
+    className:string,
+    id:string,
     name: string;
     type: ChipsType;
   } | null>(null);
 
   const setSelectedSubject = (props: {
+    className:string,
+    id:string,
     name: string;
     type: ChipsType;
   }) => {
-    const { name, type } = props;
-    _setSelectedSubject({ name, type });
+    const { name, type, id, className } = props;
+    _setSelectedSubject({className, id, name, type });
   };
 
   return (

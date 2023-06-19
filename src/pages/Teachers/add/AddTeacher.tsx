@@ -653,7 +653,7 @@ const AddTeacher = () => {
 
           <StudentImage>
             <Image
-              src={profileImage || DefaultImg}
+              src={profileImage.toString() || DefaultImg}
               alt="student_img"
             />
 

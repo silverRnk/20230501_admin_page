@@ -173,7 +173,7 @@ const GradesSYOption = styled.option``;
 
 const loadStudentProfile = async (id: number | string) => {
     
-    const response = await axiosClient.get(`/admin/student/${id}`) ?? {}
+    const response = await axiosClient.get(`/admin/student/${id}`) ?? null
 
     const studentInfo:StudentProfileLong = response?.data?.data?.[0] ?? {}
     const gradeLevels = response?.data?.grade_levels ?? []

@@ -31,7 +31,8 @@ export const Filled1: Story = {
       name: "name",
       religion: 'religion',
       section: "section",
-      status: "Old"
+      status: "Old",
+      profile_img: ""
 
     },
     isLoading: false,
@@ -53,7 +54,8 @@ export const Loading: Story = {
         name: "name",
         religion: 'religion',
         section: "section",
-        status: "Old"
+        status: "Old",
+        profile_img: ""
   
       },
       isLoading: true,

@@ -20,11 +20,10 @@ const Wrapper = styled.div<{ isDragged: boolean }>`
   position: relative;
   border: 2px dotted gray;
   border-radius: 5px;
+  transition: all 0.25s ease;
 
   display: grid;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  grid-template-columns: 1fr;
   transition: all 0.25s ease;
   background-color: ${(props) =>
     props.isDragged ? props.theme.colors.background : "white"};
@@ -49,20 +48,20 @@ const LabelStrong = styled.strong`
   }
 `;
 const FileChipsWrapper = styled.div<{ isEmpty: boolean }>`
-  flex: 1;
   width: 100%;
-  max-height: 200px;
+  min-height: 200px;
   padding: 10px 20px;
   margin-bottom: 15px;
   display: ${(props) => (props.isEmpty ? "none" : "flex")};
   flex-direction: row;
   align-content: start;
   flex-wrap: wrap;
-  overflow-y: scroll;
   gap: 15px;
 `;
 
 const InputWrapper = styled.div`
+  align-self: center;
+  justify-self: center;
   height: auto;
 `;
 const Input = styled.input`
@@ -79,7 +78,7 @@ const DraggableFileInput = (props: {
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files);
   };
-  
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();

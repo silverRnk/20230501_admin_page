@@ -804,7 +804,7 @@ function AddStudent() {
 
           <StudentImage>
             <Image
-              src={studentImage || DefaultImg}
+              src={studentImage.toString() || DefaultImg}
               alt="student_img"
             />
 

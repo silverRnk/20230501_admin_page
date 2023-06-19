@@ -20,7 +20,7 @@ type Story = StoryObj<typeof PopupDialog>
 
 export const Message: Story = {
   args:{
-    open: true,
+    
     message: "Hello World",
     messageType: "Message"
 
@@ -29,7 +29,7 @@ export const Message: Story = {
 
 export const Successful: Story = {
   args:{
-    open: true,
+    
     message: "Hello World",
     messageType: "Successful"
 
@@ -38,7 +38,7 @@ export const Successful: Story = {
 
 export const Error: Story = {
   args:{
-    open: true,
+    
     message: "Hello World",
     messageType: "Error"
 
@@ -47,7 +47,7 @@ export const Error: Story = {
 
 export const LongMessage: Story = {
   args:{
-    open: true,
+    
     message: faker.lorem.paragraph(10),
     messageType: "Message"
 

@@ -61,17 +61,17 @@ interface ContextObject extends InitContext {
 const StateContext = createContext<ContextObject>(contextInitValue);
 
 /**
- * 
+ * Context Provider For the whole website
  * @param props 
  * @returns 
  */
 export const ContextProvider = (props: {
   children: React.JSX.Element;
 }) => {
-  const [token, _setToken] = useState(123);
-  // const [token, _setToken] = useState(
-  //   localStorage.getItem("ACCESS_TOKEN")
-  // );
+  // const [token, _setToken] = useState(123);
+  const [token, _setToken] = useState(
+    localStorage.getItem("ACCESS_TOKEN")
+  );
   const [dialogMessages, dialogHandler] = useReducer(
     dialogMessagesHandler,
     dialogMessageInitState

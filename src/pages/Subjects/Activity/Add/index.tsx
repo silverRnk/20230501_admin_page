@@ -29,7 +29,7 @@ import DraggableFileInput from "../../../../compenents/forms/DraggableFileInput"
 const AddActivity = () => {
   const editorRef = useRef(null);
 
-  const [files, setFiles] = useState<readonly File[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleDropFile = (fileList: FileList) => {
     setFiles(files.concat([...fileList]));
@@ -50,8 +50,8 @@ const AddActivity = () => {
       newFiles = newFiles.concat(files.slice(0, -1));
     } else if (index > 0) {
       newFiles = newFiles.concat(
-        files.slice(0, index + 1),
-        files.slice(index + 1, fileCount - 1)
+        files.slice(0, index),
+        files.slice(index + 1)
       );
     }
     setFiles(newFiles)

@@ -4,8 +4,6 @@ import Theme from "../../../Theme";
 import { Activities } from "./ClassSubjectsTable";
 import { EmptyArrayGenerator } from "../../../utils/ArrayGenerator";
 import { faker } from "@faker-js/faker";
-import { RouterProvider } from "react-router-dom";
-import { router } from "../../../App";
 import {withRouter} from "storybook-addon-react-router-v6"
 
 const meta: Meta<typeof ActivitiesTable> = {

@@ -16,7 +16,6 @@ import React, {
   createRef,
 } from "react";
 import styled from "styled-components";
-import { studentList, studentList2 } from "../../../utils/data";
 import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 
 import { loaderTeacherAll } from "../utils/Loaders";
