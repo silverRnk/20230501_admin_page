@@ -69,7 +69,7 @@ export const ContextProvider = (props: {
   children: React.JSX.Element;
 }) => {
   // const [token, _setToken] = useState(123);
-  const [token, _setToken] = useState(
+  const [token, _setToken] = useState<string | null | undefined>(
     localStorage.getItem("ACCESS_TOKEN")
   );
   const [dialogMessages, dialogHandler] = useReducer(

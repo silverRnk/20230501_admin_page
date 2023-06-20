@@ -161,15 +161,16 @@ const AddTeacher = () => {
       }
       payload.append(form.name, form.value!);
     });
-
     payload.append(
       FormField.profile_img.name,
       teacherPhotoRef.current?.files?.[0]!
     );
+    
 
     axiosClient
       .post("/admin/teachers/add", payload)
       .then((data) => {
+        console.log(data)
         if (data && data.status === 201) {
           formRef.current?.reset();
           addDialogMessages({
