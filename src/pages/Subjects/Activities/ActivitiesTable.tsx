@@ -14,8 +14,6 @@ import {
 
 //MUI Materials-Icons
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import LinkIcon from "@mui/icons-material/Link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -24,6 +22,7 @@ import styled from "styled-components";
 import { Activities } from "./ClassSubjectsTable";
 import { theme } from "../../../Theme";
 import { Link, useNavigate } from "react-router-dom";
+import ResourceLink from "../../../compenents/ui/ResourceLink";
 
 const headers: Array<ColumnHeader> = [
   { id: "title", label: "Title", minWidth: 100 },
@@ -91,26 +90,6 @@ const Button = styled.button`
   }
 `;
 
-const ResourceLink = styled.a`
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  padding: 2px 5px;
-
-  &:hover {
-    background-color: lightblue;
-  }
-`;
-
-const ResourceWrapper = styled.button`
-  all: unset;
-  display: flex;
-  align-items: center;
-`;
-
 const ColGroup = styled.colgroup``;
 const Col = styled.col``;
 
@@ -122,7 +101,7 @@ const TableOptionsContainer = styled.div`
   gap: 5px;
 `;
 
-type ButtonType = "ADD" | "DELETE";
+export type ButtonType = "ADD" | "DELETE";
 
 const TableOptionsButtons = styled.button<{ buttonType: ButtonType }>`
   all: unset;
@@ -161,7 +140,7 @@ const Label = styled.span`
 
 //Styled-components End
 
-type ActivityResourceType = "Files" | "Link";
+
 
 const ActivitiesTableHead = (props: {
   numSelected: number;
@@ -194,32 +173,7 @@ const ActivitiesTableHead = (props: {
   );
 };
 
-const ResourceLinks = (props: {
-  type: ActivityResourceType;
-  url: string;
-  label: string;
-}) => {
-  const { type, url, label } = props;
-  return (
-    <ResourceWrapper>
-      {type === "Files" ? (
-        <ResourceLink download href={url}>
-          <FileDownloadIcon
-            style={{ fontSize: "20px", lineHeight: "20px" }}
-          />
-          {label}
-        </ResourceLink>
-      ) : (
-        <ResourceLink href={url}>
-          <LinkIcon
-            style={{ fontSize: "20px", lineHeight: "20px" }}
-          />
-          {label}
-        </ResourceLink>
-      )}
-    </ResourceWrapper>
-  );
-};
+
 
 const TableOptions = (props: { selectedRows: readonly string[] }) => {
   const { selectedRows } = props;
@@ -297,9 +251,9 @@ const ActivitiesRow = (props: {
       </TableCell>
       <TableCell>
         {activity.activityResources.map((resource) => (
-          <ResourceLinks
+          <ResourceLink
             type={resource.type}
-            label="url"
+            label={resource.label ?? undefined}
             url={resource.url}
           />
         ))}
