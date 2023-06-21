@@ -3,6 +3,7 @@
 import React, {
   FormEventHandler,
   createRef,
+  useEffect,
   useReducer,
   useState,
 } from "react";
@@ -13,26 +14,18 @@ import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import {
   AddStudentProps,
   FormValidationFeedback,
+  GradeLevels,
+  Section,
 } from "../utils/interface";
 import { useFormFeedback } from "../utils/CustomHooks";
 import { AddStudentLabels } from "../utils/FormInputNames";
 import { useStateContext } from "../../../context/ContextProvider";
 import PopupDialog from "../../../compenents/PopupDialog";
-import {
-  formFieldsInitValue,
-  formFieldsReducer,
-} from "./reducer";
+import { formFieldsInitValue, formFieldsReducer } from "./reducer";
+import { Label, Input, Selection, Option } from "../../../compenents/forms/Forms";
+import { PageContainer } from "../../../compenents/style-components/PageStyleComponents";
 
-const Container = styled.div`
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0px 0px 7px lightgray;
-`;
-
+const Container = styled(PageContainer)``;
 const Title = styled.h1`
   ${(props) => props.theme.fontThemes.h2}
 `;
@@ -40,7 +33,10 @@ const Reminder = styled.p`
   font-size: 0.75rem;
   color: gray;
 `;
-const Form = styled.form``;
+const Form = styled.form`
+  width: 100%;
+`;
+
 const InputContainer = styled.div`
   width: 100%;
   display: flex;
@@ -65,13 +61,7 @@ const InputItem = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Label = styled.label``;
-const Input = styled.input<AddStudentProps>`
-  height: 30px;
-  padding: 5px;
-  border-radius: 2px;
-  border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
-`;
+
 const ValidationFeedback = styled.small<AddStudentProps>`
   min-height: 20px;
   font-weight: 400;
@@ -85,13 +75,7 @@ const InputRow = styled.div`
   display: flex;
   gap: 20px;
 `;
-const Selection = styled.select<AddStudentProps>`
-  padding-left: 5px;
-  height: 30px;
-  border-radius: 2px;
-  border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
-`;
-const Option = styled.option``;
+
 const StudentImage = styled.div`
   display: flex;
   align-items: center;
@@ -101,6 +85,7 @@ const Image = styled.img`
   height: 200px;
   width: 200px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -129,8 +114,9 @@ const Button = styled.button`
 function AddStudent() {
   const { addDialogMessages } = useStateContext();
   const formRef = createRef<HTMLFormElement>();
+  const sectionSelectionRef = createRef<HTMLSelectElement>();
   const studentPhotoRef = createRef<HTMLInputElement>();
-
+  const [selectedGrade, setSelectedGrade] = useState("");
   const [studentImage, setStudentImage] = useState<
     string | ArrayBuffer | null
   >("");
@@ -139,6 +125,32 @@ function AddStudent() {
     formFieldsReducer,
     formFieldsInitValue
   );
+
+  const [gradeLevelAndSections, setGradeLevelAndSections] = useState<
+    GradeLevels[]
+  >([]);
+  const selectedGradeSections: Section[] =
+    gradeLevelAndSections.find((gradeLevel) => {
+      return gradeLevel.grade_level_id === selectedGrade;
+    })?.sections ?? [];
+
+  useEffect(() => {
+    axiosClient
+      .get("/admin/gradesAndSections")
+      .then((data) => {
+        setGradeLevelAndSections(
+          data?.data?.data ?? ([] as GradeLevels[])
+        );
+        console.log(data?.data?.data);
+      })
+      .catch((err) => {
+        const errorMessage = err;
+        addDialogMessages({
+          message: errorMessage?.toString(),
+          messageType: "Error",
+        });
+      });
+  }, []);
 
   const handlerOnInput = (
     e: any,
@@ -152,28 +164,31 @@ function AddStudent() {
     });
   };
 
-  const handlerForm = (e: any) => {
+  const handlerFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    formInputsReducer({type: "INVALID", name: ""})
-    resetForm(e);
+
+    formInputsReducer({ type: "INVALID", name: "" });
     const payload = new FormData();
+
     formInputs.forEach((form) => {
       if (form.name === "std_photo") {
         return;
       }
       payload.append(form.name, form.value!);
     });
-    payload.append(
-      AddStudentLabels.std_photo.name,
-      studentPhotoRef.current?.files?.[0]!
-    );
+    if (studentPhotoRef.current.files.length !== 0) {
+      payload.append(
+        AddStudentLabels.std_photo.name,
+        studentPhotoRef.current?.files?.[0]!
+      );
+    }
 
     axiosClient
       .post("/admin/add_student", payload)
       .then((data) => {
         if (data && data.status === 201) {
-
           //Notify user for successful
+          resetForm();
           addDialogMessages({
             message: "Student has been successfully added",
             messageType: "Successful",
@@ -186,7 +201,7 @@ function AddStudent() {
         if (response && response.status === 422) {
           const errors = response.data.errors;
           const errorKey = Object.keys(errors);
-          
+
           //Notify user for invalid
           addDialogMessages({
             message: `You have ${errorKey.length} input `,
@@ -213,10 +228,10 @@ function AddStudent() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const resetForm = (e) => {
-    console.log(e);
+  const resetForm = () => {
+    formRef.current.reset();
+    setStudentImage("");
   };
-
 
   const handleFormInput = (e) => {
     if (e.target.name === "std_photo") {
@@ -227,6 +242,14 @@ function AddStudent() {
       name: e.target.name,
       value: e.target.value,
     });
+    console.log(formInputs);
+  };
+
+  const handleGradeSelection = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    sectionSelectionRef.current.value = "";
+    setSelectedGrade(e.target.value);
   };
 
   const getFormInput = (name: string) => {
@@ -237,7 +260,7 @@ function AddStudent() {
     <Container>
       <Form
         ref={formRef}
-        onSubmit={handlerForm}
+        onSubmit={handlerFormSubmit}
         onInput={handleFormInput}
         method="post"
       >
@@ -246,80 +269,82 @@ function AddStudent() {
         <InputContainer>
           <FormSection>
             <SectionTitle>Student Info</SectionTitle>
-            <InputItem>
-              <Label htmlFor={AddStudentLabels.std_first_name.name}>
-                {AddStudentLabels.std_first_name.label}*:
-              </Label>
-              <Input
-                onChange={(e) =>
-                  handlerOnInput(
-                    e,
-                    AddStudentLabels.std_first_name.name,
-                    e.target.value
-                  )
-                }
-                type="text"
-                id={AddStudentLabels.std_first_name.name}
-                name={AddStudentLabels.std_first_name.name}
-                isInvalid={
-                  getFormInput(AddStudentLabels.std_first_name.name)
-                    .isInvalid
-                }
-                required
-              />
-              <ValidationFeedback
-                isVisible={
-                  getFormInput(AddStudentLabels.std_first_name.name)
-                    .isInvalid
-                }
-                isInvalid={
-                  getFormInput(AddStudentLabels.std_first_name.name)
-                    .isInvalid
-                }
-              >
-                {
-                  getFormInput(AddStudentLabels.std_first_name.name)
-                    .feedbackMessage
-                }
-              </ValidationFeedback>
-            </InputItem>
-            <InputItem>
-              <Label htmlFor={AddStudentLabels.std_last_name.name}>
-                {AddStudentLabels.std_last_name.label}*:
-              </Label>
-              <Input
-                type="text"
-                id={AddStudentLabels.std_last_name.name}
-                name={AddStudentLabels.std_last_name.name}
-                isInvalid={
-                  getFormInput(AddStudentLabels.std_last_name.name)
-                    .isInvalid
-                }
-                required
-              />
-              <ValidationFeedback
-                isVisible={
-                  getFormInput(AddStudentLabels.std_last_name.name)
-                    .isInvalid
-                }
-                isInvalid={
-                  getFormInput(AddStudentLabels.std_last_name.name)
-                    .isInvalid
-                }
-              >
-                {
-                  getFormInput(AddStudentLabels.std_last_name.name)
-                    .feedbackMessage
-                }
-              </ValidationFeedback>
-            </InputItem>
+            <InputRow>
+              <InputItem>
+                <Label htmlFor={AddStudentLabels.std_first_name.name}>
+                  {AddStudentLabels.std_first_name.label}*:
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    handlerOnInput(
+                      e,
+                      AddStudentLabels.std_first_name.name,
+                      e.target.value
+                    )
+                  }
+                  type="text"
+                  id={AddStudentLabels.std_first_name.name}
+                  name={AddStudentLabels.std_first_name.name}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_first_name.name)
+                      .isInvalid
+                  }
+                  required
+                />
+                <ValidationFeedback
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_first_name.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_first_name.name)
+                      .isInvalid
+                  }
+                >
+                  {
+                    getFormInput(AddStudentLabels.std_first_name.name)
+                      .feedbackMessage
+                  }
+                </ValidationFeedback>
+              </InputItem>
+              <InputItem>
+                <Label htmlFor={AddStudentLabels.std_last_name.name}>
+                  {AddStudentLabels.std_last_name.label}*:
+                </Label>
+                <Input
+                  type="text"
+                  id={AddStudentLabels.std_last_name.name}
+                  name={AddStudentLabels.std_last_name.name}
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_last_name.name)
+                      .isInvalid
+                  }
+                  required
+                />
+                <ValidationFeedback
+                  isVisible={
+                    getFormInput(AddStudentLabels.std_last_name.name)
+                      .isInvalid
+                  }
+                  isInvalid={
+                    getFormInput(AddStudentLabels.std_last_name.name)
+                      .isInvalid
+                  }
+                >
+                  {
+                    getFormInput(AddStudentLabels.std_last_name.name)
+                      .feedbackMessage
+                  }
+                </ValidationFeedback>
+              </InputItem>
+            </InputRow>
+
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_gender.name}>
                   {AddStudentLabels.std_gender.label}*:
                 </Label>
                 <Selection
-
                   id={AddStudentLabels.std_gender.name}
                   name={AddStudentLabels.std_gender.name}
                   isInvalid={
@@ -354,7 +379,6 @@ function AddStudent() {
                   {AddStudentLabels.std_dob.label}*
                 </Label>
                 <Input
-
                   type="date"
                   id={AddStudentLabels.std_dob.name}
                   name={AddStudentLabels.std_dob.name}
@@ -386,7 +410,6 @@ function AddStudent() {
                 {AddStudentLabels.std_religion.label}*:
               </Label>
               <Input
-
                 type="text"
                 name={AddStudentLabels.std_religion.name}
                 id={AddStudentLabels.std_religion.name}
@@ -418,7 +441,6 @@ function AddStudent() {
                   {AddStudentLabels.std_email.label}*:
                 </Label>
                 <Input
-
                   type="email"
                   id={AddStudentLabels.std_email.name}
                   name={AddStudentLabels.std_email.name}
@@ -449,7 +471,6 @@ function AddStudent() {
                   {AddStudentLabels.std_phone.label}*:
                 </Label>
                 <Input
-
                   type="number"
                   inputMode="numeric"
                   pattern="[0-9]+"
@@ -485,7 +506,6 @@ function AddStudent() {
                   {AddStudentLabels.std_password.label}*:
                 </Label>
                 <Input
-
                   type="password"
                   id={AddStudentLabels.std_password.name}
                   name={AddStudentLabels.std_password.name}
@@ -517,7 +537,6 @@ function AddStudent() {
                   {AddStudentLabels.std_passconf.label}*:
                 </Label>
                 <Input
-
                   type="password"
                   id={AddStudentLabels.std_passconf.name}
                   name={AddStudentLabels.std_passconf.name}
@@ -557,12 +576,16 @@ function AddStudent() {
                     getFormInput(AddStudentLabels.std_grade.name)
                       .isInvalid
                   }
-                  required
+                  onChange={handleGradeSelection}
                 >
                   <Option value={""}>--Select Class--</Option>
-                  <Option value={1}>I</Option>
-                  <Option value={2}>II</Option>
-                  <Option value={3}>III</Option>
+                  {gradeLevelAndSections.map((gradeLevel) => {
+                    return (
+                      <Option value={gradeLevel.grade_level_id}>
+                        {gradeLevel.grade_level}
+                      </Option>
+                    );
+                  })}
                 </Selection>
                 <ValidationFeedback
                   isVisible={
@@ -585,18 +608,22 @@ function AddStudent() {
                   {AddStudentLabels.std_section.label}*:
                 </Label>
                 <Selection
+                  ref={sectionSelectionRef}
                   id={AddStudentLabels.std_section.name}
                   name={AddStudentLabels.std_section.name}
                   isInvalid={
                     getFormInput(AddStudentLabels.std_section.name)
                       .isInvalid
                   }
-                  required
                 >
                   <Option value={""}> --Select Section-- </Option>
-                  <Option value={1}>Acacia</Option>
-                  <Option value={2}>Nara</Option>
-                  <Option value={3}>Kawayan</Option>
+                  {selectedGradeSections.map((sectionItem) => {
+                    return (
+                      <Option value={sectionItem.id}>
+                        {sectionItem.name}
+                      </Option>
+                    );
+                  })}
                 </Selection>
                 <ValidationFeedback
                   isVisible={
@@ -815,6 +842,9 @@ function AddStudent() {
               <Input
                 ref={studentPhotoRef}
                 type="file"
+                style={{border:"unset"}}
+                isInvalid={getFormInput(AddStudentLabels.std_photo.name)
+                  .isInvalid}
                 id={AddStudentLabels.std_photo.name}
                 name={AddStudentLabels.std_photo.name}
                 onInput={handlerSelectImg}
