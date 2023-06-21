@@ -206,6 +206,8 @@ const ViewStudent = () => {
     .then(data => {
       setStudentProfile(data?.studentInfo)
       setIsLoading(false)
+    }).catch(err => {
+      console.log(err)
     })
   }, [])
 

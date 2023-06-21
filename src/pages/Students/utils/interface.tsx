@@ -72,6 +72,9 @@ export interface FormInputLabel {
   label: string;
 }
 
+/**
+ * 
+ */
 export interface GradeLevels {
   grade_level_id: string;
   level: number;
@@ -81,7 +84,7 @@ export interface GradeLevels {
 
 export interface Section {
   id: number;
-  section_name: string;
+  name: string;
 }
 
 export interface CredentialsInfo {

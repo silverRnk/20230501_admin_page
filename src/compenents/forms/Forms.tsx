@@ -102,6 +102,10 @@ const Button = styled.button`
   }
 `;
 
+const IsRequiredIndicator = styled.span`
+  color: red !important;
+`;
+
 const InputWithFeedback = (props: {
   type: string | undefined;
   value?: string | number | undefined;
@@ -134,6 +138,7 @@ export {
   FormSection,
   InputContainer,
   Input,
+  IsRequiredIndicator,
   InputRow,
   ValidationFeedback,
   InputWrapper,

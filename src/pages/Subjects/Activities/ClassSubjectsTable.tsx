@@ -149,6 +149,7 @@ export interface Activities {
   description: string;
   activityResources: Array<{
     type: ActivityResourceType;
+    label?:string,
     url: string;
   }>;
 }

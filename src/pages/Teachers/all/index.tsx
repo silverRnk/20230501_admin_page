@@ -19,14 +19,13 @@ import styled from "styled-components";
 import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 
 import { loaderTeacherAll } from "../utils/Loaders";
-import { Section } from "../../Students/utils/interface";
 import {
   SearchInput,
   SearchSelection,
   ButtonSearch as SearchButton,
 } from "../../../compenents/style-components/SearchInputComponents";
 import TeachersTable from "./TeachersTable";
-import { GradeLevels } from "../utils/interface";
+import { GradeLevels, Section } from "../utils/interface";
 import { TeacherProfileShort } from "../utils/interface";
 import axios from "axios";
 import { URLSearchParams } from "url";
@@ -79,7 +78,7 @@ function AllTeachers() {
   const nameRef = createRef<HTMLInputElement>();
   const gradeLevelRef = createRef<HTMLSelectElement>();
   const sectionRef = createRef<HTMLSelectElement>();
-  const [sectionList, setSectionList] = useState<Array<Section>>([]);
+  const [sectionList, setSectionList] = useState<Section[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState<number>(1);
   const [gradeAndSections, setGradeAndSections] = useState<

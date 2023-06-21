@@ -7,19 +7,19 @@ import {
 
 /**
  * Get request to BASE_URL + /api//admin/teachers/all
- * @param args 
- * @returns 
+ * @param args
+ * @returns
  */
 export const loaderTeacherAll = async (args: {
   params?: Record<AllTeachersSearchParams, string | number | null>;
   request?: any;
 }) => {
-  const {params, request} = args
-  
-  const response = await axiosClient.get("/admin/teachers/all", {
-    params:params
-  });
+  const { params, request } = args;
 
+  const response = await axiosClient.get("/admin/teachers/all", {
+    
+  });
+  console.log(params);
   const teachers: Array<TeacherProfileShort> =
     response?.data?.data?.teachers ?? [];
   const gradeAndSections: Array<GradeLevels> =
@@ -27,7 +27,7 @@ export const loaderTeacherAll = async (args: {
   const pageCount = response?.data?.meta?.last_page ?? 1;
   const currentPage = response?.data?.meta?.last_page ?? 1;
 
-  return {teachers, gradeAndSections,pageCount, currentPage };
+  return { teachers, gradeAndSections, pageCount, currentPage };
 };
 
 export const loaderTeacherAdd = async () => {

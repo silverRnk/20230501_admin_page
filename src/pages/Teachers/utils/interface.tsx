@@ -4,8 +4,8 @@ export interface TeacherProfileShort {
   teacher_id: string,
   teacher_name: string,
   teacher_gender: Gender,
-  teacher_class: string,
-  teacher_addr: string,
+  teacher_advisory_class: string,
+  teacher_address: string,
   teacher_dob: string,
   teacher_phone: string
 } 
@@ -14,6 +14,7 @@ export interface TeacherProfileLong {
   teacher_id: string,
   teacher_name: string
   teacher_gender: Gender,
+  teacher_date_of_birth: string | Date,
   teacher_address: string,
   teacher_religion: string,
   teacher_email: string,

@@ -46,8 +46,8 @@ export const columnTeachers: Array<ColumnHeader> = [
     minWidth: 70,
     align: "center",
   },
-  { id: "teacher_class", label: "Class", minWidth: 70 },
-  { id: "teacher_addr", label: "Address", minWidth: 70 },
+  { id: "teacher_advisory_class", label: "Class", minWidth: 70 },
+  { id: "teacher_address", label: "Address", minWidth: 70 },
   { id: "teacher_admission_date", label: "Admission Date", minWidth: 70 },
   { id: "teacher_phone", label: "Phone", minWidth: 70 },
 ];

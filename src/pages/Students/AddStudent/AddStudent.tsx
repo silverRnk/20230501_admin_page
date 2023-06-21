@@ -22,7 +22,7 @@ import { AddStudentLabels } from "../utils/FormInputNames";
 import { useStateContext } from "../../../context/ContextProvider";
 import PopupDialog from "../../../compenents/PopupDialog";
 import { formFieldsInitValue, formFieldsReducer } from "./reducer";
-import { Label, Input, Selection, Option } from "../../../compenents/forms/Forms";
+import { Label, Input, Selection, Option, IsRequiredIndicator } from "../../../compenents/forms/Forms";
 import { PageContainer } from "../../../compenents/style-components/PageStyleComponents";
 
 const Container = styled(PageContainer)``;
@@ -272,7 +272,8 @@ function AddStudent() {
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_first_name.name}>
-                  {AddStudentLabels.std_first_name.label}*:
+                  {AddStudentLabels.std_first_name.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   onChange={(e) =>
@@ -309,7 +310,8 @@ function AddStudent() {
               </InputItem>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_last_name.name}>
-                  {AddStudentLabels.std_last_name.label}*:
+                  {AddStudentLabels.std_last_name.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="text"
@@ -342,7 +344,8 @@ function AddStudent() {
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_gender.name}>
-                  {AddStudentLabels.std_gender.label}*:
+                  {AddStudentLabels.std_gender.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Selection
                   id={AddStudentLabels.std_gender.name}
@@ -376,7 +379,8 @@ function AddStudent() {
 
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_dob.name}>
-                  {AddStudentLabels.std_dob.label}*
+                  {AddStudentLabels.std_dob.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="date"
@@ -407,7 +411,7 @@ function AddStudent() {
             </InputRow>
             <InputItem>
               <Label htmlFor={AddStudentLabels.std_religion.name}>
-                {AddStudentLabels.std_religion.label}*:
+                {AddStudentLabels.std_religion.label}:
               </Label>
               <Input
                 type="text"
@@ -417,7 +421,6 @@ function AddStudent() {
                   getFormInput(AddStudentLabels.std_religion.name)
                     .isInvalid
                 }
-                required
               />
               <ValidationFeedback
                 isVisible={
@@ -438,7 +441,8 @@ function AddStudent() {
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_email.name}>
-                  {AddStudentLabels.std_email.label}*:
+                  {AddStudentLabels.std_email.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="email"
@@ -468,7 +472,8 @@ function AddStudent() {
               </InputItem>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_phone.name}>
-                  {AddStudentLabels.std_phone.label}*:
+                  {AddStudentLabels.std_phone.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="number"
@@ -503,7 +508,8 @@ function AddStudent() {
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_password.name}>
-                  {AddStudentLabels.std_password.label}*:
+                  {AddStudentLabels.std_password.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="password"
@@ -534,7 +540,8 @@ function AddStudent() {
               </InputItem>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_passconf.name}>
-                  {AddStudentLabels.std_passconf.label}*:
+                  {AddStudentLabels.std_passconf.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Input
                   type="password"
@@ -567,7 +574,8 @@ function AddStudent() {
             <InputRow>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_grade.name}>
-                  {AddStudentLabels.std_grade.label}*:
+                  {AddStudentLabels.std_grade.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Selection
                   id={AddStudentLabels.std_grade.name}
@@ -605,7 +613,8 @@ function AddStudent() {
               </InputItem>
               <InputItem>
                 <Label htmlFor={AddStudentLabels.std_section.name}>
-                  {AddStudentLabels.std_section.label}*:
+                  {AddStudentLabels.std_section.label}
+                  <IsRequiredIndicator>*</IsRequiredIndicator>:
                 </Label>
                 <Selection
                   ref={sectionSelectionRef}
@@ -648,7 +657,8 @@ function AddStudent() {
             <SectionTitle>Parent's Info</SectionTitle>
             <InputItem>
               <Label htmlFor={AddStudentLabels.fth_name.name}>
-                {AddStudentLabels.fth_name.label}*:
+                {AddStudentLabels.fth_name.label}
+                <IsRequiredIndicator>*</IsRequiredIndicator>:
               </Label>
               <Input
                 type="text"
@@ -678,7 +688,8 @@ function AddStudent() {
             </InputItem>
             <InputItem>
               <Label htmlFor={AddStudentLabels.mth_name.name}>
-                {AddStudentLabels.mth_name.label}*:
+                {AddStudentLabels.mth_name.label}
+                <IsRequiredIndicator>*</IsRequiredIndicator>:
               </Label>
               <Input
                 type="text"
@@ -708,7 +719,8 @@ function AddStudent() {
             </InputItem>
             <InputItem>
               <Label htmlFor={AddStudentLabels.fth_occupation.name}>
-                {AddStudentLabels.fth_occupation.label}*:
+                {AddStudentLabels.fth_occupation.label}
+                <IsRequiredIndicator>*</IsRequiredIndicator>:
               </Label>
               <Input
                 type="text"
@@ -739,7 +751,7 @@ function AddStudent() {
 
             <InputItem>
               <Label htmlFor={AddStudentLabels.prn_religion.name}>
-                {AddStudentLabels.prn_religion.label}*:
+                {AddStudentLabels.prn_religion.label}:
               </Label>
               <Input
                 type="text"
@@ -749,7 +761,6 @@ function AddStudent() {
                   getFormInput(AddStudentLabels.prn_religion.name)
                     .isInvalid
                 }
-                required
               />
               <ValidationFeedback
                 isVisible={
@@ -769,7 +780,8 @@ function AddStudent() {
             </InputItem>
             <InputItem>
               <Label htmlFor={AddStudentLabels.prn_email.name}>
-                {AddStudentLabels.prn_email.label}*:
+                {AddStudentLabels.prn_email.label}
+                <IsRequiredIndicator>*</IsRequiredIndicator>:
               </Label>
               <Input
                 type="email"
@@ -799,7 +811,8 @@ function AddStudent() {
             </InputItem>
             <InputItem>
               <Label htmlFor={AddStudentLabels.prn_phone.name}>
-                {AddStudentLabels.prn_phone.label}*:
+                {AddStudentLabels.prn_phone.label}
+                <IsRequiredIndicator>*</IsRequiredIndicator>:
               </Label>
               <Input
                 type="number"

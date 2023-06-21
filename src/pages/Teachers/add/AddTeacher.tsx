@@ -19,16 +19,10 @@ import {
   addTeachersInputFieldReducer,
   addTeachersInputFieldsInitValue,
 } from "./reducer";
+import { Label, Input, Selection, Option } from "../../../compenents/forms/Forms";
+import { PageContainer } from "../../../compenents/style-components/PageStyleComponents";
 
-const Container = styled.div`
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0px 0px 7px lightgray;
-`;
+const Container = styled(PageContainer)``;
 
 const Title = styled.h1`
   ${(props) => props.theme.fontThemes.h2}
@@ -37,7 +31,9 @@ const Reminder = styled.p`
   font-size: 0.75rem;
   color: gray;
 `;
-const Form = styled.form``;
+const Form = styled.form`
+  width: 100%;
+`;
 const InputContainer = styled.div`
   width: 100%;
   display: flex;
@@ -62,14 +58,15 @@ const InputItem = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Label = styled.label``;
-const Input = styled.input<AddStudentProps>`
-  height: 30px;
-  padding: 5px;
-  border-radius: 2px;
-  border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
-  box-shadow: 0 0 0 ${props => props.isInvalid? "2px red": "0px transparent"};
-`;
+// const Label = styled.label``;
+// const Input = styled.input<AddStudentProps>`
+//   height: 30px;
+//   padding: 5px;
+//   border-radius: 2px;
+//   border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
+//   box-shadow: 0 0 0
+//     ${(props) => (props.isInvalid ? "2px red" : "0px transparent")};
+// `;
 const ValidationFeedback = styled.small<AddStudentProps>`
   min-height: 20px;
   font-weight: 400;
@@ -86,13 +83,13 @@ const InputRow = styled.div`
   display: flex;
   gap: 20px;
 `;
-const Selection = styled.select<AddStudentProps>`
-  padding-left: 5px;
-  height: 30px;
-  border-radius: 2px;
-  border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
-`;
-const Option = styled.option``;
+// const Selection = styled.select<AddStudentProps>`
+//   padding-left: 5px;
+//   height: 30px;
+//   border-radius: 2px;
+//   border: 1px solid ${(props) => (props.isInvalid ? "red" : "gray")};
+// `;
+// const Option = styled.option``;
 const StudentImage = styled.div`
   display: flex;
   align-items: center;
@@ -151,8 +148,8 @@ const AddTeacher = () => {
   const { addDialogMessages } = useStateContext();
   const handlerForm = (e: any) => {
     e.preventDefault();
-    
-    formInputsReducer({type: "RESET_INVALID", name:""})
+
+    formInputsReducer({ type: "RESET_INVALID", name: "" });
     /* resetForm(e); */
     const payload = new FormData();
     formInputs.forEach((form) => {
@@ -165,18 +162,17 @@ const AddTeacher = () => {
       FormField.profile_img.name,
       teacherPhotoRef.current?.files?.[0]!
     );
-    
 
     axiosClient
       .post("/admin/teachers/add", payload)
       .then((data) => {
-        console.log(data)
+        console.log(data);
         if (data && data.status === 201) {
           formRef.current?.reset();
           addDialogMessages({
             message: "Teacher has been added successfully",
-            messageType: "Successful"
-          })
+            messageType: "Successful",
+          });
         }
       })
       .catch((err) => {
@@ -184,21 +180,21 @@ const AddTeacher = () => {
         console.log(err.response.data);
         if (response && response.status === 422) {
           const errors = response.data.errors;
-          console.log("errors", errors)
+          console.log("errors", errors);
           const keys = Object.keys(errors);
           addDialogMessages({
             message: `You have enter ${keys.length} invalid input`,
             messageType: "Error",
           });
           keys.forEach((key) => {
-            console.log(errors[key][0])
+            console.log(errors[key][0]);
             formInputsReducer({
               type: "INVALID",
               name: key,
               feedbackMessage: errors[key].toString(),
             });
           });
-          console.log(formInputs)
+          console.log(formInputs);
         }
       });
   };
@@ -664,11 +660,13 @@ const AddTeacher = () => {
               </Label>
               <Input
                 ref={teacherPhotoRef}
+                style={{border: "unset"}}
                 type="file"
                 id={FormField.profile_img.name}
                 name={FormField.profile_img.name}
                 onInput={handlerSelectImg}
                 accept="image/jpeg, image/png, image/jpg"
+                isInvalid={getFormInput(FormField.profile_img.name).isInvalid}
               />
               <ValidationFeedback
                 isVisible={

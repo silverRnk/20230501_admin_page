@@ -199,6 +199,7 @@ const TableOptions = (props: { selectedRows: readonly string[] }) => {
 
 const ActivitiesRow = (props: {
   activity: Activities;
+  label?: string,
   isSelected?: boolean;
   onCheck?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {

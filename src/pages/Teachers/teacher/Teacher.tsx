@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import SchoolLogo from "../../../assets/cedarhills.png";
@@ -12,6 +12,10 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import TeacherProfileDetails from "../../../compenents/TeacherProfileDetails";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axiosClient from "../../../utils/AxiosClient";
+import { TeacherProfileLong } from "../utils/interface";
+import { useStateContext } from "../../../context/ContextProvider";
 
 const Container = styled.div`
   min-height: 800px;
@@ -61,8 +65,31 @@ const ProfileWrapper = styled.div`
 `;
 
 const Teacher = () => {
+  const { addDialogMessages } = useStateContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTab, setSelectedTab] = useState<string>("1");
+  const [teacherProfile, setTeacherProfile] =
+    useState<TeacherProfileLong | null>(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const idParam = searchParams.get("id");
+
+  useEffect(() => {
+    if (!idParam) {
+      navigate("/teachers/all");
+    }
+
+    axiosClient
+      .get(`/admin/teachers/teacher/${idParam}`)
+      .then((data) => {
+        setTeacherProfile(data?.data?.data[0] as TeacherProfileLong);
+        setIsLoading(false);
+        console.log(teacherProfile);
+      })
+      .catch((err) => {
+        addDialogMessages({message: err.toString(), messageType: "Error"})
+      });
+  }, []);
 
   return (
     <Container className="pageMinHeight">
@@ -71,10 +98,16 @@ const Teacher = () => {
       </Top>
       <Bottom>
         <Left>
-          <ProfileImg image="" isLoading={isLoading} />
+          <ProfileImg
+            image={import.meta.env.VITE_URL + teacherProfile?.teacher_profile_img}
+            isLoading={isLoading}
+          />
         </Left>
         <Right>
-          <ProfileName name="" isLoading={isLoading} />
+          <ProfileName
+            name={teacherProfile?.teacher_name}
+            isLoading={isLoading}
+          />
 
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={selectedTab}>
@@ -87,13 +120,12 @@ const Teacher = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab label="Profile" value="1" />
-                  
                 </TabList>
               </Box>
               <TabPanel value="1">
                 <ProfileWrapper>
                   <TeacherProfileDetails
-                    data={null}
+                    data={teacherProfile}
                     isLoading={isLoading}
                   />
                 </ProfileWrapper>

@@ -36,6 +36,7 @@ export const filled: Story = {
             teacher_id: faker.string.uuid(),
             teacher_name: faker.person.fullName(),
             teacher_gender: "Male",
+            teacher_date_of_birth: "",
             teacher_address: faker.location.streetAddress(),
             teacher_religion: "Religion",
             teacher_admission_date: faker.date.anytime().toDateString(),

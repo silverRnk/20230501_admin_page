@@ -107,7 +107,7 @@ const TeachersTable = (args: {
                   return (
                     <TableCell
                       size="medium"
-                      style={{ fontSize: theme.fontSize.medium }}
+                      style={{ fontSize: theme.fontSize.medium, textTransform:"capitalize" }}
                     >
                       {value || "N/A"}
                     </TableCell>

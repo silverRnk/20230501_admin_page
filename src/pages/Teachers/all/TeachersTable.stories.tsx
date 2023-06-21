@@ -32,9 +32,9 @@ const teachers: Array<TeacherProfileShort> = EmptyArrayGenerator(
 ).map(() => ({
   teacher_id: faker.string.alphanumeric({ length: 8 }),
   teacher_name: faker.person.fullName(),
-  teacher_addr: faker.location.secondaryAddress(),
+  teacher_address: faker.location.secondaryAddress(),
   teacher_gender: faker.helpers.arrayElement(["Male"]),
-  teacher_class: faker.helpers.arrayElement(["", "class1", "class2"]),
+  teacher_advisory_class: faker.helpers.arrayElement(["", "class1", "class2"]),
   teacher_dob: faker.date
     .birthdate({ min: 20, max: 65 })
     .toLocaleDateString(),
