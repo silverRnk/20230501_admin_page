@@ -67,11 +67,11 @@ const SharePage = () => {
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  // useEffect(() => {
-  //   axiosClient.get("/user").then((data) => {
-  //     setUser(data);
-  //   });
-  // }, [setUser]);
+  useEffect(() => {
+    axiosClient.get("/admin").then((data) => {
+      
+    });
+  }, []);
 
   const handlerDeleteDialog = (message) => {
     deleteDialogMessages(message);

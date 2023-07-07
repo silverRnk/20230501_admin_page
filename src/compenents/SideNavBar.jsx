@@ -94,9 +94,11 @@ function SideNavbar() {
   console.log(collapsed);
 
   const onLogout = () => {
+    localStorage.removeItem("ACCESS_TOKEN")
+    setToken(null);
     axiosClient.post("/logout").then(() => {
       // setUser({});
-      setToken("");
+      
     });
   };
 
