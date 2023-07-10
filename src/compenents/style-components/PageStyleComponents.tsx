@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
   width: 100%;
-  max-width: 1500px;
+  max-width: 1100px;
   min-width: 600px;
   min-height: 1000px;
   border-radius: 10px;

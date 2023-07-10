@@ -61,6 +61,8 @@ import SubjectActivitiesPage from "./pages/Subjects/Activities";
 import AddActivity from "./pages/Subjects/Activity/Add";
 import EditActivity from "./pages/Subjects/Activity/Edit";
 import Activity from "./pages/Subjects/Activity";
+import { element } from "prop-types";
+import Registration from "./pages/Registration/Registration";
 
 //Taena mo pol gawin mo to bukas ng umaga
 
@@ -169,6 +171,10 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignUp />,
   },
+  {
+    path: "/registration",
+    element: <Registration/>
+  }
 
   // {
   //   path: "/navbar",

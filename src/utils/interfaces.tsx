@@ -47,3 +47,14 @@ export interface FormInput {
   isInvalid: boolean;
   feedbackMessage: string | undefined;
 }
+
+export interface FormValidationFeedback {
+  message: string;
+  isInvalid: boolean;
+  isVisible: boolean;
+}
+
+export interface FormInputLabel {
+  name: string;
+  label: string;
+}

@@ -8,6 +8,13 @@ const InputField = styled.input``;
 const Form = styled.form`
   width: 100%;
 `;
+const FormReminder = styled.p`
+  font-size: 0.75rem;
+  color: gray;
+`;
+const FormTitle = styled.h1`
+  ${(props) => props.theme.fontThemes.h2}
+`;
 const FormSection = styled.div`
   width: 100%;
   display: flex;
@@ -23,7 +30,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-bottom: 20px;
 `;
 const InputRow = styled.div<{ columnCount: number }>`
   width: 100%;
@@ -106,6 +112,52 @@ const IsRequiredIndicator = styled.span`
   color: red !important;
 `;
 
+const RadioContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
+const RadioWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  gap: 10px;
+  width: auto;
+  height: auto;
+`;
+
+const InputRadio = styled(Input)`
+  height: 1rem !important;
+  width: 1rem !important;
+`;
+type MyType = React.HTMLAttributes<HTMLInputElement>;
+const RadioButton = (
+  { props,
+    name,
+    id,
+    value,
+  }: {
+    props?: MyType,
+    name: string;
+    id: string;
+    value: string;
+  },
+  
+) => {
+  return (
+    <InputRadio
+      type="radio"
+      id={id}
+      value={value}
+      name={name}
+      isInvalid={false}
+      {...props}
+    />
+  );
+};
+
 const InputWithFeedback = (props: {
   type: string | undefined;
   value?: string | number | undefined;
@@ -134,10 +186,15 @@ export default InputWithFeedback;
 
 export {
   Form,
+  FormReminder,
+  FormTitle,
   FormSectionTitle,
   FormSection,
   InputContainer,
   Input,
+  RadioContainer,
+  RadioWrapper,
+  RadioButton,
   IsRequiredIndicator,
   InputRow,
   ValidationFeedback,
