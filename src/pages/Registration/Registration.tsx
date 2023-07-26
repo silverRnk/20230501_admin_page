@@ -42,6 +42,7 @@ const Container = styled.div`
 
 const Registration = () => {
   const formRef = createRef<HTMLFormElement>();
+  const radioButtonRef = createRef<HTMLInputElement>();
   const sectionSelectionRef = createRef<HTMLSelectElement>();
   const studentPhotoRef = createRef<HTMLInputElement>();
   const [selectedGrade, setSelectedGrade] = useState("");
@@ -94,7 +95,7 @@ const Registration = () => {
 
   const handlerFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(formInputs);
     formInputsReducer({ type: "INVALID", name: "" });
     const payload = new FormData();
 
@@ -162,14 +163,15 @@ const Registration = () => {
   };
 
   const handleFormInput = (e) => {
-    // if (e.target.name === "std_photo") {
-    //   return;
-    // }
-    // formInputsReducer({
-    //   type: "INPUT",
-    //   name: e.target.name,
-    //   value: e.target.value,
-    // });
+    // console.log(e.target.value)
+    if (e.target.name === "std_photo") {
+      return;
+    }
+    formInputsReducer({
+      type: "INPUT",
+      name: e.target.name,
+      value: e.target.value,
+    });
     // console.log(formInputs);
   };
 
@@ -409,14 +411,19 @@ const Registration = () => {
               </InputContainer>
               <InputRow columnCount={2}>
                 <InputContainer>
-                  <Label>Enrollee Type</Label>
+                  <Label
+                    htmlFor={AddStudentLabels.enrollee_type.name}
+                  >
+                    {AddStudentLabels.enrollee_type.label}
+                  </Label>
                   <RadioContainer>
                     <RadioWrapper>
                       <Label htmlFor="new_student">New</Label>
                       <RadioButton
                         id="new_student"
-                        name="enrollee_type"
+                        name={AddStudentLabels.enrollee_type.name}
                         value={"new"}
+                        props={{}}
                       />
                     </RadioWrapper>
                     <RadioWrapper>
@@ -425,16 +432,18 @@ const Registration = () => {
                       </Label>
                       <RadioButton
                         id="transferee_student"
-                        name="enrollee_type"
+                        name={AddStudentLabels.enrollee_type.name}
                         value={"transferee"}
+                        props={{}}
                       />
                     </RadioWrapper>
                     <RadioWrapper>
                       <Label htmlFor="old_student">Old</Label>
                       <RadioButton
                         id="old_student"
-                        name="enrollee_type"
+                        name={AddStudentLabels.enrollee_type.name}
                         value={"old"}
+                        props={{}}
                       />
                     </RadioWrapper>
                   </RadioContainer>

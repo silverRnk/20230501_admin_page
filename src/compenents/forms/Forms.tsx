@@ -138,16 +138,19 @@ const RadioButton = (
     name,
     id,
     value,
+    ref
   }: {
     props?: MyType,
     name: string;
     id: string;
     value: string;
+    ref?: React.Ref<HTMLInputElement>
   },
   
 ) => {
   return (
     <InputRadio
+      ref={ref}
       type="radio"
       id={id}
       value={value}

@@ -26,17 +26,17 @@ type AddStudentInput = 'std_first_name'
          | 'prev_school'
 
 
-export const AddStudentLabels: Record<Exclude<AddStudentInput, 'std_photo'>, FormInputLabel> = {
-    std_first_name: {label: 'First Name', name: 'std_first_name'},
-    std_last_name: {label: 'Last Name', name: 'std_last_name'},
-    std_gender: {label: 'Gender', name: 'std_gender'},
-    std_dob: {label: 'Date of Birth', name: 'std_date_of_birth'},
-    std_religion: {label: 'Religion', name: 'std_religion'},
-    std_email: {label: 'Email', name: 'std_email'},
-    std_phone: {label: 'Phone Number', name: 'std_phone'},
-    std_password: {label: 'Password', name: 'std_password'},
-    std_passconf: {label: 'Confirm Password', name: 'std_password_confirmation'},
-    std_grade: {label: 'Grade', name: 'std_grade'},
+export const AddStudentLabels: Record<Exclude<AddStudentInput, 'std_photo' | 'std_religion'>, FormInputLabel> = {
+    std_first_name: {label: 'First Name', name: 'first_name'},
+    std_last_name: {label: 'Last Name', name: 'last_name'},
+    std_gender: {label: 'Gender', name: 'gender'},
+    std_dob: {label: 'Date of Birth', name: 'date_of_birth'},
+    // std_religion: {label: 'Religion', name: 'std_religion'},
+    std_email: {label: 'Email', name: 'email'},
+    std_phone: {label: 'Phone Number', name: 'phone_no'},
+    std_password: {label: 'Password', name: 'password'},
+    std_passconf: {label: 'Confirm Password', name: 'password_confirmation'},
+    std_grade: {label: 'Grade', name: 'grade'},
     std_section: {label: 'Section', name: 'std_section'},
     enrollee_type: {label: 'Enrollee Type', name: 'enrollee_type'},
     // std_photo: {label: 'Profile Image', name: 'std_photo'},

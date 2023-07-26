@@ -1,5 +1,5 @@
 import { FormInput } from "../../../utils/interfaces";
-import { FormActions } from "../../Teachers/utils/types";
+import { FormActions } from "../../../utils/Types";
 import { AddStudentLabels } from "../utils/FormInputNames";
 
 
